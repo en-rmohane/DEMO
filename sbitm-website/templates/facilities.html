@@ -1,0 +1,1431 @@
+{% extends "base.html" %}
+
+{% block title %}Facilities | World-Class Infrastructure at SBITM{% endblock %}
+
+{% block head %}
+<style>
+    /* ========== CUSTOM VARIABLES ========== */
+    :root {
+        --sbitm-blue: #003366;
+        --sbitm-gold: #FFD700;
+        --sbitm-light-blue: #0066CC;
+        --sbitm-white: #FFFFFF;
+        --sbitm-gray: #F5F5F5;
+        --sbitm-dark: #1A1A1A;
+        --border-gradient: linear-gradient(45deg, #003366, #FFD700, #0066CC, #FFD700);
+    }
+
+    /* ========== HERO SECTION ========== */
+    .facilities-hero {
+        position: relative;
+        min-height: 85vh;
+        background: linear-gradient(rgba(0, 51, 102, 0.9), rgba(0, 51, 102, 0.95)),
+                    url('https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        margin-top: -80px;
+        padding-top: 80px;
+        overflow: hidden;
+    }
+
+    .facilities-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(0, 51, 102, 0.2) 0%, rgba(255, 215, 0, 0.1) 100%);
+        z-index: 1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin-bottom: 2rem;
+        color: var(--sbitm-gold);
+        font-weight: 600;
+    }
+
+    /* Floating Icons Animation */
+    .facility-icons {
+        position: absolute;
+        bottom: 40px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        z-index: 2;
+    }
+
+    .facility-icons i {
+        font-size: 2rem;
+        color: rgba(255, 255, 255, 0.9);
+        background: rgba(0, 51, 102, 0.3);
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 215, 0, 0.3);
+        transition: all 0.3s ease;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .facility-icons i:nth-child(1) { animation-delay: 0s; }
+    .facility-icons i:nth-child(2) { animation-delay: 0.5s; }
+    .facility-icons i:nth-child(3) { animation-delay: 1s; }
+    .facility-icons i:nth-child(4) { animation-delay: 1.5s; }
+
+    .facility-icons i:hover {
+        background: var(--sbitm-gold);
+        color: var(--sbitm-blue);
+        transform: translateY(-10px) scale(1.1);
+        border-color: var(--sbitm-gold);
+        box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+    }
+
+    /* ========== CAMPUS OVERVIEW ========== */
+    .campus-overview {
+        padding: 5rem 0;
+        background: var(--sbitm-gray);
+    }
+
+    .section-title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        color: var(--sbitm-blue);
+        margin-bottom: 1rem;
+        text-align: center;
+        font-size: clamp(2rem, 4vw, 3.5rem);
+    }
+
+    .section-subtitle {
+        color: #666;
+        font-size: 1.2rem;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 3rem;
+    }
+
+    .campus-stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin: 3rem 0;
+    }
+
+    .stat-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .stat-card:hover::before {
+        opacity: 1;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .stat-icon {
+        font-size: 3rem;
+        color: var(--sbitm-gold);
+        margin-bottom: 1rem;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--sbitm-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    /* ========== MODERN FACILITIES GRID ========== */
+    .modern-facilities {
+        padding: 5rem 0;
+        background: white;
+    }
+
+    .facilities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2.5rem;
+        margin-top: 3rem;
+    }
+
+    .modern-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: 2px solid transparent;
+        height: 100%;
+    }
+
+    .modern-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .modern-card:hover::before {
+        opacity: 1;
+    }
+
+    .modern-card:hover {
+        transform: translateY(-15px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .card-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .modern-card:hover .card-image {
+        transform: scale(1.1);
+    }
+
+    .card-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: var(--sbitm-gold);
+        color: var(--sbitm-blue);
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--sbitm-blue);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .card-title i {
+        color: var(--sbitm-gold);
+        font-size: 1.2em;
+    }
+
+    .card-text {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-features {
+        list-style: none;
+        padding: 0;
+        margin: 1.5rem 0;
+    }
+
+    .card-features li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #555;
+        transition: all 0.3s ease;
+    }
+
+    .card-features li:hover {
+        color: var(--sbitm-blue);
+        transform: translateX(5px);
+    }
+
+    .card-features li i {
+        color: var(--sbitm-gold);
+        width: 20px;
+        font-size: 0.9rem;
+    }
+
+    .card-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--sbitm-blue);
+        font-weight: 600;
+        text-decoration: none;
+        padding: 0.8rem 1.5rem;
+        background: rgba(0, 51, 102, 0.1);
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .card-action:hover {
+        background: var(--sbitm-blue);
+        color: white;
+        gap: 15px;
+        border-color: var(--sbitm-blue);
+        transform: translateY(-2px);
+    }
+
+    /* ========== LIBRARY SECTION ========== */
+    .library-section {
+        padding: 5rem 0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    .library-container {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .library-container::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .library-container:hover::before {
+        opacity: 1;
+    }
+
+    .library-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .library-stat {
+        text-align: center;
+        padding: 1.5rem;
+        background: var(--sbitm-gray);
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+    }
+
+    .library-stat::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .library-stat:hover::before {
+        opacity: 1;
+    }
+
+    .library-stat:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .library-stat h4 {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--sbitm-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    /* ========== LABORATORIES ========== */
+    .laboratories-section {
+        padding: 5rem 0;
+        background: white;
+    }
+
+    .lab-tabs {
+        margin-top: 3rem;
+    }
+
+    .lab-tab-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 3rem;
+    }
+
+    .lab-tab-btn {
+        padding: 1rem 2rem;
+        background: white;
+        border: 2px solid var(--sbitm-gray);
+        border-radius: 50px;
+        font-weight: 600;
+        color: #666;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .lab-tab-btn::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 52px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .lab-tab-btn.active::before,
+    .lab-tab-btn:hover::before {
+        opacity: 1;
+    }
+
+    .lab-tab-btn.active {
+        background: var(--sbitm-blue);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 51, 102, 0.2);
+    }
+
+    .lab-content {
+        display: none;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .lab-content.active {
+        display: block;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .lab-details {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .lab-details::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .lab-details:hover::before {
+        opacity: 1;
+    }
+
+    .lab-specs-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .lab-spec {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: var(--sbitm-gray);
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+    }
+
+    .lab-spec::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .lab-spec:hover::before {
+        opacity: 1;
+    }
+
+    .lab-spec:hover {
+        transform: translateY(-5px);
+    }
+
+    .lab-spec i {
+        font-size: 2rem;
+        color: var(--sbitm-gold);
+    }
+
+    /* ========== SPORTS FACILITIES ========== */
+    .sports-section {
+        padding: 5rem 0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    .sports-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+
+    .sport-item {
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+    }
+
+    .sport-item::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .sport-item:hover::before {
+        opacity: 1;
+    }
+
+    .sport-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .sport-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--sbitm-blue) 0%, var(--sbitm-light-blue) 100%);
+        color: var(--sbitm-gold);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .sport-item:hover .sport-icon {
+        transform: rotate(360deg) scale(1.1);
+        background: linear-gradient(135deg, var(--sbitm-gold) 0%, #ffed4e 100%);
+        color: var(--sbitm-blue);
+    }
+
+    /* ========== OTHER FACILITIES ========== */
+    .other-facilities-section {
+        padding: 5rem 0;
+        background: white;
+    }
+
+    .other-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+
+    .other-facility {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+    }
+
+    .other-facility::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .other-facility:hover::before {
+        opacity: 1;
+    }
+
+    .other-facility:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .other-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, var(--sbitm-blue) 0%, var(--sbitm-light-blue) 100%);
+        color: var(--sbitm-gold);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin: 0 auto 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .other-facility:hover .other-icon {
+        transform: scale(1.1);
+        background: linear-gradient(135deg, var(--sbitm-gold) 0%, #ffed4e 100%);
+        color: var(--sbitm-blue);
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-15px);
+        }
+    }
+
+    @keyframes borderAnimation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.7;
+        }
+    }
+
+    .floating-animation {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .pulse-animation {
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* ========== BUTTONS ========== */
+    .btn-explore {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--sbitm-blue);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-explore::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 52px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .btn-explore:hover::before {
+        opacity: 1;
+    }
+
+    .btn-explore:hover {
+        background: transparent;
+        color: var(--sbitm-blue);
+        border-color: var(--sbitm-blue);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 51, 102, 0.2);
+    }
+
+    /* ========== RESPONSIVE DESIGN ========== */
+    @media (max-width: 992px) {
+        .campus-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .lab-specs-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .facilities-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .campus-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .lab-tab-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lab-tab-btn {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .facility-image {
+            height: 200px;
+        }
+
+        .facilities-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .library-stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .facility-icons {
+            gap: 20px;
+            bottom: 20px;
+        }
+
+        .facility-icons i {
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+        }
+
+        .stat-number,
+        .library-stat h4 {
+            font-size: 2rem;
+        }
+
+        .sport-item,
+        .other-facility {
+            padding: 1.5rem;
+        }
+
+        .facility-icons i {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="facilities-hero">
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1 class="hero-title">World-Class Campus Facilities</h1>
+            <p class="hero-subtitle">Experience state-of-the-art infrastructure designed for excellence</p>
+            <a href="#campus-overview" class="btn-explore">
+                <i class="fas fa-arrow-down"></i>
+                Explore Facilities
+            </a>
+        </div>
+    </div>
+
+    <!-- Animated Facility Icons -->
+    <div class="facility-icons">
+        <i class="fas fa-building" title="Academic Blocks"></i>
+        <i class="fas fa-flask" title="Laboratories"></i>
+        <i class="fas fa-book" title="Library"></i>
+        <i class="fas fa-wifi" title="Wi-Fi Campus"></i>
+    </div>
+</section>
+
+<!-- Campus Overview -->
+<section id="campus-overview" class="campus-overview">
+    <div class="container">
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">25-Acre Green Campus</h2>
+            <p class="section-subtitle">A sprawling campus with modern infrastructure and sustainable practices</p>
+        </div>
+
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="campus-image rounded-4 overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1576495199011-ebd36d1d32f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Campus Aerial View" class="img-fluid w-100">
+                </div>
+            </div>
+
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="campus-stats">
+                    <div class="stat-card floating-animation">
+                        <i class="fas fa-tree stat-icon"></i>
+                        <h3 class="stat-number">25 Acre</h3>
+                        <p class="text-muted mb-0">Green Campus Area</p>
+                    </div>
+                    <div class="stat-card floating-animation" style="animation-delay: 0.2s">
+                        <i class="fas fa-building stat-icon"></i>
+                        <h3 class="stat-number">10+</h3>
+                        <p class="text-muted mb-0">Academic Blocks</p>
+                    </div>
+                    <div class="stat-card floating-animation" style="animation-delay: 0.4s">
+                        <i class="fas fa-flask stat-icon"></i>
+                        <h3 class="stat-number">25+</h3>
+                        <p class="text-muted mb-0">Laboratories</p>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h4 class="h3 fw-bold mb-3">Sustainable Features</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <i class="fas fa-solar-panel fa-2x text-warning"></i>
+                                <div>
+                                    <h5 class="h6 fw-bold mb-1">Solar Power</h5>
+                                    <p class="text-muted mb-0">Renewable energy system</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <i class="fas fa-recycle fa-2x text-success"></i>
+                                <div>
+                                    <h5 class="h6 fw-bold mb-1">Waste Management</h5>
+                                    <p class="text-muted mb-0">Eco-friendly disposal</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modern Facilities Grid -->
+<section class="modern-facilities">
+    <div class="container">
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Modern Facilities</h2>
+            <p class="section-subtitle">Cutting-edge infrastructure for world-class education</p>
+        </div>
+
+        <div class="facilities-grid">
+            <!-- Smart Classrooms Card -->
+            <div class="modern-card" data-aos="fade-up">
+                <div class="card-header">
+                    <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Smart Classrooms" class="card-image">
+                    <span class="card-badge">Smart</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        Smart Classrooms
+                    </h3>
+                    <p class="card-text">
+                        Digitally equipped classrooms with interactive boards, projectors, and audio-visual systems for enhanced learning.
+                    </p>
+                    <ul class="card-features">
+                        <li><i class="fas fa-check"></i> Interactive whiteboards</li>
+                        <li><i class="fas fa-check"></i> High-speed Wi-Fi</li>
+                        <li><i class="fas fa-check"></i> Audio-visual systems</li>
+                        <li><i class="fas fa-check"></i> Ergonomic furniture</li>
+                    </ul>
+                    <a href="#smart-classrooms" class="card-action">
+                        <span>Explore</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Computer Labs Card -->
+            <div class="modern-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-header">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Computer Labs" class="card-image">
+                    <span class="card-badge">Advanced</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <i class="fas fa-desktop"></i>
+                        Computer Labs
+                    </h3>
+                    <p class="card-text">
+                        300+ latest configuration systems with high-speed internet and dedicated servers for cutting-edge research.
+                    </p>
+                    <ul class="card-features">
+                        <li><i class="fas fa-check"></i> 300+ computer systems</li>
+                        <li><i class="fas fa-check"></i> Gigabit internet</li>
+                        <li><i class="fas fa-check"></i> Latest software</li>
+                        <li><i class="fas fa-check"></i> Dedicated servers</li>
+                    </ul>
+                    <a href="#computer-labs" class="card-action">
+                        <span>Explore</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Central Library Card -->
+            <div class="modern-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-header">
+                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Library" class="card-image">
+                    <span class="card-badge">Digital</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <i class="fas fa-book"></i>
+                        Central Library
+                    </h3>
+                    <p class="card-text">
+                        50,000+ books and digital resources with 24/7 access and modern reading spaces for comprehensive learning.
+                    </p>
+                    <ul class="card-features">
+                        <li><i class="fas fa-check"></i> 50,000+ books</li>
+                        <li><i class="fas fa-check"></i> Digital section</li>
+                        <li><i class="fas fa-check"></i> 24/7 access</li>
+                        <li><i class="fas fa-check"></i> E-journals</li>
+                    </ul>
+                    <a href="#central-library" class="card-action">
+                        <span>Explore</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Laboratories Card -->
+            <div class="modern-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-header">
+                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Laboratories" class="card-image">
+                    <span class="card-badge">Research</span>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <i class="fas fa-flask"></i>
+                        Advanced Laboratories
+                    </h3>
+                    <p class="card-text">
+                        25+ specialized labs with modern equipment for practical learning across all engineering disciplines.
+                    </p>
+                    <ul class="card-features">
+                        <li><i class="fas fa-check"></i> Mechanical Labs</li>
+                        <li><i class="fas fa-check"></i> Electronics Labs</li>
+                        <li><i class="fas fa-check"></i> Computer Labs</li>
+                        <li><i class="fas fa-check"></i> Civil Engineering Labs</li>
+                    </ul>
+                    <a href="#laboratories" class="card-action">
+                        <span>Explore</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Library Section -->
+<section class="library-section" id="central-library">
+    <div class="container">
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Digital Library</h2>
+            <p class="section-subtitle">Knowledge center with extensive resources and modern facilities</p>
+        </div>
+
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="library-container">
+                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Library Interior" class="img-fluid w-100">
+                </div>
+            </div>
+
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="library-stats-grid">
+                    <div class="library-stat pulse-animation">
+                        <h4>50,000+</h4>
+                        <p class="text-muted mb-0">Books Collection</p>
+                    </div>
+                    <div class="library-stat pulse-animation" style="animation-delay: 0.2s">
+                        <h4>200+</h4>
+                        <p class="text-muted mb-0">Seating Capacity</p>
+                    </div>
+                    <div class="library-stat pulse-animation" style="animation-delay: 0.4s">
+                        <h4>100+</h4>
+                        <p class="text-muted mb-0">Journals</p>
+                    </div>
+                    <div class="library-stat pulse-animation" style="animation-delay: 0.6s">
+                        <h4>24/7</h4>
+                        <p class="text-muted mb-0">Access</p>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h4 class="h3 fw-bold mb-3">Digital Resources</h4>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-primary px-3 py-2">IEEE Xplore</span>
+                        <span class="badge bg-primary px-3 py-2">Springer Link</span>
+                        <span class="badge bg-primary px-3 py-2">Science Direct</span>
+                        <span class="badge bg-primary px-3 py-2">J-Gate</span>
+                        <span class="badge bg-primary px-3 py-2">Scopus</span>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h4 class="h4 fw-bold mb-3">Library Features</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="fas fa-laptop text-primary"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-0">Digital Access</h6>
+                                    <small class="text-muted">Online resources</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="fas fa-print text-primary"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-0">Printing</h6>
+                                    <small class="text-muted">Print & photocopy</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Laboratories Section -->
+<section class="laboratories-section" id="laboratories">
+    <div class="container">
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Advanced Laboratories</h2>
+            <p class="section-subtitle">State-of-the-art labs for practical learning and research</p>
+        </div>
+
+        <div class="lab-tabs">
+            <div class="lab-tab-buttons">
+                <button class="lab-tab-btn active" data-tab="computer">Computer Labs</button>
+                <button class="lab-tab-btn" data-tab="electronics">Electronics Labs</button>
+                <button class="lab-tab-btn" data-tab="mechanical">Mechanical Labs</button>
+                <button class="lab-tab-btn" data-tab="civil">Civil Labs</button>
+            </div>
+
+            <div class="lab-content active" id="computer">
+                <div class="lab-details">
+                    <div class="row g-5">
+                        <div class="col-lg-6">
+                            <h3 class="h2 fw-bold mb-3">Computer Science Labs</h3>
+                            <p class="text-muted mb-4">
+                                Equipped with 300+ latest computer systems, high-speed servers, and
+                                advanced networking infrastructure for cutting-edge research and development.
+                            </p>
+
+                            <div class="lab-specs-grid">
+                                <div class="lab-spec">
+                                    <i class="fas fa-desktop"></i>
+                                    <div>
+                                        <h5 class="h6 fw-bold mb-1">300+ Systems</h5>
+                                        <p class="text-muted mb-0">Latest configuration</p>
+                                    </div>
+                                </div>
+                                <div class="lab-spec">
+                                    <i class="fas fa-server"></i>
+                                    <div>
+                                        <h5 class="h6 fw-bold mb-1">Dedicated Servers</h5>
+                                        <p class="text-muted mb-0">High-performance</p>
+                                    </div>
+                                </div>
+                                <div class="lab-spec">
+                                    <i class="fas fa-wifi"></i>
+                                    <div>
+                                        <h5 class="h6 fw-bold mb-1">Gigabit Network</h5>
+                                        <p class="text-muted mb-0">High-speed internet</p>
+                                    </div>
+                                </div>
+                                <div class="lab-spec">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <div>
+                                        <h5 class="h6 fw-bold mb-1">Advanced Security</h5>
+                                        <p class="text-muted mb-0">Firewall protection</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="lab-image rounded-4 overflow-hidden shadow-lg">
+                                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                     alt="Computer Lab" class="img-fluid w-100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sports Facilities -->
+<section class="sports-section">
+    <div class="container">
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Sports & Recreation</h2>
+            <p class="section-subtitle">Comprehensive facilities for physical fitness and recreation</p>
+        </div>
+
+        <div class="sports-grid">
+            <div class="sport-item" data-aos="fade-up">
+                <div class="sport-icon">
+                    <i class="fas fa-futbol"></i>
+                </div>
+                <h3 class="h4 fw-bold mb-3">Outdoor Sports</h3>
+                <p class="text-muted mb-3">State-of-the-art outdoor sports facilities</p>
+                <ul class="card-features">
+                    <li><i class="fas fa-check"></i> Cricket ground</li>
+                    <li><i class="fas fa-check"></i> Football field</li>
+                    <li><i class="fas fa-check"></i> Basketball court</li>
+                    <li><i class="fas fa-check"></i> Volleyball court</li>
+                </ul>
+            </div>
+
+            <div class="sport-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="sport-icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <h3 class="h4 fw-bold mb-3">Gymnasium</h3>
+                <p class="text-muted mb-3">Fully-equipped modern gym</p>
+                <ul class="card-features">
+                    <li><i class="fas fa-check"></i> Treadmills</li>
+                    <li><i class="fas fa-check"></i> Weight machines</li>
+                    <li><i class="fas fa-check"></i> Free weights</li>
+                    <li><i class="fas fa-check"></i> Professional trainers</li>
+                </ul>
+            </div>
+
+            <div class="sport-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="sport-icon">
+                    <i class="fas fa-table-tennis"></i>
+                </div>
+                <h3 class="h4 fw-bold mb-3">Indoor Sports</h3>
+                <p class="text-muted mb-3">Dedicated indoor sports complex</p>
+                <ul class="card-features">
+                    <li><i class="fas fa-check"></i> Table tennis</li>
+                    <li><i class="fas fa-check"></i> Carrom boards</li>
+                    <li><i class="fas fa-check"></i> Chess area</li>
+                    <li><i class="fas fa-check"></i> Yoga room</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Other Facilities -->
+<section class="other-facilities-section">
+    <div class="container">
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <h2 class="section-title">Additional Facilities</h2>
+            <p class="section-subtitle">Comprehensive support facilities for student convenience</p>
+        </div>
+
+        <div class="other-grid">
+            <div class="other-facility" data-aos="fade-up">
+                <div class="other-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h4 class="h5 fw-bold mb-3">Cafeteria & Food Court</h4>
+                <p class="text-muted">Modern cafeteria serving hygienic and nutritious food with multiple cuisines.</p>
+            </div>
+
+            <div class="other-facility" data-aos="fade-up" data-aos-delay="100">
+                <div class="other-icon">
+                    <i class="fas fa-first-aid"></i>
+                </div>
+                <h4 class="h5 fw-bold mb-3">Medical Facilities</h4>
+                <p class="text-muted">24x7 medical center with doctor, nurse, and emergency facilities.</p>
+            </div>
+
+            <div class="other-facility" data-aos="fade-up" data-aos-delay="200">
+                <div class="other-icon">
+                    <i class="fas fa-bus"></i>
+                </div>
+                <h4 class="h5 fw-bold mb-3">Transportation</h4>
+                <p class="text-muted">College buses covering all major routes in and around the city.</p>
+            </div>
+
+            <div class="other-facility" data-aos="fade-up" data-aos-delay="300">
+                <div class="other-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h4 class="h5 fw-bold mb-3">Banking & ATM</h4>
+                <p class="text-muted">On-campus banking facilities and 24x7 ATM services.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-5 bg-primary">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8" data-aos="fade-right">
+                <h2 class="display-5 text-white mb-3">Experience Our Facilities Firsthand</h2>
+                <p class="lead text-white-50 mb-0">Schedule a campus visit to see our world-class infrastructure.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end" data-aos="fade-left">
+                <a href="{{ url_for('contact') }}" class="btn btn-light btn-lg px-5 py-3">
+                    <i class="fas fa-map-marker-alt me-2"></i> Plan Your Visit
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lab tabs functionality
+        const tabButtons = document.querySelectorAll('.lab-tab-btn');
+        const tabContents = document.querySelectorAll('.lab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animation to elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards and sections
+        document.querySelectorAll('.modern-card, .sport-item, .other-facility').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(el);
+        });
+
+        // Initialize AOS
+        if(typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100
+            });
+        }
+    });
+</script>
+{% endblock %}

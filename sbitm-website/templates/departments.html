@@ -1,0 +1,1620 @@
+{% extends "base.html" %}
+
+{% block title %}
+Departments | Academic Departments at SBITM Betul
+{% endblock %}
+
+{% block head %}
+<style>
+    /* ========== CUSTOM VARIABLES ========== */
+    :root {
+        --dept-blue: #1e40af;
+        --dept-gold: #fbbf24;
+        --dept-green: #10b981;
+        --dept-purple: #8b5cf6;
+        --dept-red: #ef4444;
+        --dept-orange: #f97316;
+        --dept-teal: #0d9488;
+        --dept-bg: #f8fafc;
+        --border-gradient: linear-gradient(45deg, #1e40af, #fbbf24, #10b981, #8b5cf6);
+    }
+
+    /* ========== HERO SECTION ========== */
+    .departments-hero {
+        position: relative;
+        min-height: 80vh;
+        background: linear-gradient(rgba(30, 64, 175, 0.9), rgba(30, 64, 175, 0.95)),
+                    url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        margin-top: -80px;
+        padding-top: 80px;
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(251, 191, 36, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        animation: slideDown 1s ease;
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin-bottom: 2rem;
+        color: var(--dept-gold);
+        font-weight: 600;
+        animation: slideUp 1s ease 0.3s both;
+    }
+
+    /* Department Icons Animation */
+    .dept-icons {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        gap: 1.5rem;
+        opacity: 0.3;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .dept-icons i {
+        font-size: 2rem;
+        color: var(--dept-gold);
+        animation: floatIcon 4s ease-in-out infinite;
+    }
+
+    .dept-icons i:nth-child(2) { animation-delay: 0.5s; }
+    .dept-icons i:nth-child(3) { animation-delay: 1s; }
+    .dept-icons i:nth-child(4) { animation-delay: 1.5s; }
+
+    /* ========== SECTION STYLES ========== */
+    .section {
+        padding: 5rem 0;
+        position: relative;
+    }
+
+    .bg-light {
+        background: var(--dept-bg);
+    }
+
+    .section-label {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: var(--dept-blue);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 800;
+        color: var(--dept-blue);
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: var(--dept-gold);
+        border-radius: 2px;
+    }
+
+    .section-header.text-center .section-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* ========== DEPARTMENTS OVERVIEW ========== */
+    .departments-intro {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 3rem;
+    }
+
+    .intro-text {
+        font-size: 1.2rem;
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+    }
+
+    /* Department Stats */
+    .dept-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin: 3rem auto;
+        max-width: 600px;
+    }
+
+    @media (min-width: 768px) {
+        .dept-stats {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    .dept-stat {
+        text-align: center;
+        padding: 1.5rem 1rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .dept-stat::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 14px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .dept-stat:hover::before {
+        opacity: 1;
+    }
+
+    .dept-stat:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.2);
+    }
+
+    .dept-stat h3 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--dept-blue);
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, var(--dept-blue), var(--dept-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .dept-stat p {
+        color: #666;
+        font-weight: 600;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    /* ========== ALL DEPARTMENTS GRID ========== */
+    .departments-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+
+    .department-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+    }
+
+    .department-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .department-card:hover::before {
+        opacity: 1;
+    }
+
+    .department-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(30, 64, 175, 0.15);
+    }
+
+    .dept-header {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .dept-header img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .department-card:hover .dept-header img {
+        transform: scale(1.1);
+    }
+
+    .dept-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, transparent 50%, rgba(30, 64, 175, 0.8));
+    }
+
+    .dept-icon {
+        position: absolute;
+        top: 1.5rem;
+        left: 1.5rem;
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dept-blue);
+        font-size: 1.8rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .dept-title {
+        position: absolute;
+        bottom: 1.5rem;
+        left: 1.5rem;
+        color: white;
+    }
+
+    .dept-title h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+    }
+
+    .dept-title p {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    .dept-content {
+        padding: 1.5rem;
+    }
+
+    .dept-details {
+        margin-bottom: 1rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 0.8rem;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .detail-item i {
+        color: var(--dept-gold);
+        width: 20px;
+    }
+
+    .dept-highlights {
+        margin-bottom: 1.5rem;
+    }
+
+    .dept-highlights h5 {
+        color: var(--dept-blue);
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .highlight-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .highlight-list li {
+        padding: 0.3rem 0;
+        color: #666;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .highlight-list li::before {
+        content: '✓';
+        color: var(--dept-green);
+        font-weight: bold;
+    }
+
+    .dept-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .btn-primary {
+        background: var(--dept-blue);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: transparent;
+        color: var(--dept-blue);
+        border-color: var(--dept-blue);
+        transform: translateY(-2px);
+    }
+
+    .btn-outline {
+        background: transparent;
+        border: 2px solid var(--dept-purple);
+        color: var(--dept-purple);
+    }
+
+    .btn-outline:hover {
+        background: var(--dept-purple);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* ========== DEPARTMENT FEATURES ========== */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        height: 100%;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--dept-gold);
+        box-shadow: 0 20px 40px rgba(30, 64, 175, 0.15);
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: white;
+        font-size: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: rotate(360deg) scale(1.1);
+    }
+
+    /* Different colors for different features */
+    .feature-card:nth-child(1) .feature-icon {
+        background: linear-gradient(135deg, var(--dept-blue), var(--dept-purple));
+    }
+    .feature-card:nth-child(2) .feature-icon {
+        background: linear-gradient(135deg, var(--dept-green), #34d399);
+    }
+    .feature-card:nth-child(3) .feature-icon {
+        background: linear-gradient(135deg, var(--dept-orange), #fb923c);
+    }
+    .feature-card:nth-child(4) .feature-icon {
+        background: linear-gradient(135deg, var(--dept-teal), #5eead4);
+    }
+
+    .feature-card h3 {
+        color: var(--dept-blue);
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .feature-card p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+    }
+
+    .feature-list li {
+        padding: 0.5rem 0;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .feature-list li::before {
+        content: '✓';
+        color: var(--dept-green);
+        font-weight: bold;
+    }
+
+    /* ========== LABORATORIES SECTION ========== */
+    .labs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .lab-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .lab-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--dept-purple);
+        box-shadow: 0 20px 40px rgba(30, 64, 175, 0.15);
+    }
+
+    .lab-image {
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .lab-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .lab-card:hover .lab-image img {
+        transform: scale(1.1);
+    }
+
+    .lab-content {
+        padding: 1.5rem;
+    }
+
+    .lab-content h3 {
+        color: var(--dept-blue);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .lab-content p {
+        color: #666;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    .lab-equipment {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .equipment-tag {
+        padding: 0.3rem 0.8rem;
+        background: rgba(30, 64, 175, 0.1);
+        color: var(--dept-blue);
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .lab-stats {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(30, 64, 175, 0.1);
+    }
+
+    .lab-stat {
+        text-align: center;
+    }
+
+    .lab-stat h4 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--dept-blue);
+        margin-bottom: 0.3rem;
+        background: linear-gradient(135deg, var(--dept-blue), var(--dept-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .lab-stat p {
+        color: #666;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    /* ========== FACULTY STRENGTH ========== */
+    .faculty-strength {
+        background: linear-gradient(135deg, var(--dept-blue), var(--dept-purple));
+        border-radius: 20px;
+        padding: 3rem;
+        color: white;
+        box-shadow: 0 15px 35px rgba(30, 64, 175, 0.2);
+    }
+
+    .strength-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .strength-item {
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .strength-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .strength-icon {
+        font-size: 2.5rem;
+        color: var(--dept-gold);
+        margin-bottom: 1rem;
+    }
+
+    .strength-item h3 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+    }
+
+    .strength-item p {
+        opacity: 0.9;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    /* ========== DEPARTMENT COMPARISON ========== */
+    .comparison-table {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+    }
+
+    .table-header {
+        background: linear-gradient(135deg, var(--dept-blue), var(--dept-purple));
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .table-header h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .table-content {
+        padding: 1.5rem;
+    }
+
+    .table-row {
+        display: grid;
+        grid-template-columns: 2fr repeat(5, 1fr);
+        gap: 1rem;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(30, 64, 175, 0.1);
+        align-items: center;
+    }
+
+    .table-row:last-child {
+        border-bottom: none;
+    }
+
+    .row-header {
+        font-weight: 700;
+        color: var(--dept-blue);
+    }
+
+    .table-cell {
+        text-align: center;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .highlight {
+        color: var(--dept-green);
+        font-weight: 700;
+    }
+
+    /* ========== CTA SECTION ========== */
+    .dept-cta {
+        background: linear-gradient(135deg, var(--dept-blue), var(--dept-purple));
+        border-radius: 20px;
+        padding: 4rem 2rem;
+        text-align: center;
+        color: white;
+        box-shadow: 0 20px 40px rgba(30, 64, 175, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dept-cta::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.1;
+    }
+
+    .cta-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-text {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-buttons .btn {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+
+    .btn-white {
+        background: white;
+        color: var(--dept-blue);
+    }
+
+    .btn-white:hover {
+        background: transparent;
+        color: white;
+        border-color: white;
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes borderAnimation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    @keyframes floatIcon {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    /* ========== RESPONSIVE DESIGN ========== */
+    @media (max-width: 768px) {
+        .section {
+            padding: 3rem 0;
+        }
+
+        .departments-hero {
+            min-height: 60vh;
+        }
+
+        .dept-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .departments-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .labs-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .strength-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .table-row {
+            grid-template-columns: 1fr;
+            text-align: center;
+            gap: 0.5rem;
+        }
+
+        .row-header {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .table-cell {
+            font-size: 0.8rem;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+        }
+
+        .cta-buttons .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .dept-icons {
+            display: none;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+        }
+
+        .dept-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .strength-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .cta-title {
+            font-size: 1.8rem;
+        }
+    }
+
+    /* Utility Classes */
+    .mt-6 { margin-top: 1.5rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .text-center { text-align: center; }
+    .me-1 { margin-right: 0.25rem; }
+    .me-2 { margin-right: 0.5rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO BANNER ================= -->
+<section class="page-hero departments-hero">
+    <div class="hero-overlay"></div>
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1 class="hero-title">Academic Departments</h1>
+            <p class="hero-subtitle">Excellence in Engineering & Management Education</p>
+            <div class="breadcrumb">
+                <a href="{{ url_for('home') }}"><i class="fas fa-home me-2"></i>Home</a>
+                <i class="fas fa-chevron-right mx-3"></i>
+                <span>Departments</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Department Icons -->
+    <div class="dept-icons">
+        <i class="fas fa-laptop-code"></i>
+        <i class="fas fa-cogs"></i>
+        <i class="fas fa-hard-hat"></i>
+        <i class="fas fa-chart-line"></i>
+    </div>
+</section>
+
+<!-- ================= DEPARTMENTS OVERVIEW ================= -->
+<section class="section departments-overview">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label">Academics</span>
+            <h2 class="section-title">Our Academic Departments</h2>
+        </div>
+
+        <div class="departments-intro" data-aos="fade-up">
+            <p class="intro-text">
+                SBITM Betul offers a comprehensive range of undergraduate and postgraduate
+                programs across various engineering and management disciplines. Each department
+                is equipped with state-of-the-art facilities, experienced faculty, and industry
+                partnerships to provide quality education.
+            </p>
+
+            <div class="dept-stats">
+                <div class="dept-stat" data-aos="fade-up" data-aos-delay="100">
+                    <h3>06</h3>
+                    <p>Departments</p>
+                </div>
+                <div class="dept-stat" data-aos="fade-up" data-aos-delay="200">
+                    <h3>18+</h3>
+                    <p>Programs</p>
+                </div>
+                <div class="dept-stat" data-aos="fade-up" data-aos-delay="300">
+                    <h3>58</h3>
+                    <p>Faculty Members</p>
+                </div>
+                <div class="dept-stat" data-aos="fade-up" data-aos-delay="400">
+                    <h3>85%</h3>
+                    <p>Ph.D. Faculty</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= ALL DEPARTMENTS ================= -->
+<section class="section all-departments bg-light">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Programs</span>
+            <h2 class="section-title">Explore Our Departments</h2>
+        </div>
+
+        <div class="departments-grid">
+            <!-- Computer Science & Engineering -->
+            <div class="department-card" data-aos="fade-up">
+                <div class="dept-header">
+                    <img src="https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CSE Department">
+                    <div class="dept-overlay"></div>
+                    <div class="dept-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <div class="dept-title">
+                        <h3>Computer Science & Engineering</h3>
+                        <p>B.Tech, M.Tech</p>
+                    </div>
+                </div>
+                <div class="dept-content">
+                    <div class="dept-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>HOD: Dr. Rajesh Sharma</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <span>12 Faculty Members</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-flask"></i>
+                            <span>8 Modern Labs</span>
+                        </div>
+                    </div>
+
+                    <div class="dept-highlights">
+                        <h5>Specializations:</h5>
+                        <ul class="highlight-list">
+                            <li>Artificial Intelligence & ML</li>
+                            <li>Cyber Security</li>
+                            <li>Data Science</li>
+                            <li>Cloud Computing</li>
+                        </ul>
+                    </div>
+
+                    <div class="dept-actions">
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-info-circle me-1"></i> Learn More
+                        </a>
+                        <a href="#" class="btn btn-outline">
+                            <i class="fas fa-user-graduate me-1"></i> Programs
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mechanical Engineering -->
+            <div class="department-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="dept-header">
+                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mechanical Department">
+                    <div class="dept-overlay"></div>
+                    <div class="dept-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div class="dept-title">
+                        <h3>Mechanical Engineering</h3>
+                        <p>B.Tech, M.Tech</p>
+                    </div>
+                </div>
+                <div class="dept-content">
+                    <div class="dept-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>HOD: Prof. Anjali Verma</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <span>10 Faculty Members</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-flask"></i>
+                            <span>6 Advanced Labs</span>
+                        </div>
+                    </div>
+
+                    <div class="dept-highlights">
+                        <h5>Specializations:</h5>
+                        <ul class="highlight-list">
+                            <li>Thermal Engineering</li>
+                            <li>Manufacturing Systems</li>
+                            <li>Automobile Engineering</li>
+                            <li>CAD/CAM</li>
+                        </ul>
+                    </div>
+
+                    <div class="dept-actions">
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-info-circle me-1"></i> Learn More
+                        </a>
+                        <a href="#" class="btn btn-outline">
+                            <i class="fas fa-user-graduate me-1"></i> Programs
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Civil Engineering -->
+            <div class="department-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="dept-header">
+                    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Civil Department">
+                    <div class="dept-overlay"></div>
+                    <div class="dept-icon">
+                        <i class="fas fa-hard-hat"></i>
+                    </div>
+                    <div class="dept-title">
+                        <h3>Civil Engineering</h3>
+                        <p>B.Tech, M.Tech</p>
+                    </div>
+                </div>
+                <div class="dept-content">
+                    <div class="dept-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>HOD: Prof. Ramesh Kumar</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <span>8 Faculty Members</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-flask"></i>
+                            <span>5 Specialized Labs</span>
+                        </div>
+                    </div>
+
+                    <div class="dept-highlights">
+                        <h5>Specializations:</h5>
+                        <ul class="highlight-list">
+                            <li>Structural Engineering</li>
+                            <li>Environmental Engineering</li>
+                            <li>Transportation Engineering</li>
+                            <li>Geotechnical Engineering</li>
+                        </ul>
+                    </div>
+
+                    <div class="dept-actions">
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-info-circle me-1"></i> Learn More
+                        </a>
+                        <a href="#" class="btn btn-outline">
+                            <i class="fas fa-user-graduate me-1"></i> Programs
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Electrical Engineering -->
+            <div class="department-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="dept-header">
+                    <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Electrical Department">
+                    <div class="dept-overlay"></div>
+                    <div class="dept-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="dept-title">
+                        <h3>Electrical Engineering</h3>
+                        <p>B.Tech, M.Tech</p>
+                    </div>
+                </div>
+                <div class="dept-content">
+                    <div class="dept-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>HOD: Prof. Sunil Verma</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <span>9 Faculty Members</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-flask"></i>
+                            <span>7 Technical Labs</span>
+                        </div>
+                    </div>
+
+                    <div class="dept-highlights">
+                        <h5>Specializations:</h5>
+                        <ul class="highlight-list">
+                            <li>Power Systems</li>
+                            <li>Control Systems</li>
+                            <li>Renewable Energy</li>
+                            <li>Electrical Machines</li>
+                        </ul>
+                    </div>
+
+                    <div class="dept-actions">
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-info-circle me-1"></i> Learn More
+                        </a>
+                        <a href="#" class="btn btn-outline">
+                            <i class="fas fa-user-graduate me-1"></i> Programs
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Electronics & Communication -->
+            <div class="department-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="dept-header">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="ECE Department">
+                    <div class="dept-overlay"></div>
+                    <div class="dept-icon">
+                        <i class="fas fa-satellite-dish"></i>
+                    </div>
+                    <div class="dept-title">
+                        <h3>Electronics & Communication</h3>
+                        <p>B.Tech, M.Tech</p>
+                    </div>
+                </div>
+                <div class="dept-content">
+                    <div class="dept-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>HOD: Prof. Amit Sharma</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <span>11 Faculty Members</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-flask"></i>
+                            <span>9 Electronics Labs</span>
+                        </div>
+                    </div>
+
+                    <div class="dept-highlights">
+                        <h5>Specializations:</h5>
+                        <ul class="highlight-list">
+                            <li>VLSI Design</li>
+                            <li>Communication Systems</li>
+                            <li>Embedded Systems</li>
+                            <li>Signal Processing</li>
+                        </ul>
+                    </div>
+
+                    <div class="dept-actions">
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-info-circle me-1"></i> Learn More
+                        </a>
+                        <a href="#" class="btn btn-outline">
+                            <i class="fas fa-user-graduate me-1"></i> Programs
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Management Department -->
+            <div class="department-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="dept-header">
+                    <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Management Department">
+                    <div class="dept-overlay"></div>
+                    <div class="dept-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="dept-title">
+                        <h3>Management Department</h3>
+                        <p>MBA, BBA</p>
+                    </div>
+                </div>
+                <div class="dept-content">
+                    <div class="dept-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>HOD: Prof. Ravi Kumar</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <span>8 Faculty Members</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-flask"></i>
+                            <span>4 Business Labs</span>
+                        </div>
+                    </div>
+
+                    <div class="dept-highlights">
+                        <h5>Specializations:</h5>
+                        <ul class="highlight-list">
+                            <li>Marketing Management</li>
+                            <li>Financial Management</li>
+                            <li>Human Resources</li>
+                            <li>Operations Management</li>
+                        </ul>
+                    </div>
+
+                    <div class="dept-actions">
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-info-circle me-1"></i> Learn More
+                        </a>
+                        <a href="#" class="btn btn-outline">
+                            <i class="fas fa-user-graduate me-1"></i> Programs
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= DEPARTMENT FEATURES ================= -->
+<section class="section dept-features">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label">Advantages</span>
+            <h2 class="section-title">Department Features</h2>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card" data-aos="fade-up">
+                <div class="feature-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h3>Expert Faculty</h3>
+                <p>Highly qualified faculty with industry and research experience</p>
+                <ul class="feature-list">
+                    <li>85% Ph.D. Holders</li>
+                    <li>Industry Experts</li>
+                    <li>Research Scholars</li>
+                    <li>Certified Professionals</li>
+                </ul>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h3>Modern Labs</h3>
+                <p>State-of-the-art laboratories with latest equipment</p>
+                <ul class="feature-list">
+                    <li>Industry-standard Labs</li>
+                    <li>Research Facilities</li>
+                    <li>Computer Centers</li>
+                    <li>Specialized Equipment</li>
+                </ul>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <h3>Industry Connect</h3>
+                <p>Strong industry partnerships and collaborations</p>
+                <ul class="feature-list">
+                    <li>Industry Visits</li>
+                    <li>Guest Lectures</li>
+                    <li>Internship Programs</li>
+                    <li>Live Projects</li>
+                </ul>
+            </div>
+
+            <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3>Research Focus</h3>
+                <p>Encouraging research and innovation culture</p>
+                <ul class="feature-list">
+                    <li>Research Projects</li>
+                    <li>Publications</li>
+                    <li>Conferences</li>
+                    <li>Patents</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= LABORATORIES ================= -->
+<section class="section laboratories bg-light">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Infrastructure</span>
+            <h2 class="section-title">Department Laboratories</h2>
+        </div>
+
+        <div class="labs-grid">
+            <div class="lab-card" data-aos="fade-up">
+                <div class="lab-image">
+                    <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Computer Lab">
+                </div>
+                <div class="lab-content">
+                    <h3>Advanced Computing Lab</h3>
+                    <p>Equipped with high-performance computers and software for programming, AI/ML, and data science projects.</p>
+                    <div class="lab-equipment">
+                        <span class="equipment-tag">High-end PCs</span>
+                        <span class="equipment-tag">GPU Servers</span>
+                        <span class="equipment-tag">Software Suite</span>
+                    </div>
+                    <div class="lab-stats">
+                        <div class="lab-stat">
+                            <h4>60+</h4>
+                            <p>Computers</p>
+                        </div>
+                        <div class="lab-stat">
+                            <h4>24/7</h4>
+                            <p>Access</p>
+                        </div>
+                        <div class="lab-stat">
+                            <h4>10+</h4>
+                            <p>Software</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lab-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="lab-image">
+                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Mechanical Lab">
+                </div>
+                <div class="lab-content">
+                    <h3>Mechanical Workshop</h3>
+                    <p>Fully equipped workshop with CNC machines, lathes, and testing equipment for practical training.</p>
+                    <div class="lab-equipment">
+                        <span class="equipment-tag">CNC Machines</span>
+                        <span class="equipment-tag">Lathes</span>
+                        <span class="equipment-tag">Testing Rigs</span>
+                    </div>
+                    <div class="lab-stats">
+                        <div class="lab-stat">
+                            <h4>15+</h4>
+                            <p>Machines</p>
+                        </div>
+                        <div class="lab-stat">
+                            <h4>2000</h4>
+                            <p>Sq. Ft.</p>
+                        </div>
+                        <div class="lab-stat">
+                            <h4>10+</h4>
+                            <p>Equipment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FACULTY STRENGTH ================= -->
+<section class="section faculty-strength">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <h2 class="section-title" style="color: white;">Faculty Strength Across Departments</h2>
+        </div>
+
+        <div class="strength-grid">
+            <div class="strength-item" data-aos="fade-up">
+                <div class="strength-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h3>58</h3>
+                <p>Total Faculty Members</p>
+            </div>
+
+            <div class="strength-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="strength-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h3>85%</h3>
+                <p>Ph.D. Holders</p>
+            </div>
+
+            <div class="strength-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="strength-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3>15+</h3>
+                <p>Years Avg. Experience</p>
+            </div>
+
+            <div class="strength-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="strength-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h3>200+</h3>
+                <p>Research Papers</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= DEPARTMENT COMPARISON ================= -->
+<section class="section dept-comparison bg-light">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label">Analysis</span>
+            <h2 class="section-title">Department Overview</h2>
+        </div>
+
+        <div class="comparison-table" data-aos="fade-up">
+            <div class="table-header">
+                <h3>Department Statistics & Achievements</h3>
+            </div>
+            <div class="table-content">
+                <div class="table-row row-header">
+                    <div>Department</div>
+                    <div>Faculty</div>
+                    <div>Labs</div>
+                    <div>Placement %</div>
+                    <div>Research Papers</div>
+                    <div>Industry Tie-ups</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="row-header">Computer Science</div>
+                    <div class="table-cell">12</div>
+                    <div class="table-cell">8</div>
+                    <div class="table-cell highlight">95%</div>
+                    <div class="table-cell">65</div>
+                    <div class="table-cell">25+</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="row-header">Mechanical</div>
+                    <div class="table-cell">10</div>
+                    <div class="table-cell">6</div>
+                    <div class="table-cell">88%</div>
+                    <div class="table-cell">45</div>
+                    <div class="table-cell">18+</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="row-header">Civil</div>
+                    <div class="table-cell">8</div>
+                    <div class="table-cell">5</div>
+                    <div class="table-cell">85%</div>
+                    <div class="table-cell">38</div>
+                    <div class="table-cell">15+</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="row-header">Electrical</div>
+                    <div class="table-cell">9</div>
+                    <div class="table-cell">7</div>
+                    <div class="table-cell">87%</div>
+                    <div class="table-cell">42</div>
+                    <div class="table-cell">20+</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="row-header">ECE</div>
+                    <div class="table-cell">11</div>
+                    <div class="table-cell">9</div>
+                    <div class="table-cell">90%</div>
+                    <div class="table-cell">52</div>
+                    <div class="table-cell">22+</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="row-header">Management</div>
+                    <div class="table-cell">8</div>
+                    <div class="table-cell">4</div>
+                    <div class="table-cell highlight">92%</div>
+                    <div class="table-cell">35</div>
+                    <div class="table-cell">30+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CTA SECTION ================= -->
+<section class="section dept-cta">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2 class="cta-title" data-aos="fade-up">Ready to Choose Your Department?</h2>
+            <p class="cta-text" data-aos="fade-up" data-aos-delay="100">
+                Explore our academic programs, meet our faculty, and start your journey
+                towards a successful career in engineering or management.
+            </p>
+            <div class="cta-buttons" data-aos="fade-up" data-aos-delay="200">
+                <a href="{{ url_for('admissions') }}" class="btn btn-white">
+                    <i class="fas fa-file-alt me-2"></i> Apply Now
+                </a>
+                <a href="{{ url_for('contact') }}" class="btn btn-outline" style="border-color: white; color: white;">
+                    <i class="fas fa-phone-alt me-2"></i> Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Initialize AOS animations
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                once: true
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

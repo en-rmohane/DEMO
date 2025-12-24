@@ -1,0 +1,1780 @@
+{% extends "base.html" %}
+
+{% block title %}
+Academic Programs | UG & PG Courses at SBITM Betul
+{% endblock %}
+
+{% block head %}
+<style>
+    /* ========== CUSTOM VARIABLES ========== */
+    :root {
+        --program-blue: #1e40af;
+        --program-gold: #fbbf24;
+        --program-green: #10b981;
+        --program-purple: #8b5cf6;
+        --program-red: #ef4444;
+        --program-orange: #f97316;
+        --program-teal: #0d9488;
+        --program-bg: #f8fafc;
+        --border-gradient: linear-gradient(45deg, #1e40af, #fbbf24, #10b981, #8b5cf6);
+    }
+
+    /* ========== HERO SECTION ========== */
+    .programs-hero {
+        position: relative;
+        min-height: 80vh;
+        background: linear-gradient(rgba(30, 64, 175, 0.9), rgba(30, 64, 175, 0.95)),
+                    url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        margin-top: -80px;
+        padding-top: 80px;
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(251, 191, 36, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        animation: slideDown 1s ease;
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin-bottom: 2rem;
+        color: var(--program-gold);
+        font-weight: 600;
+        animation: slideUp 1s ease 0.3s both;
+    }
+
+    /* Program Icons Animation */
+    .program-icons {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        gap: 1.5rem;
+        opacity: 0.3;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .program-icons i {
+        font-size: 2rem;
+        color: var(--program-gold);
+        animation: floatIcon 4s ease-in-out infinite;
+    }
+
+    .program-icons i:nth-child(2) { animation-delay: 0.5s; }
+    .program-icons i:nth-child(3) { animation-delay: 1s; }
+    .program-icons i:nth-child(4) { animation-delay: 1.5s; }
+
+    /* ========== SECTION STYLES ========== */
+    .section {
+        padding: 5rem 0;
+        position: relative;
+    }
+
+    .bg-light {
+        background: var(--program-bg);
+    }
+
+    .section-label {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: var(--program-blue);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 800;
+        color: var(--program-blue);
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: var(--program-gold);
+        border-radius: 2px;
+    }
+
+    .section-header.text-center .section-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* ========== PROGRAMS OVERVIEW ========== */
+    .programs-intro {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 3rem;
+    }
+
+    .intro-text {
+        font-size: 1.2rem;
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+    }
+
+    /* Program Stats */
+    .program-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin: 3rem auto;
+        max-width: 600px;
+    }
+
+    @media (min-width: 768px) {
+        .program-stats {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    .program-stat {
+        text-align: center;
+        padding: 1.5rem 1rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .program-stat::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 14px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .program-stat:hover::before {
+        opacity: 1;
+    }
+
+    .program-stat:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.2);
+    }
+
+    .program-stat h3 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--program-blue);
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, var(--program-blue), var(--program-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .program-stat p {
+        color: #666;
+        font-weight: 600;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    /* ========== PROGRAM TABS ========== */
+    .program-tabs {
+        margin-top: 2rem;
+    }
+
+    .tab-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(30, 64, 175, 0.1);
+    }
+
+    .tab-btn {
+        padding: 0.8rem 1.5rem;
+        background: var(--program-bg);
+        border: 2px solid transparent;
+        border-radius: 25px;
+        color: var(--program-blue);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .tab-btn:hover {
+        background: var(--program-blue);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .tab-btn.active {
+        background: var(--program-blue);
+        color: white;
+        box-shadow: 0 5px 15px rgba(30, 64, 175, 0.3);
+    }
+
+    .tab-content {
+        display: none;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    /* ========== UG PROGRAMS ========== */
+    .ug-programs {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+    }
+
+    .program-category {
+        margin-bottom: 3rem;
+    }
+
+    .category-title {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid rgba(251, 191, 36, 0.3);
+    }
+
+    .category-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--program-blue), var(--program-purple));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--program-gold);
+        font-size: 1.5rem;
+    }
+
+    .category-title h3 {
+        color: var(--program-blue);
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .programs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+
+    .program-card {
+        background: var(--program-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .program-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .program-card:hover::before {
+        opacity: 1;
+    }
+
+    .program-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(30, 64, 175, 0.15);
+        background: white;
+    }
+
+    .program-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(30, 64, 175, 0.1);
+    }
+
+    .program-header h4 {
+        color: var(--program-blue);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .program-badge {
+        padding: 0.3rem 1rem;
+        background: var(--program-green);
+        color: white;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .program-details {
+        margin-bottom: 1.5rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 0.8rem;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .detail-item i {
+        color: var(--program-gold);
+        width: 20px;
+    }
+
+    .program-specializations {
+        margin-bottom: 1.5rem;
+    }
+
+    .program-specializations h5 {
+        color: var(--program-blue);
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .specialization-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .specialization-tag {
+        padding: 0.3rem 0.8rem;
+        background: rgba(30, 64, 175, 0.1);
+        color: var(--program-blue);
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .program-card:hover .specialization-tag {
+        background: var(--program-blue);
+        color: white;
+    }
+
+    .program-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(30, 64, 175, 0.1);
+    }
+
+    .program-duration {
+        color: var(--program-purple);
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .program-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .btn-primary {
+        background: var(--program-blue);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: transparent;
+        color: var(--program-blue);
+        border-color: var(--program-blue);
+        transform: translateY(-2px);
+    }
+
+    .btn-outline {
+        background: transparent;
+        border: 2px solid var(--program-purple);
+        color: var(--program-purple);
+    }
+
+    .btn-outline:hover {
+        background: var(--program-purple);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* ========== ADMISSION PROCESS ========== */
+    .admission-process {
+        background: linear-gradient(135deg, var(--program-blue), var(--program-purple));
+        border-radius: 20px;
+        padding: 3rem;
+        color: white;
+        box-shadow: 0 15px 35px rgba(30, 64, 175, 0.2);
+    }
+
+    .process-steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .process-step {
+        text-align: center;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .process-step:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .step-number {
+        width: 50px;
+        height: 50px;
+        background: var(--program-gold);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        color: var(--program-blue);
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .process-step h4 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 0.8rem;
+    }
+
+    .process-step p {
+        opacity: 0.9;
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+
+    /* ========== ELIGIBILITY CRITERIA ========== */
+    .eligibility-criteria {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+    }
+
+    .criteria-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .criteria-card {
+        padding: 1.5rem;
+        background: var(--program-bg);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .criteria-card:hover {
+        background: white;
+        box-shadow: 0 10px 25px rgba(30, 64, 175, 0.1);
+        transform: translateX(5px);
+    }
+
+    .criteria-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .criteria-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--program-blue), var(--program-purple));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--program-gold);
+        font-size: 1.2rem;
+    }
+
+    .criteria-header h4 {
+        color: var(--program-blue);
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .criteria-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .criteria-list li {
+        padding: 0.5rem 0;
+        color: #666;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .criteria-list li::before {
+        content: '✓';
+        color: var(--program-green);
+        font-weight: bold;
+    }
+
+    /* ========== FEE STRUCTURE ========== */
+    .fee-tables {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .fee-table {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+    }
+
+    .table-header {
+        background: linear-gradient(135deg, var(--program-blue), var(--program-purple));
+        color: white;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .table-header h4 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .table-content {
+        padding: 1.5rem;
+    }
+
+    .fee-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(30, 64, 175, 0.1);
+    }
+
+    .fee-row:last-child {
+        border-bottom: none;
+        font-weight: 700;
+        color: var(--program-blue);
+        font-size: 1.1rem;
+    }
+
+    .fee-label {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .fee-amount {
+        color: var(--program-blue);
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .note {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(30, 64, 175, 0.1);
+        color: #666;
+        font-size: 0.8rem;
+        font-style: italic;
+    }
+
+    /* ========== SCHOLARSHIPS ========== */
+    .scholarships-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .scholarship-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .scholarship-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--program-gold);
+        box-shadow: 0 20px 40px rgba(30, 64, 175, 0.15);
+    }
+
+    .scholarship-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .scholarship-header h4 {
+        color: var(--program-blue);
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .scholarship-badge {
+        padding: 0.3rem 1rem;
+        background: var(--program-gold);
+        color: var(--program-blue);
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .scholarship-details {
+        margin-bottom: 1.5rem;
+    }
+
+    .scholarship-details p {
+        color: #666;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    .eligibility {
+        background: var(--program-bg);
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+    }
+
+    .eligibility h5 {
+        color: var(--program-blue);
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .eligibility ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .eligibility li {
+        padding: 0.3rem 0;
+        color: #666;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .eligibility li::before {
+        content: '✓';
+        color: var(--program-green);
+        font-weight: bold;
+    }
+
+    .apply-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* ========== CTA SECTION ========== */
+    .program-cta {
+        background: linear-gradient(135deg, var(--program-blue), var(--program-purple));
+        border-radius: 20px;
+        padding: 4rem 2rem;
+        text-align: center;
+        color: white;
+        box-shadow: 0 20px 40px rgba(30, 64, 175, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .program-cta::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.1;
+    }
+
+    .cta-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-text {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-buttons .btn {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+
+    .btn-white {
+        background: white;
+        color: var(--program-blue);
+    }
+
+    .btn-white:hover {
+        background: transparent;
+        color: white;
+        border-color: white;
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes borderAnimation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    @keyframes floatIcon {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    /* ========== RESPONSIVE DESIGN ========== */
+    @media (max-width: 768px) {
+        .section {
+            padding: 3rem 0;
+        }
+
+        .programs-hero {
+            min-height: 60vh;
+        }
+
+        .program-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .tab-buttons {
+            overflow-x: auto;
+            justify-content: flex-start;
+            padding: 0.5rem;
+        }
+
+        .tab-btn {
+            white-space: nowrap;
+        }
+
+        .programs-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .process-steps {
+            grid-template-columns: 1fr;
+        }
+
+        .criteria-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .fee-tables {
+            grid-template-columns: 1fr;
+        }
+
+        .scholarships-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+        }
+
+        .cta-buttons .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .program-icons {
+            display: none;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+        }
+
+        .program-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .cta-title {
+            font-size: 1.8rem;
+        }
+    }
+
+    /* Utility Classes */
+    .mt-6 { margin-top: 1.5rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .text-center { text-align: center; }
+    .me-1 { margin-right: 0.25rem; }
+    .me-2 { margin-right: 0.5rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO BANNER ================= -->
+<section class="page-hero programs-hero">
+    <div class="hero-overlay"></div>
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1 class="hero-title">Academic Programs</h1>
+            <p class="hero-subtitle">Shape Your Future with Quality Education</p>
+            <div class="breadcrumb">
+                <a href="{{ url_for('home') }}"><i class="fas fa-home me-2"></i>Home</a>
+                <i class="fas fa-chevron-right mx-3"></i>
+                <span>Programs</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Program Icons -->
+    <div class="program-icons">
+        <i class="fas fa-graduation-cap"></i>
+        <i class="fas fa-book"></i>
+        <i class="fas fa-flask"></i>
+        <i class="fas fa-chart-line"></i>
+    </div>
+</section>
+
+<!-- ================= PROGRAMS OVERVIEW ================= -->
+<section class="section programs-overview">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label">Academics</span>
+            <h2 class="section-title">Our Academic Programs</h2>
+        </div>
+
+        <div class="programs-intro" data-aos="fade-up">
+            <p class="intro-text">
+                SBITM Betul offers a wide range of undergraduate and postgraduate programs
+                designed to meet industry demands and provide students with comprehensive
+                knowledge and practical skills for successful careers.
+            </p>
+
+            <div class="program-stats">
+                <div class="program-stat" data-aos="fade-up" data-aos-delay="100">
+                    <h3>18+</h3>
+                    <p>Programs</p>
+                </div>
+                <div class="program-stat" data-aos="fade-up" data-aos-delay="200">
+                    <h3>06</h3>
+                    <p>Departments</p>
+                </div>
+                <div class="program-stat" data-aos="fade-up" data-aos-delay="300">
+                    <h3>4</h3>
+                    <p>Years B.Tech</p>
+                </div>
+                <div class="program-stat" data-aos="fade-up" data-aos-delay="400">
+                    <h3>2</h3>
+                    <p>Years MBA</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= PROGRAM TABS ================= -->
+<section class="section program-tabs bg-light">
+    <div class="container">
+        <div class="tab-buttons">
+            <button class="tab-btn active" data-tab="ug">
+                <i class="fas fa-user-graduate me-2"></i> Undergraduate Programs
+            </button>
+            <button class="tab-btn" data-tab="pg">
+                <i class="fas fa-graduation-cap me-2"></i> Postgraduate Programs
+            </button>
+            <button class="tab-btn" data-tab="phd">
+                <i class="fas fa-user-md me-2"></i> Research Programs
+            </button>
+            <button class="tab-btn" data-tab="diploma">
+                <i class="fas fa-certificate me-2"></i> Diploma Courses
+            </button>
+        </div>
+
+        <!-- Undergraduate Programs -->
+        <div class="tab-content active" id="ug">
+            <div class="ug-programs">
+                <!-- Engineering Programs -->
+                <div class="program-category" data-aos="fade-up">
+                    <div class="category-title">
+                        <div class="category-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3>B.Tech Programs</h3>
+                    </div>
+
+                    <div class="programs-grid">
+                        <!-- Computer Science & Engineering -->
+                        <div class="program-card" data-aos="fade-up">
+                            <div class="program-header">
+                                <h4>Computer Science & Engineering</h4>
+                                <span class="program-badge">Popular</span>
+                            </div>
+                            
+                            <div class="program-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-code"></i>
+                                    <span>Code: B.Tech CSE</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Duration: 4 Years (8 Semesters)</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>Intake: 120 Seats</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Approved by AICTE</span>
+                                </div>
+                            </div>
+
+                            <div class="program-specializations">
+                                <h5>Specializations Available:</h5>
+                                <div class="specialization-tags">
+                                    <span class="specialization-tag">AI & ML</span>
+                                    <span class="specialization-tag">Cyber Security</span>
+                                    <span class="specialization-tag">Data Science</span>
+                                    <span class="specialization-tag">Cloud Computing</span>
+                                </div>
+                            </div>
+
+                            <div class="program-footer">
+                                <div class="program-duration">
+                                    <i class="fas fa-calendar-alt me-1"></i> 4 Years
+                                </div>
+                                <div class="program-actions">
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-download"></i> Brochure
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mechanical Engineering -->
+                        <div class="program-card" data-aos="fade-up" data-aos-delay="100">
+                            <div class="program-header">
+                                <h4>Mechanical Engineering</h4>
+                                <span class="program-badge">Core</span>
+                            </div>
+                            
+                            <div class="program-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-cogs"></i>
+                                    <span>Code: B.Tech ME</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Duration: 4 Years (8 Semesters)</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>Intake: 60 Seats</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Approved by AICTE</span>
+                                </div>
+                            </div>
+
+                            <div class="program-specializations">
+                                <h5>Specializations Available:</h5>
+                                <div class="specialization-tags">
+                                    <span class="specialization-tag">Manufacturing</span>
+                                    <span class="specialization-tag">Thermal Engineering</span>
+                                    <span class="specialization-tag">Automobile</span>
+                                    <span class="specialization-tag">CAD/CAM</span>
+                                </div>
+                            </div>
+
+                            <div class="program-footer">
+                                <div class="program-duration">
+                                    <i class="fas fa-calendar-alt me-1"></i> 4 Years
+                                </div>
+                                <div class="program-actions">
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-download"></i> Brochure
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Civil Engineering -->
+                        <div class="program-card" data-aos="fade-up" data-aos-delay="200">
+                            <div class="program-header">
+                                <h4>Civil Engineering</h4>
+                                <span class="program-badge">Core</span>
+                            </div>
+                            
+                            <div class="program-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-hard-hat"></i>
+                                    <span>Code: B.Tech CE</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Duration: 4 Years (8 Semesters)</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>Intake: 60 Seats</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Approved by AICTE</span>
+                                </div>
+                            </div>
+
+                            <div class="program-specializations">
+                                <h5>Specializations Available:</h5>
+                                <div class="specialization-tags">
+                                    <span class="specialization-tag">Structural</span>
+                                    <span class="specialization-tag">Environmental</span>
+                                    <span class="specialization-tag">Transportation</span>
+                                    <span class="specialization-tag">Geotechnical</span>
+                                </div>
+                            </div>
+
+                            <div class="program-footer">
+                                <div class="program-duration">
+                                    <i class="fas fa-calendar-alt me-1"></i> 4 Years
+                                </div>
+                                <div class="program-actions">
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-download"></i> Brochure
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Management Programs -->
+                <div class="program-category" data-aos="fade-up">
+                    <div class="category-title">
+                        <div class="category-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Management Programs</h3>
+                    </div>
+
+                    <div class="programs-grid">
+                        <!-- BBA -->
+                        <div class="program-card" data-aos="fade-up">
+                            <div class="program-header">
+                                <h4>Bachelor of Business Administration</h4>
+                                <span class="program-badge">Management</span>
+                            </div>
+                            
+                            <div class="program-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>Code: BBA</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Duration: 3 Years (6 Semesters)</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>Intake: 60 Seats</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-university"></i>
+                                    <span>Affiliated to DAVV</span>
+                                </div>
+                            </div>
+
+                            <div class="program-specializations">
+                                <h5>Specializations Available:</h5>
+                                <div class="specialization-tags">
+                                    <span class="specialization-tag">Marketing</span>
+                                    <span class="specialization-tag">Finance</span>
+                                    <span class="specialization-tag">HR Management</span>
+                                    <span class="specialization-tag">Operations</span>
+                                </div>
+                            </div>
+
+                            <div class="program-footer">
+                                <div class="program-duration">
+                                    <i class="fas fa-calendar-alt me-1"></i> 3 Years
+                                </div>
+                                <div class="program-actions">
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-download"></i> Brochure
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Postgraduate Programs -->
+        <div class="tab-content" id="pg">
+            <div class="ug-programs">
+                <!-- M.Tech Programs -->
+                <div class="program-category" data-aos="fade-up">
+                    <div class="category-title">
+                        <div class="category-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>M.Tech Programs</h3>
+                    </div>
+
+                    <div class="programs-grid">
+                        <!-- M.Tech CSE -->
+                        <div class="program-card" data-aos="fade-up">
+                            <div class="program-header">
+                                <h4>M.Tech Computer Science</h4>
+                                <span class="program-badge">PG</span>
+                            </div>
+                            
+                            <div class="program-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-code"></i>
+                                    <span>Specialization: AI & ML</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Duration: 2 Years (4 Semesters)</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>Intake: 24 Seats</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <span>Eligibility: B.Tech/B.E.</span>
+                                </div>
+                            </div>
+
+                            <div class="program-specializations">
+                                <h5>Research Areas:</h5>
+                                <div class="specialization-tags">
+                                    <span class="specialization-tag">Machine Learning</span>
+                                    <span class="specialization-tag">Data Analytics</span>
+                                    <span class="specialization-tag">Cyber Security</span>
+                                    <span class="specialization-tag">IoT</span>
+                                </div>
+                            </div>
+
+                            <div class="program-footer">
+                                <div class="program-duration">
+                                    <i class="fas fa-calendar-alt me-1"></i> 2 Years
+                                </div>
+                                <div class="program-actions">
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-download"></i> Brochure
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MBA Program -->
+                <div class="program-category" data-aos="fade-up">
+                    <div class="category-title">
+                        <div class="category-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>MBA Program</h3>
+                    </div>
+
+                    <div class="programs-grid">
+                        <div class="program-card" data-aos="fade-up">
+                            <div class="program-header">
+                                <h4>Master of Business Administration</h4>
+                                <span class="program-badge">Flagship</span>
+                            </div>
+                            
+                            <div class="program-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>Code: MBA</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>Duration: 2 Years (4 Semesters)</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>Intake: 120 Seats</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-university"></i>
+                                    <span>Approved by AICTE</span>
+                                </div>
+                            </div>
+
+                            <div class="program-specializations">
+                                <h5>Specializations:</h5>
+                                <div class="specialization-tags">
+                                    <span class="specialization-tag">Marketing</span>
+                                    <span class="specialization-tag">Finance</span>
+                                    <span class="specialization-tag">HR</span>
+                                    <span class="specialization-tag">Operations</span>
+                                    <span class="specialization-tag">International Business</span>
+                                </div>
+                            </div>
+
+                            <div class="program-footer">
+                                <div class="program-duration">
+                                    <i class="fas fa-calendar-alt me-1"></i> 2 Years
+                                </div>
+                                <div class="program-actions">
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-info-circle"></i> Details
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-download"></i> Brochure
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= ADMISSION PROCESS ================= -->
+<section class="section admission-process">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <h2 class="section-title" style="color: white;">Admission Process</h2>
+            <p style="color: rgba(255, 255, 255, 0.9); max-width: 800px; margin: 0 auto;">Simple and transparent admission procedure for all programs</p>
+        </div>
+
+        <div class="process-steps">
+            <div class="process-step" data-aos="fade-up">
+                <div class="step-number">1</div>
+                <h4>Application Form</h4>
+                <p>Fill the online application form available on our website or collect from admission office</p>
+            </div>
+
+            <div class="process-step" data-aos="fade-up" data-aos-delay="100">
+                <div class="step-number">2</div>
+                <h4>Document Submission</h4>
+                <p>Submit required documents (mark sheets, certificates, ID proof, photographs)</p>
+            </div>
+
+            <div class="process-step" data-aos="fade-up" data-aos-delay="200">
+                <div class="step-number">3</div>
+                <h4>Entrance Exam/Interview</h4>
+                <p>Appear for entrance test (if applicable) and personal interview</p>
+            </div>
+
+            <div class="process-step" data-aos="fade-up" data-aos-delay="300">
+                <div class="step-number">4</div>
+                <h4>Admission Confirmation</h4>
+                <p>Pay admission fees and complete registration formalities</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= ELIGIBILITY CRITERIA ================= -->
+<section class="section eligibility-section bg-light">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Requirements</span>
+            <h2 class="section-title">Eligibility Criteria</h2>
+        </div>
+
+        <div class="eligibility-criteria" data-aos="fade-up">
+            <div class="criteria-grid">
+                <!-- B.Tech Eligibility -->
+                <div class="criteria-card">
+                    <div class="criteria-header">
+                        <div class="criteria-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h4>B.Tech Programs</h4>
+                    </div>
+                    <ul class="criteria-list">
+                        <li>10+2 with Physics, Chemistry, Mathematics</li>
+                        <li>Minimum 45% aggregate marks (40% for reserved category)</li>
+                        <li>Valid JEE Main score (for admission through counseling)</li>
+                        <li>Direct admission based on 12th marks (subject to availability)</li>
+                        <li>Age limit: Minimum 17 years as on 31st December</li>
+                    </ul>
+                </div>
+
+                <!-- MBA Eligibility -->
+                <div class="criteria-card">
+                    <div class="criteria-header">
+                        <div class="criteria-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>MBA Program</h4>
+                    </div>
+                    <ul class="criteria-list">
+                        <li>Bachelor's degree in any discipline</li>
+                        <li>Minimum 50% aggregate marks (45% for reserved category)</li>
+                        <li>Valid CAT/MAT/CMAT/XAT/ATMA score</li>
+                        <li>Direct admission based on graduation marks</li>
+                        <li>Final year students can apply provisionally</li>
+                    </ul>
+                </div>
+
+                <!-- M.Tech Eligibility -->
+                <div class="criteria-card">
+                    <div class="criteria-header">
+                        <div class="criteria-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h4>M.Tech Programs</h4>
+                    </div>
+                    <ul class="criteria-list">
+                        <li>B.Tech/B.E. in relevant discipline</li>
+                        <li>Minimum 55% aggregate marks (50% for reserved category)</li>
+                        <li>Valid GATE score preferred</li>
+                        <li>Non-GATE candidates can apply</li>
+                        <li>Industry experience considered for working professionals</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FEE STRUCTURE ================= -->
+<section class="section fee-structure">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Financials</span>
+            <h2 class="section-title">Fee Structure</h2>
+        </div>
+
+        <div class="fee-tables" data-aos="fade-up">
+            <!-- B.Tech Fee -->
+            <div class="fee-table">
+                <div class="table-header">
+                    <h4>B.Tech Programs</h4>
+                </div>
+                <div class="table-content">
+                    <div class="fee-row">
+                        <span class="fee-label">Tuition Fee (per year)</span>
+                        <span class="fee-amount">₹65,000</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="fee-label">Development Fee</span>
+                        <span class="fee-amount">₹10,000</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="fee-label">Examination Fee</span>
+                        <span class="fee-amount">₹5,000</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="fee-label">Library Fee</span>
+                        <span class="fee-amount">₹2,000</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="fee-label">Total (per year)</span>
+                        <span class="fee-amount">₹82,000</span>
+                    </div>
+                    <p class="note">* Hostel and mess charges extra. Payment in installments available.</p>
+                </div>
+            </div>
+
+            <!-- MBA Fee -->
+            <div class="fee-table">
+                <div class="table-header">
+                    <h4>MBA Program</h4>
+                </div>
+                <div class="table-content">
+                    <div class="fee-row">
+                        <span class="fee-label">Tuition Fee (per year)</span>
+                        <span class="fee-amount">₹75,000</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="fee-label">Development Fee</span>
+                        <span class="fee-amount">₹15,000</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="fee-label">Examination Fee</span>
+                        <span class="fee-amount">₹6,000</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="fee-label">Library Fee</span>
+                        <span class="fee-amount">₹3,000</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="fee-label">Total (per year)</span>
+                        <span class="fee-amount">₹99,000</span>
+                    </div>
+                    <p class="note">* Industry visit and study tour charges extra. Scholarships available.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= SCHOLARSHIPS ================= -->
+<section class="section scholarships bg-light">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Financial Aid</span>
+            <h2 class="section-title">Scholarships & Financial Assistance</h2>
+        </div>
+
+        <div class="scholarships-grid" data-aos="fade-up">
+            <!-- Merit Scholarship -->
+            <div class="scholarship-card">
+                <div class="scholarship-header">
+                    <h4>Merit Scholarship</h4>
+                    <span class="scholarship-badge">Upto 100%</span>
+                </div>
+                <div class="scholarship-details">
+                    <p>Based on academic performance in qualifying examination or entrance test scores.</p>
+                    
+                    <div class="eligibility">
+                        <h5>Eligibility Criteria:</h5>
+                        <ul>
+                            <li>95%+ in 12th: 100% scholarship on tuition fee</li>
+                            <li>90-94% in 12th: 75% scholarship on tuition fee</li>
+                            <li>85-89% in 12th: 50% scholarship on tuition fee</li>
+                            <li>80-84% in 12th: 25% scholarship on tuition fee</li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-primary apply-btn">
+                    <i class="fas fa-file-alt me-2"></i> Apply for Scholarship
+                </a>
+            </div>
+
+            <!-- Sports Scholarship -->
+            <div class="scholarship-card">
+                <div class="scholarship-header">
+                    <h4>Sports Scholarship</h4>
+                    <span class="scholarship-badge">Upto 50%</span>
+                </div>
+                <div class="scholarship-details">
+                    <p>For students who have represented state/national level in sports.</p>
+                    
+                    <div class="eligibility">
+                        <h5>Eligibility Criteria:</h5>
+                        <ul>
+                            <li>National level participation: 50% scholarship</li>
+                            <li>State level participation: 25% scholarship</li>
+                            <li>District level participation: 15% scholarship</li>
+                            <li>Valid sports certificates required</li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-primary apply-btn">
+                    <i class="fas fa-file-alt me-2"></i> Apply for Scholarship
+                </a>
+            </div>
+
+            <!-- EWS Scholarship -->
+            <div class="scholarship-card">
+                <div class="scholarship-header">
+                    <h4>EWS Scholarship</h4>
+                    <span class="scholarship-badge">Upto 100%</span>
+                </div>
+                <div class="scholarship-details">
+                    <p>For students from economically weaker sections as per government norms.</p>
+                    
+                    <div class="eligibility">
+                        <h5>Eligibility Criteria:</h5>
+                        <ul>
+                            <li>Annual family income below ₹8 lakhs</li>
+                            <li>Valid income certificate required</li>
+                            <li>EWS certificate from competent authority</li>
+                            <li>Domicile certificate of Madhya Pradesh</li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="#" class="btn btn-primary apply-btn">
+                    <i class="fas fa-file-alt me-2"></i> Apply for Scholarship
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CTA SECTION ================= -->
+<section class="section program-cta">
+    <div class="container">
+        <div class="section-header text-center">
+            <h2 class="cta-title" data-aos="fade-up">Start Your Academic Journey</h2>
+            <p class="cta-text" data-aos="fade-up" data-aos-delay="100">
+                Join SBITM Betul for quality education, excellent placements, and a bright future.
+                Admissions open for 2024-25 academic session.
+            </p>
+            <div class="cta-buttons" data-aos="fade-up" data-aos-delay="200">
+                <a href="{{ url_for('admissions') }}" class="btn btn-white">
+                    <i class="fas fa-file-alt me-2"></i> Apply Now
+                </a>
+                <a href="{{ url_for('contact') }}" class="btn btn-outline" style="border-color: white; color: white;">
+                    <i class="fas fa-phone-alt me-2"></i> Contact Admissions
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Tab functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                // Add active class to clicked button
+                btn.classList.add('active');
+
+                // Show corresponding content
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Initialize AOS animations
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                once: true
+            });
+        }
+    });
+</script>
+{% endblock %}

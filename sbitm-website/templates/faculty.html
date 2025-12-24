@@ -1,0 +1,2344 @@
+{% extends "base.html" %}
+
+{% block title %}
+Faculty | Expert Professors & Mentors at SBITM Betul
+{% endblock %}
+
+{% block head %}
+<style>
+    /* ========== CUSTOM VARIABLES ========== */
+    :root {
+        --faculty-blue: #1e40af;
+        --faculty-gold: #fbbf24;
+        --faculty-green: #10b981;
+        --faculty-purple: #8b5cf6;
+        --faculty-red: #ef4444;
+        --faculty-bg: #f8fafc;
+        --faculty-card: #ffffff;
+        --border-gradient: linear-gradient(45deg, #1e40af, #fbbf24, #10b981, #8b5cf6);
+    }
+
+    /* ========== HERO SECTION ========== */
+    .faculty-hero {
+        position: relative;
+        min-height: 80vh;
+        background: linear-gradient(rgba(30, 64, 175, 0.9), rgba(30, 64, 175, 0.95)),
+                    url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        margin-top: -80px;
+        padding-top: 80px;
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(251, 191, 36, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        animation: slideDown 1s ease;
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin-bottom: 2rem;
+        color: var(--faculty-gold);
+        font-weight: 600;
+        animation: slideUp 1s ease 0.3s both;
+    }
+
+    .breadcrumb {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        color: white;
+        font-size: 1rem;
+    }
+
+    .breadcrumb a {
+        color: rgba(255, 255, 255, 0.9);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .breadcrumb a:hover {
+        color: var(--faculty-gold);
+    }
+
+    .breadcrumb i {
+        font-size: 0.8rem;
+        opacity: 0.7;
+    }
+
+    /* Floating Faculty Icons */
+    .faculty-icons {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        gap: 1.5rem;
+        opacity: 0.3;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .faculty-icons i {
+        font-size: 2rem;
+        color: var(--faculty-gold);
+        animation: floatIcon 4s ease-in-out infinite;
+    }
+
+    .faculty-icons i:nth-child(2) {
+        animation-delay: 0.5s;
+    }
+
+    .faculty-icons i:nth-child(3) {
+        animation-delay: 1s;
+    }
+
+    .faculty-icons i:nth-child(4) {
+        animation-delay: 1.5s;
+    }
+
+    /* ========== SECTION STYLES ========== */
+    .section {
+        padding: 5rem 0;
+        position: relative;
+    }
+
+    .bg-light {
+        background: var(--faculty-bg);
+    }
+
+    .section-label {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: var(--faculty-blue);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 800;
+        color: var(--faculty-blue);
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: var(--faculty-gold);
+        border-radius: 2px;
+    }
+
+    .section-header.text-center .section-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* ========== FACULTY OVERVIEW ========== */
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    @media (min-width: 992px) {
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .align-center {
+        align-items: center;
+    }
+
+    .gap-8 {
+        gap: 2rem;
+    }
+
+    .lead-text {
+        font-size: 1.2rem;
+        color: var(--faculty-blue);
+        font-weight: 500;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+
+    /* Faculty Stats */
+    .faculty-stats {
+        margin: 2rem 0;
+    }
+
+    .stat-row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .stat-row {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 1.5rem 1rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+    }
+
+    .stat-item::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 14px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .stat-item:hover::before {
+        opacity: 1;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.2);
+    }
+
+    .stat-item h3 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--faculty-blue);
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, var(--faculty-blue), var(--faculty-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .stat-item p {
+        color: #666;
+        font-weight: 600;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    /* Faculty Qualities */
+    .faculty-qualities {
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 15px 35px rgba(30, 64, 175, 0.1);
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .faculty-qualities::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .faculty-qualities:hover::before {
+        opacity: 1;
+    }
+
+    .faculty-qualities h3 {
+        color: var(--faculty-blue);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .qualities-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .quality-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: var(--faculty-bg);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .quality-item:hover {
+        background: white;
+        transform: translateX(5px);
+        box-shadow: 0 5px 15px rgba(30, 64, 175, 0.1);
+    }
+
+    .quality-item i {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--faculty-blue), var(--faculty-purple));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--faculty-gold);
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .quality-item h4 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--faculty-blue);
+        margin-bottom: 0.3rem;
+    }
+
+    .quality-item p {
+        color: #666;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    /* ========== DEPARTMENT TABS ========== */
+    .department-tabs {
+        margin-top: 2rem;
+    }
+
+    .tab-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(30, 64, 175, 0.1);
+    }
+
+    .tab-btn {
+        padding: 0.8rem 1.5rem;
+        background: var(--faculty-bg);
+        border: 2px solid transparent;
+        border-radius: 25px;
+        color: var(--faculty-blue);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .tab-btn:hover {
+        background: var(--faculty-blue);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .tab-btn.active {
+        background: var(--faculty-blue);
+        color: white;
+        box-shadow: 0 5px 15px rgba(30, 64, 175, 0.3);
+    }
+
+    .tab-content {
+        display: none;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    /* Department Header */
+    .department-info {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+    }
+
+    .dept-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 2px solid rgba(251, 191, 36, 0.3);
+    }
+
+    .dept-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--faculty-blue), var(--faculty-purple));
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--faculty-gold);
+        font-size: 2rem;
+    }
+
+    .dept-header h3 {
+        color: var(--faculty-blue);
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .dept-header p {
+        color: #666;
+        font-size: 1rem;
+    }
+
+    /* Faculty Grid */
+    .faculty-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .faculty-card.detailed {
+        background: var(--faculty-bg);
+        border-radius: 15px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+    }
+
+    .faculty-card.detailed::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .faculty-card.detailed:hover::before {
+        opacity: 1;
+    }
+
+    .faculty-card.detailed:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(30, 64, 175, 0.15);
+    }
+
+    .faculty-image {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .faculty-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .faculty-card:hover .faculty-image img {
+        transform: scale(1.1);
+    }
+
+    .faculty-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+        background: var(--faculty-gold);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--faculty-blue);
+        font-size: 1rem;
+        box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+    }
+
+    .faculty-info {
+        padding: 1.5rem;
+    }
+
+    .faculty-info h4 {
+        color: var(--faculty-blue);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .designation {
+        color: var(--faculty-purple);
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .faculty-details {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(30, 64, 175, 0.1);
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .detail-item i {
+        color: var(--faculty-gold);
+        width: 20px;
+    }
+
+    .expertise h5 {
+        color: var(--faculty-blue);
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .expertise-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .tag {
+        padding: 0.3rem 0.8rem;
+        background: rgba(30, 64, 175, 0.1);
+        color: var(--faculty-blue);
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .faculty-card:hover .tag {
+        background: var(--faculty-blue);
+        color: white;
+    }
+
+    .faculty-contact {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .btn-outline {
+        background: transparent;
+        border: 2px solid var(--faculty-purple);
+        color: var(--faculty-purple);
+    }
+
+    .btn-outline:hover {
+        background: var(--faculty-purple);
+        color: white;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: var(--faculty-blue);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: transparent;
+        color: var(--faculty-blue);
+        border-color: var(--faculty-blue);
+        transform: translateY(-2px);
+    }
+
+    /* ========== LEADERSHIP TEAM ========== */
+    .leadership-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+        .leadership-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .leader-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+    }
+
+    .leader-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .leader-card:hover::before {
+        opacity: 1;
+    }
+
+    .leader-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(30, 64, 175, 0.15);
+    }
+
+    .leader-image {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+    }
+
+    .leader-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .leader-card:hover .leader-image img {
+        transform: scale(1.05);
+    }
+
+    .leader-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 50px;
+        height: 50px;
+        background: var(--faculty-gold);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--faculty-blue);
+        font-size: 1.2rem;
+        box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+    }
+
+    .leader-info {
+        padding: 2rem;
+    }
+
+    .leader-info h3 {
+        color: var(--faculty-blue);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .leader-designation {
+        color: var(--faculty-purple);
+        font-weight: 600;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+
+    .leader-qualifications {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(30, 64, 175, 0.1);
+    }
+
+    .qualification {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .qualification i {
+        color: var(--faculty-gold);
+        width: 20px;
+    }
+
+    .leader-expertise h5 {
+        color: var(--faculty-blue);
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .leader-achievements h5 {
+        color: var(--faculty-blue);
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin: 1rem 0 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .leader-achievements ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .leader-achievements li {
+        padding: 0.3rem 0;
+        color: #666;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .leader-achievements li::before {
+        content: '✓';
+        color: var(--faculty-green);
+        font-weight: bold;
+    }
+
+    /* ========== ACHIEVEMENTS ========== */
+    .achievements-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .achievement-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .achievement-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .achievement-card:hover::before {
+        opacity: 1;
+    }
+
+    .achievement-card:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 20px 40px rgba(30, 64, 175, 0.15);
+    }
+
+    .achievement-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--faculty-blue), var(--faculty-purple));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: var(--faculty-gold);
+        font-size: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .achievement-card:hover .achievement-icon {
+        transform: rotate(360deg) scale(1.1);
+        background: linear-gradient(135deg, var(--faculty-gold), #fcd34d);
+        color: var(--faculty-blue);
+    }
+
+    .achievement-card h3 {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--faculty-blue);
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, var(--faculty-blue), var(--faculty-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .achievement-card p {
+        color: #666;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.3rem 1rem;
+        background: rgba(30, 64, 175, 0.1);
+        color: var(--faculty-blue);
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* ========== TEACHING METHODOLOGY ========== */
+    .methodology-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+
+    .method-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        height: 100%;
+    }
+
+    .method-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--faculty-gold);
+        box-shadow: 0 20px 40px rgba(30, 64, 175, 0.15);
+    }
+
+    .method-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--faculty-blue), var(--faculty-purple));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: var(--faculty-gold);
+        font-size: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .method-card:hover .method-icon {
+        transform: rotate(360deg) scale(1.1);
+        background: linear-gradient(135deg, var(--faculty-gold), #fcd34d);
+        color: var(--faculty-blue);
+    }
+
+    .method-card h3 {
+        color: var(--faculty-blue);
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .method-card p {
+        color: #666;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .method-features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+    }
+
+    .method-features li {
+        padding: 0.5rem 0;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .method-features li::before {
+        content: '✓';
+        color: var(--faculty-green);
+        font-weight: bold;
+    }
+
+    /* ========== FACULTY DEVELOPMENT ========== */
+    .development-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .dev-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .dev-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--faculty-purple);
+        box-shadow: 0 20px 40px rgba(30, 64, 175, 0.15);
+    }
+
+    .dev-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, var(--faculty-blue), var(--faculty-purple));
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        color: var(--faculty-gold);
+        font-size: 1.8rem;
+        transition: all 0.3s ease;
+    }
+
+    .dev-card:hover .dev-icon {
+        transform: rotate(360deg) scale(1.1);
+        background: linear-gradient(135deg, var(--faculty-gold), #fcd34d);
+        color: var(--faculty-blue);
+    }
+
+    .dev-card h3 {
+        color: var(--faculty-blue);
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .dev-card p {
+        color: #666;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    .dev-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .dev-stats .stat {
+        text-align: center;
+        padding: 1rem;
+        background: var(--faculty-bg);
+        border-radius: 10px;
+    }
+
+    .dev-stats .stat h4 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: var(--faculty-blue);
+        margin-bottom: 0.3rem;
+        background: linear-gradient(135deg, var(--faculty-blue), var(--faculty-purple));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .dev-stats .stat p {
+        color: #666;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    /* ========== RESEARCH PUBLICATIONS ========== */
+    .publications-list {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .publication-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 15px;
+        margin-bottom: 1rem;
+        box-shadow: 0 5px 20px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .publication-card:hover {
+        transform: translateX(10px);
+        border-color: var(--faculty-green);
+        box-shadow: 0 10px 30px rgba(30, 64, 175, 0.15);
+    }
+
+    .pub-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--faculty-blue), var(--faculty-purple));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--faculty-gold);
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .pub-content {
+        flex: 1;
+    }
+
+    .pub-content h4 {
+        color: var(--faculty-blue);
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+    }
+
+    .pub-authors {
+        color: var(--faculty-purple);
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .pub-journal {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .pub-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .pub-link {
+        width: 40px;
+        height: 40px;
+        background: var(--faculty-bg);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--faculty-blue);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+    }
+
+    .pub-link:hover {
+        background: var(--faculty-blue);
+        color: white;
+        transform: rotate(15deg);
+    }
+
+    /* ========== CONTACT FACULTY ========== */
+    .contact-faculty .grid-2 {
+        align-items: stretch;
+    }
+
+    .contact-faculty h2 {
+        color: var(--faculty-blue);
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .contact-faculty p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+
+    .contact-options {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .option {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(30, 64, 175, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .option:hover {
+        transform: translateX(5px);
+        box-shadow: 0 10px 25px rgba(30, 64, 175, 0.15);
+    }
+
+    .option i {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--faculty-blue), var(--faculty-purple));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--faculty-gold);
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .option h4 {
+        color: var(--faculty-blue);
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+    }
+
+    .option p {
+        color: #666;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .faculty-message {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .message-box {
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 15px 35px rgba(30, 64, 175, 0.1);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .message-box:hover {
+        border-color: var(--faculty-gold);
+    }
+
+    .quote-icon {
+        font-size: 3rem;
+        color: var(--faculty-gold);
+        opacity: 0.3;
+        margin-bottom: 1rem;
+    }
+
+    .message-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #666;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+    }
+
+    .message-author h4 {
+        color: var(--faculty-blue);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+    }
+
+    .message-author p {
+        color: var(--faculty-purple);
+        font-weight: 600;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes borderAnimation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    @keyframes floatIcon {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    /* ========== RESPONSIVE DESIGN ========== */
+    @media (max-width: 768px) {
+        .section {
+            padding: 3rem 0;
+        }
+
+        .faculty-hero {
+            min-height: 60vh;
+        }
+
+        .stat-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .faculty-qualities {
+            padding: 1.5rem;
+        }
+
+        .tab-buttons {
+            overflow-x: auto;
+            justify-content: flex-start;
+            padding: 0.5rem;
+        }
+
+        .tab-btn {
+            white-space: nowrap;
+        }
+
+        .faculty-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .dept-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .achievements-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .methodology-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .development-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .publication-card {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .pub-icon {
+            margin: 0 auto;
+        }
+
+        .pub-meta {
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+        }
+
+        .stat-row {
+            grid-template-columns: 1fr;
+        }
+
+        .achievements-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .faculty-icons {
+            display: none;
+        }
+    }
+
+    /* Utility Classes */
+    .mt-8 { margin-top: 2rem; }
+    .text-center { text-align: center; }
+    .content-box { margin-bottom: 2rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO BANNER ================= -->
+<section class="page-hero faculty-hero">
+    <div class="hero-overlay"></div>
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1 class="hero-title">Our Faculty</h1>
+            <p class="hero-subtitle">Experienced Mentors, Expert Educators</p>
+            <div class="breadcrumb">
+                <a href="{{ url_for('home') }}"><i class="fas fa-home me-1"></i> Home</a>
+                <i class="fas fa-chevron-right"></i>
+                <span>Faculty</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Faculty Icons -->
+    <div class="faculty-icons">
+        <i class="fas fa-chalkboard-teacher"></i>
+        <i class="fas fa-user-graduate"></i>
+        <i class="fas fa-flask"></i>
+        <i class="fas fa-book"></i>
+    </div>
+</section>
+
+<!-- ================= FACULTY OVERVIEW ================= -->
+<section class="section faculty-overview">
+    <div class="container">
+        <div class="grid-2 align-center gap-8">
+            <div data-aos="fade-right">
+                <span class="section-label">Academic Excellence</span>
+                <h2 class="section-title">Meet Our Expert Faculty</h2>
+
+                <div class="content-box">
+                    <p class="lead-text">
+                        SBITM Betul boasts a team of highly qualified and experienced
+                        faculty members who are dedicated to academic excellence,
+                        research, and student development.
+                    </p>
+
+                    <div class="faculty-stats">
+                        <div class="stat-row">
+                            <div class="stat-item">
+                                <h3>58</h3>
+                                <p>Total Faculty</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3>15+</h3>
+                                <p>Years Avg. Experience</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3>85%</h3>
+                                <p>Ph.D. Holders</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3>200+</h3>
+                                <p>Research Papers</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faculty-qualities" data-aos="fade-left">
+                <h3>Faculty Strengths</h3>
+                <div class="qualities-list">
+                    <div class="quality-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <div>
+                            <h4>High Qualifications</h4>
+                            <p>Majority faculty with Ph.D. degrees</p>
+                        </div>
+                    </div>
+
+                    <div class="quality-item">
+                        <i class="fas fa-industry"></i>
+                        <div>
+                            <h4>Industry Experience</h4>
+                            <p>Practical industry exposure</p>
+                        </div>
+                    </div>
+
+                    <div class="quality-item">
+                        <i class="fas fa-flask"></i>
+                        <div>
+                            <h4>Research Oriented</h4>
+                            <p>Active in research and publications</p>
+                        </div>
+                    </div>
+
+                    <div class="quality-item">
+                        <i class="fas fa-handshake"></i>
+                        <div>
+                            <h4>Student Centric</h4>
+                            <p>Focus on student development</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FACULTY CATEGORIES ================= -->
+<section class="section faculty-categories bg-light">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Departments</span>
+            <h2 class="section-title">Faculty by Department</h2>
+        </div>
+
+        <div class="department-tabs" data-aos="fade-up">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="cse">
+                    <i class="fas fa-laptop-code"></i> Computer Science
+                </button>
+                <button class="tab-btn" data-tab="mechanical">
+                    <i class="fas fa-cogs"></i> Mechanical
+                </button>
+                <button class="tab-btn" data-tab="civil">
+                    <i class="fas fa-hard-hat"></i> Civil
+                </button>
+                <button class="tab-btn" data-tab="electrical">
+                    <i class="fas fa-bolt"></i> Electrical
+                </button>
+                <button class="tab-btn" data-tab="ece">
+                    <i class="fas fa-satellite-dish"></i> ECE
+                </button>
+                <button class="tab-btn" data-tab="management">
+                    <i class="fas fa-chart-line"></i> Management
+                </button>
+            </div>
+
+            <!-- Computer Science Department -->
+            <div class="tab-content active" id="cse">
+                <div class="department-info">
+                    <div class="dept-header">
+                        <div class="dept-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <div>
+                            <h3>Computer Science & Engineering</h3>
+                            <p>Department of Computer Science Engineering</p>
+                        </div>
+                    </div>
+
+                    <div class="faculty-grid">
+                        <!-- CSE Faculty Members -->
+                        {% for faculty in faculty_data.cse %}
+                        <div class="faculty-card detailed" data-aos="fade-up">
+                            <div class="faculty-image">
+                                <img src="{{ url_for('static', filename='images/faculty/' + faculty.image) if faculty.image else url_for('static', filename='images/faculty/default.jpg') }}"
+                                     alt="{{ faculty.name }}">
+                                <div class="faculty-badge">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                            </div>
+                            <div class="faculty-info">
+                                <h4>{{ faculty.name }}</h4>
+                                <p class="designation">{{ faculty.designation }}</p>
+                                <div class="faculty-details">
+                                    <div class="detail-item">
+                                        <i class="fas fa-user-graduate"></i>
+                                        <span>{{ faculty.qualification }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ faculty.experience }} Experience</span>
+                                    </div>
+                                </div>
+                                <div class="expertise">
+                                    <h5>Area of Specialization</h5>
+                                    <div class="expertise-tags">
+                                        <span class="tag">{{ faculty.specialization }}</span>
+                                    </div>
+                                </div>
+                                <div class="faculty-contact">
+                                    <a href="#" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-envelope"></i> Contact
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-file"></i> Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mechanical Department -->
+            <div class="tab-content" id="mechanical">
+                <div class="department-info">
+                    <div class="dept-header">
+                        <div class="dept-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <div>
+                            <h3>Mechanical Engineering</h3>
+                            <p>Department of Mechanical Engineering</p>
+                        </div>
+                    </div>
+
+                    <div class="faculty-grid">
+                        <!-- Mechanical Faculty Members -->
+                        {% for faculty in faculty_data.mechanical %}
+                        <div class="faculty-card detailed" data-aos="fade-up">
+                            <div class="faculty-image">
+                                <img src="{{ url_for('static', filename='images/faculty/' + faculty.image) if faculty.image else url_for('static', filename='images/faculty/default.jpg') }}"
+                                     alt="{{ faculty.name }}">
+                                <div class="faculty-badge">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                            </div>
+                            <div class="faculty-info">
+                                <h4>{{ faculty.name }}</h4>
+                                <p class="designation">{{ faculty.designation }}</p>
+                                <div class="faculty-details">
+                                    <div class="detail-item">
+                                        <i class="fas fa-user-graduate"></i>
+                                        <span>{{ faculty.qualification }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ faculty.experience }} Experience</span>
+                                    </div>
+                                </div>
+                                <div class="expertise">
+                                    <h5>Area of Specialization</h5>
+                                    <div class="expertise-tags">
+                                        <span class="tag">{{ faculty.specialization }}</span>
+                                    </div>
+                                </div>
+                                <div class="faculty-contact">
+                                    <a href="#" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-envelope"></i> Contact
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-file"></i> Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Civil Department -->
+            <div class="tab-content" id="civil">
+                <div class="department-info">
+                    <div class="dept-header">
+                        <div class="dept-icon">
+                            <i class="fas fa-hard-hat"></i>
+                        </div>
+                        <div>
+                            <h3>Civil Engineering</h3>
+                            <p>Department of Civil Engineering</p>
+                        </div>
+                    </div>
+
+                    <div class="faculty-grid">
+                        <!-- Civil Faculty Members -->
+                        {% for faculty in faculty_data.civil %}
+                        <div class="faculty-card detailed" data-aos="fade-up">
+                            <div class="faculty-image">
+                                <img src="{{ url_for('static', filename='images/faculty/' + faculty.image) if faculty.image else url_for('static', filename='images/faculty/default.jpg') }}"
+                                     alt="{{ faculty.name }}">
+                                <div class="faculty-badge">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                            </div>
+                            <div class="faculty-info">
+                                <h4>{{ faculty.name }}</h4>
+                                <p class="designation">{{ faculty.designation }}</p>
+                                <div class="faculty-details">
+                                    <div class="detail-item">
+                                        <i class="fas fa-user-graduate"></i>
+                                        <span>{{ faculty.qualification }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ faculty.experience }} Experience</span>
+                                    </div>
+                                </div>
+                                <div class="expertise">
+                                    <h5>Area of Specialization</h5>
+                                    <div class="expertise-tags">
+                                        <span class="tag">{{ faculty.specialization }}</span>
+                                    </div>
+                                </div>
+                                <div class="faculty-contact">
+                                    <a href="#" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-envelope"></i> Contact
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-file"></i> Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Electrical Department -->
+            <div class="tab-content" id="electrical">
+                <div class="department-info">
+                    <div class="dept-header">
+                        <div class="dept-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div>
+                            <h3>Electrical Engineering</h3>
+                            <p>Department of Electrical Engineering</p>
+                        </div>
+                    </div>
+
+                    <div class="faculty-grid">
+                        <!-- Electrical Faculty Members -->
+                        {% for faculty in faculty_data.electrical %}
+                        <div class="faculty-card detailed" data-aos="fade-up">
+                            <div class="faculty-image">
+                                <img src="{{ url_for('static', filename='images/faculty/' + faculty.image) if faculty.image else url_for('static', filename='images/faculty/default.jpg') }}"
+                                     alt="{{ faculty.name }}">
+                                <div class="faculty-badge">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                            </div>
+                            <div class="faculty-info">
+                                <h4>{{ faculty.name }}</h4>
+                                <p class="designation">{{ faculty.designation }}</p>
+                                <div class="faculty-details">
+                                    <div class="detail-item">
+                                        <i class="fas fa-user-graduate"></i>
+                                        <span>{{ faculty.qualification }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ faculty.experience }} Experience</span>
+                                    </div>
+                                </div>
+                                <div class="expertise">
+                                    <h5>Area of Specialization</h5>
+                                    <div class="expertise-tags">
+                                        <span class="tag">{{ faculty.specialization }}</span>
+                                    </div>
+                                </div>
+                                <div class="faculty-contact">
+                                    <a href="#" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-envelope"></i> Contact
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-file"></i> Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- ECE Department -->
+            <div class="tab-content" id="ece">
+                <div class="department-info">
+                    <div class="dept-header">
+                        <div class="dept-icon">
+                            <i class="fas fa-satellite-dish"></i>
+                        </div>
+                        <div>
+                            <h3>Electronics & Communication Engineering</h3>
+                            <p>Department of ECE</p>
+                        </div>
+                    </div>
+
+                    <div class="faculty-grid">
+                        <!-- ECE Faculty Members -->
+                        {% for faculty in faculty_data.ece %}
+                        <div class="faculty-card detailed" data-aos="fade-up">
+                            <div class="faculty-image">
+                                <img src="{{ url_for('static', filename='images/faculty/' + faculty.image) if faculty.image else url_for('static', filename='images/faculty/default.jpg') }}"
+                                     alt="{{ faculty.name }}">
+                                <div class="faculty-badge">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                            </div>
+                            <div class="faculty-info">
+                                <h4>{{ faculty.name }}</h4>
+                                <p class="designation">{{ faculty.designation }}</p>
+                                <div class="faculty-details">
+                                    <div class="detail-item">
+                                        <i class="fas fa-user-graduate"></i>
+                                        <span>{{ faculty.qualification }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ faculty.experience }} Experience</span>
+                                    </div>
+                                </div>
+                                <div class="expertise">
+                                    <h5>Area of Specialization</h5>
+                                    <div class="expertise-tags">
+                                        <span class="tag">{{ faculty.specialization }}</span>
+                                    </div>
+                                </div>
+                                <div class="faculty-contact">
+                                    <a href="#" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-envelope"></i> Contact
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-file"></i> Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Management Department -->
+            <div class="tab-content" id="management">
+                <div class="department-info">
+                    <div class="dept-header">
+                        <div class="dept-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h3>Management Studies</h3>
+                            <p>Department of Management</p>
+                        </div>
+                    </div>
+
+                    <div class="faculty-grid">
+                        <!-- Management Faculty Members -->
+                        {% for faculty in faculty_data.management %}
+                        <div class="faculty-card detailed" data-aos="fade-up">
+                            <div class="faculty-image">
+                                <img src="{{ url_for('static', filename='images/faculty/' + faculty.image) if faculty.image else url_for('static', filename='images/faculty/default.jpg') }}"
+                                     alt="{{ faculty.name }}">
+                                <div class="faculty-badge">
+                                    <i class="fas fa-award"></i>
+                                </div>
+                            </div>
+                            <div class="faculty-info">
+                                <h4>{{ faculty.name }}</h4>
+                                <p class="designation">{{ faculty.designation }}</p>
+                                <div class="faculty-details">
+                                    <div class="detail-item">
+                                        <i class="fas fa-user-graduate"></i>
+                                        <span>{{ faculty.qualification }}</span>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-clock"></i>
+                                        <span>{{ faculty.experience }} Experience</span>
+                                    </div>
+                                </div>
+                                <div class="expertise">
+                                    <h5>Area of Specialization</h5>
+                                    <div class="expertise-tags">
+                                        <span class="tag">{{ faculty.specialization }}</span>
+                                    </div>
+                                </div>
+                                <div class="faculty-contact">
+                                    <a href="#" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-envelope"></i> Contact
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-file"></i> Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= LEADERSHIP TEAM ================= -->
+<section class="section leadership-team">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label">Leadership</span>
+            <h2 class="section-title">Administrative Leadership</h2>
+        </div>
+
+        <div class="leadership-grid">
+            <div class="leader-card" data-aos="fade-up">
+                <div class="leader-image">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Principal">
+                    <div class="leader-badge">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                </div>
+
+                <div class="leader-info">
+                    <h3>Dr. P.J.Shah</h3>
+                    <p class="leader-designation">Principal</p>
+
+                    <div class="leader-qualifications">
+                        <div class="qualification">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Ph.D (Electrical & Electronic Engineering), M.Tech</span>
+                        </div>
+                        <div class="qualification">
+                            <i class="fas fa-award"></i>
+                            <span>22+ Years Experience</span>
+                        </div>
+                    </div>
+
+                    <div class="leader-expertise">
+                        <h5>Expertise Areas:</h5>
+                        <div class="expertise-tags">
+                            <span class="tag">Computer Networks</span>
+                            <span class="tag">Cyber Security</span>
+                            <span class="tag">Data Structures</span>
+                        </div>
+                    </div>
+
+                    <div class="leader-achievements">
+                        <h5>Key Achievements:</h5>
+                        <ul>
+                            <li>50+ Research Publications</li>
+                            <li>5 Patents Filed</li>
+                            <li>Book Published</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="leader-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="leader-image">
+                    <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Vice Principal">
+                    <div class="leader-badge">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+
+                <div class="leader-info">
+                    <h3>Prof. SHASHANK MANE</h3>
+                    <p class="leader-designation">Vice Principal</p>
+
+                    <div class="leader-qualifications">
+                        <div class="qualification">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Ph.D (COMPUTER SCIENCE ENGINEERING), M.Tech</span>
+                        </div>
+                        <div class="qualification">
+                            <i class="fas fa-award"></i>
+                            <span>18+ Years Experience</span>
+                        </div>
+                    </div>
+
+                    <div class="leader-expertise">
+                        <h5>Expertise Areas:</h5>
+                        <div class="expertise-tags">
+                            <span class="tag">Manufacturing Systems</span>
+                            <span class="tag">CAD/CAM</span>
+                            <span class="tag">Thermal Engineering</span>
+                        </div>
+                    </div>
+
+                    <div class="leader-achievements">
+                        <h5>Key Achievements:</h5>
+                        <ul>
+                            <li>40+ Research Papers</li>
+                            <li>Industry Projects</li>
+                            <li>Conference Speaker</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FACULTY ACHIEVEMENTS ================= -->
+<section class="section faculty-achievements bg-light">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label">Recognition</span>
+            <h2 class="section-title">Faculty Achievements</h2>
+        </div>
+
+        <div class="achievements-grid">
+            <div class="achievement-card" data-aos="fade-up">
+                <div class="achievement-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <h3>200+</h3>
+                <p>Research Papers Published</p>
+                <span class="badge">National & International</span>
+            </div>
+
+            <div class="achievement-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="achievement-icon">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <h3>15+</h3>
+                <p>Patents Filed</p>
+                <span class="badge">Innovations</span>
+            </div>
+
+            <div class="achievement-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="achievement-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>10+</h3>
+                <p>Books Published</p>
+                <span class="badge">Textbooks & References</span>
+            </div>
+
+            <div class="achievement-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="achievement-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>25+</h3>
+                <p>Ph.D. Guided</p>
+                <span class="badge">Research Supervision</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= TEACHING METHODOLOGY ================= -->
+<section class="section teaching-methodology">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Pedagogy</span>
+            <h2 class="section-title">Innovative Teaching Methods</h2>
+        </div>
+
+        <div class="methodology-grid">
+            <div class="method-card" data-aos="fade-up">
+                <div class="method-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <h3>Interactive Learning</h3>
+                <p>Engaging classroom sessions with multimedia support</p>
+                <ul class="method-features">
+                    <li>Smart classroom technology</li>
+                    <li>Interactive discussions</li>
+                    <li>Case-based learning</li>
+                </ul>
+            </div>
+
+            <div class="method-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="method-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h3>Practical Exposure</h3>
+                <p>Hands-on learning through labs and projects</p>
+                <ul class="method-features">
+                    <li>Industry-standard labs</li>
+                    <li>Project-based learning</li>
+                    <li>Research projects</li>
+                </ul>
+            </div>
+
+            <div class="method-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="method-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Mentorship Program</h3>
+                <p>Personalized guidance for each student</p>
+                <ul class="method-features">
+                    <li>One-on-one mentoring</li>
+                    <li>Career counseling</li>
+                    <li>Academic support</li>
+                </ul>
+            </div>
+
+            <div class="method-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="method-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3>Digital Learning</h3>
+                <p>Technology-enhanced learning platforms</p>
+                <ul class="method-features">
+                    <li>Online learning resources</li>
+                    <li>Virtual labs</li>
+                    <li>E-learning modules</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FACULTY DEVELOPMENT ================= -->
+<section class="section faculty-development bg-light">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Growth</span>
+            <h2 class="section-title">Faculty Development Programs</h2>
+        </div>
+
+        <div class="development-grid">
+            <div class="dev-card" data-aos="fade-up">
+                <div class="dev-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h3>FDP Workshops</h3>
+                <p>Regular Faculty Development Programs</p>
+                <div class="dev-stats">
+                    <div class="stat">
+                        <h4>10+</h4>
+                        <p>FDPs Conducted</p>
+                    </div>
+                    <div class="stat">
+                        <h4>50+</h4>
+                        <p>Faculty Trained</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dev-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="dev-icon">
+                    <i class="fas fa-plane"></i>
+                </div>
+                <h3>Conference Participation</h3>
+                <p>National and International Conferences</p>
+                <div class="dev-stats">
+                    <div class="stat">
+                        <h4>25+</h4>
+                        <p>Conferences Attended</p>
+                    </div>
+                    <div class="stat">
+                        <h4>15+</h4>
+                        <p>Papers Presented</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dev-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="dev-icon">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <h3>Industry Training</h3>
+                <p>Industry exposure and training programs</p>
+                <div class="dev-stats">
+                    <div class="stat">
+                        <h4>20+</h4>
+                        <p>Industry Visits</p>
+                    </div>
+                    <div class="stat">
+                        <h4>10+</h4>
+                        <p>Training Programs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= RESEARCH PUBLICATIONS ================= -->
+<section class="section research-publications">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Research</span>
+            <h2 class="section-title">Recent Publications</h2>
+        </div>
+
+        <div class="publications-list">
+            <div class="publication-card" data-aos="fade-up">
+                <div class="pub-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <div class="pub-content">
+                    <h4>"Advanced Machine Learning Algorithms for Cybersecurity"</h4>
+                    <p class="pub-authors">Prof. Pankaj Singh sisodiya</p>
+                    <p class="pub-journal">International Journal of Computer Science, 2023</p>
+                    <div class="pub-meta">
+                        <span class="badge">SCI Indexed</span>
+                        <span class="badge">Impact Factor: 5.2</span>
+                    </div>
+                </div>
+                <a href="#" class="pub-link">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+
+            <div class="publication-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="pub-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <div class="pub-content">
+                    <h4>"Sustainable Manufacturing Processes in Mechanical Engineering"</h4>
+                    <p class="pub-authors">Prof. Hemant badode</p>
+                    <p class="pub-journal">Journal of Manufacturing Systems, 2023</p>
+                    <div class="pub-meta">
+                        <span class="badge">Scopus Indexed</span>
+                        <span class="badge">Impact Factor: 4.8</span>
+                    </div>
+                </div>
+                <a href="#" class="pub-link">
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="text-center mt-8" data-aos="fade-up">
+            <a href="#" class="btn btn-primary">
+                <i class="fas fa-download me-2"></i> View All Publications
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CONTACT FACULTY ================= -->
+<section class="section contact-faculty bg-light">
+    <div class="container">
+        <div class="grid-2 align-center">
+            <div data-aos="fade-right">
+                <h2>Connect With Our Faculty</h2>
+                <p>
+                    Our faculty members are available for academic discussions,
+                    research collaborations, and student mentorship.
+                </p>
+
+                <div class="contact-options">
+                    <div class="option">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>faculty@sbitm.edu.in</p>
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Office Hours</h4>
+                            <p>Mon-Fri: 10:00 AM - 4:00 PM</p>
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <i class="fas fa-calendar-alt"></i>
+                        <div>
+                            <h4>Appointment</h4>
+                            <p>Schedule through department office</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faculty-message" data-aos="fade-left">
+                <div class="message-box">
+                    <div class="quote-icon">
+                        <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p class="message-text">
+                        "We are committed to nurturing the next generation of engineers
+                        and managers through quality education, research, and mentorship."
+                    </p>
+                    <div class="message-author">
+                        <h4>Dr.P.J.Shah</h4>
+                        <p>Principal, SBITM Betul</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Tab functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                // Add active class to clicked button
+                btn.classList.add('active');
+
+                // Show corresponding content
+                const tabId = btn.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Initialize AOS animations
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                once: true
+            });
+        }
+    });
+</script>
+{% endblock %}

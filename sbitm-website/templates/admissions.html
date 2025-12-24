@@ -1,0 +1,2492 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admissions 2024 | Apply to SBITM Betul Engineering & Management Programs
+{% endblock %}
+
+{% block head %}
+<style>
+    /* ========== CUSTOM VARIABLES FOR ADMISSIONS ========== */
+    :root {
+        --admissions-blue: #1e3a8a;
+        --admissions-gold: #f59e0b;
+        --admissions-green: #10b981;
+        --admissions-light: #3b82f6;
+        --admissions-bg: #f8fafc;
+        --admissions-card: #ffffff;
+        --border-gradient: linear-gradient(45deg, #1e3a8a, #f59e0b, #10b981, #f59e0b);
+    }
+
+    /* ========== HERO SECTION ========== */
+    .admissions-hero {
+        position: relative;
+        min-height: 70vh;
+        background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.95)),
+                    url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        margin-top: -80px;
+        padding-top: 80px;
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(245, 158, 11, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        animation: slideDown 1s ease;
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin-bottom: 2rem;
+        color: var(--admissions-gold);
+        font-weight: 600;
+        animation: slideUp 1s ease 0.3s both;
+    }
+
+    /* Admission Status */
+    .admission-status {
+        position: absolute;
+        bottom: 30px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        z-index: 2;
+    }
+
+    .status-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.8rem 1.5rem;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 50px;
+        color: white;
+        font-weight: 600;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .status-badge.open {
+        background: var(--admissions-green);
+        border-color: rgba(16, 185, 129, 0.5);
+        animation: pulse 2s infinite;
+    }
+
+    .deadline-timer {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.8rem 1.5rem;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-radius: 50px;
+        color: white;
+        font-weight: 600;
+        border: 2px solid rgba(245, 158, 11, 0.5);
+    }
+
+    .deadline-timer i {
+        color: var(--admissions-gold);
+    }
+
+    /* ========== SECTION STYLES ========== */
+    .section {
+        padding: 5rem 0;
+        position: relative;
+    }
+
+    .bg-light {
+        background: var(--admissions-bg);
+    }
+
+    .section-label {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: var(--admissions-blue);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 800;
+        color: var(--admissions-blue);
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: var(--admissions-gold);
+        border-radius: 2px;
+    }
+
+    .section-subtitle {
+        font-size: 1.1rem;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto 2rem;
+        line-height: 1.6;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-header.text-center .section-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* ========== ADMISSION OVERVIEW ========== */
+    .admission-overview {
+        background: white;
+    }
+
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    @media (min-width: 992px) {
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .align-center {
+        align-items: center;
+    }
+
+    .gap-8 {
+        gap: 2rem;
+    }
+
+    .lead-text {
+        font-size: 1.2rem;
+        color: var(--admissions-blue);
+        font-weight: 500;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+
+    /* Highlight Cards */
+    .highlight-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .highlight-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: var(--admissions-bg);
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .highlight-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .highlight-card:hover::before {
+        opacity: 1;
+    }
+
+    .highlight-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(30, 58, 138, 0.1);
+        background: white;
+    }
+
+    .highlight-card i {
+        font-size: 2rem;
+        color: var(--admissions-gold);
+        background: linear-gradient(135deg, var(--admissions-blue), var(--admissions-light));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        min-width: 40px;
+        transition: all 0.3s ease;
+    }
+
+    .highlight-card:hover i {
+        transform: scale(1.2) rotate(10deg);
+    }
+
+    .highlight-card h4 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--admissions-blue);
+        margin-bottom: 0.3rem;
+    }
+
+    .highlight-card p {
+        font-size: 0.9rem;
+        color: #666;
+        margin: 0;
+    }
+
+    /* CTA Buttons */
+    .cta-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 52px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .btn:hover::before {
+        opacity: 1;
+    }
+
+    .btn-lg {
+        padding: 1.2rem 2.5rem;
+        font-size: 1.1rem;
+    }
+
+    .btn-primary {
+        background: var(--admissions-blue);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: transparent;
+        color: var(--admissions-blue);
+        border-color: var(--admissions-blue);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(30, 58, 138, 0.2);
+    }
+
+    .btn-outline {
+        background: transparent;
+        border-color: var(--admissions-light);
+        color: var(--admissions-light);
+    }
+
+    .btn-outline:hover {
+        background: var(--admissions-light);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.85rem;
+    }
+
+    /* Admission Process */
+    .admission-process {
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 15px 35px rgba(30, 58, 138, 0.1);
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .admission-process::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .admission-process:hover::before {
+        opacity: 1;
+    }
+
+    .admission-process:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(30, 58, 138, 0.15);
+    }
+
+    .process-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--admissions-blue);
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .process-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 3px;
+        background: var(--admissions-gold);
+        border-radius: 2px;
+    }
+
+    .process-steps {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+        .process-steps {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .step {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: var(--admissions-bg);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .step:hover {
+        transform: translateX(5px);
+        background: white;
+        box-shadow: 0 5px 15px rgba(30, 58, 138, 0.1);
+    }
+
+    .step-number {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--admissions-blue), var(--admissions-light));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+    }
+
+    .step-content h4 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--admissions-blue);
+        margin-bottom: 0.3rem;
+    }
+
+    .step-content p {
+        font-size: 0.9rem;
+        color: #666;
+        margin: 0;
+    }
+
+    /* ========== PROGRAMS OFFERED ========== */
+    .program-tabs {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(30, 58, 138, 0.1);
+    }
+
+    .tab-buttons {
+        display: flex;
+        background: var(--admissions-bg);
+        border-bottom: 2px solid #e2e8f0;
+        overflow-x: auto;
+    }
+
+    .tab-btn {
+        flex: 1;
+        padding: 1.5rem;
+        background: transparent;
+        border: none;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--admissions-blue);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        white-space: nowrap;
+        position: relative;
+    }
+
+    .tab-btn:hover {
+        background: rgba(59, 130, 246, 0.1);
+        color: var(--admissions-light);
+    }
+
+    .tab-btn.active {
+        background: white;
+        color: var(--admissions-blue);
+        border-bottom: 3px solid var(--admissions-gold);
+    }
+
+    .tab-btn.active::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--admissions-gold);
+    }
+
+    /* Programs Table */
+    .programs-table {
+        padding: 2rem;
+    }
+
+    .table-header {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 2fr 1fr;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        background: var(--admissions-bg);
+        border-radius: 10px;
+        font-weight: 700;
+        color: var(--admissions-blue);
+        margin-bottom: 1rem;
+    }
+
+    .table-row {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 2fr 1fr;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .table-row:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(30, 58, 138, 0.1);
+        border-color: var(--admissions-gold);
+    }
+
+    .table-cell h4 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--admissions-blue);
+        margin-bottom: 0.3rem;
+    }
+
+    .table-cell .code {
+        font-size: 0.9rem;
+        color: var(--admissions-light);
+        font-weight: 600;
+    }
+
+    .table-cell {
+        display: flex;
+        align-items: center;
+        color: #666;
+    }
+
+    /* Program Details Card */
+    .program-details {
+        padding: 2rem;
+    }
+
+    .detail-card {
+        background: var(--admissions-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .detail-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .detail-card:hover::before {
+        opacity: 1;
+    }
+
+    .detail-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(30, 58, 138, 0.1);
+    }
+
+    .detail-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .detail-header h3 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--admissions-blue);
+        margin: 0;
+    }
+
+    .badge {
+        padding: 0.5rem 1rem;
+        background: var(--admissions-gold);
+        color: var(--admissions-blue);
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 0.9rem;
+    }
+
+    .detail-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        color: #666;
+    }
+
+    .detail-item i {
+        color: var(--admissions-gold);
+        font-size: 1.2rem;
+    }
+
+    .detail-item strong {
+        color: var(--admissions-blue);
+    }
+
+    .specializations h4 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--admissions-blue);
+        margin-bottom: 1rem;
+    }
+
+    .spec-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .tag {
+        padding: 0.5rem 1rem;
+        background: rgba(59, 130, 246, 0.1);
+        color: var(--admissions-light);
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+        background: var(--admissions-light);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* ========== ELIGIBILITY CRITERIA ========== */
+    .eligibility-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .eligibility-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(30, 58, 138, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .eligibility-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .eligibility-card:hover::before {
+        opacity: 1;
+    }
+
+    .eligibility-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(30, 58, 138, 0.15);
+    }
+
+    .eligibility-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .eligibility-header i {
+        font-size: 2rem;
+        color: var(--admissions-gold);
+        background: linear-gradient(135deg, var(--admissions-blue), var(--admissions-light));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .eligibility-header h3 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--admissions-blue);
+        margin: 0;
+    }
+
+    .eligibility-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .eligibility-list li {
+        padding: 0.8rem 0;
+        color: #666;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .eligibility-list li:last-child {
+        border-bottom: none;
+    }
+
+    .eligibility-list li i {
+        color: var(--admissions-green);
+        font-size: 1rem;
+        margin-top: 0.3rem;
+        flex-shrink: 0;
+    }
+
+    /* ========== FEE STRUCTURE ========== */
+    .fee-tables {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .fee-table {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(30, 58, 138, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .fee-table:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(30, 58, 138, 0.15);
+    }
+
+    .fee-table h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--admissions-blue);
+        margin-bottom: 1.5rem;
+        text-align: center;
+        position: relative;
+    }
+
+    .fee-table h3::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 3px;
+        background: var(--admissions-gold);
+        border-radius: 2px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background: var(--admissions-bg);
+    }
+
+    th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 700;
+        color: var(--admissions-blue);
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    td {
+        padding: 1rem;
+        border-bottom: 1px solid #f1f5f9;
+        color: #666;
+    }
+
+    tbody tr:hover {
+        background: var(--admissions-bg);
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    tbody strong {
+        color: var(--admissions-blue);
+        font-size: 1.1rem;
+    }
+
+    .fee-notes {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        border-left: 4px solid var(--admissions-gold);
+        box-shadow: 0 5px 15px rgba(30, 58, 138, 0.1);
+    }
+
+    .note {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .note i {
+        color: var(--admissions-gold);
+        font-size: 1.2rem;
+        margin-top: 0.2rem;
+    }
+
+    .note p {
+        margin: 0;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    /* ========== SCHOLARSHIPS ========== */
+    .scholarship-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+
+    .scholarship-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(30, 58, 138, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .scholarship-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .scholarship-card:hover::before {
+        opacity: 1;
+    }
+
+    .scholarship-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(30, 58, 138, 0.15);
+    }
+
+    .scholarship-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--admissions-blue), var(--admissions-light));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: var(--admissions-gold);
+        font-size: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .scholarship-card:hover .scholarship-icon {
+        transform: rotate(360deg) scale(1.1);
+        background: linear-gradient(135deg, var(--admissions-gold), #fbbf24);
+        color: var(--admissions-blue);
+    }
+
+    .scholarship-card h3 {
+        color: var(--admissions-blue);
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .scholarship-card p {
+        color: #666;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .scholarship-details {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+    }
+
+    .scholarship-details li {
+        padding: 0.5rem 0;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .scholarship-details li::before {
+        content: '✓';
+        color: var(--admissions-green);
+        font-weight: bold;
+    }
+
+    /* ========== DOCUMENTS REQUIRED ========== */
+    .documents-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .document-category {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 30px rgba(30, 58, 138, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .document-category:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(30, 58, 138, 0.15);
+        border-color: var(--admissions-gold);
+    }
+
+    .document-category h3 {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: var(--admissions-blue);
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .document-category h3 i {
+        color: var(--admissions-gold);
+    }
+
+    .document-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .document-list li {
+        padding: 0.8rem 0;
+        color: #666;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .document-list li:last-child {
+        border-bottom: none;
+    }
+
+    .document-list li i {
+        color: var(--admissions-green);
+        font-size: 1rem;
+        margin-top: 0.3rem;
+        flex-shrink: 0;
+    }
+
+    /* ========== APPLICATION FORM ========== */
+    .application-form {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .application-form::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, var(--admissions-blue), var(--admissions-gold), var(--admissions-green));
+    }
+
+    .form-container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(30, 58, 138, 0.15);
+        overflow: hidden;
+    }
+
+    .admission-form {
+        padding: 3rem;
+    }
+
+    .form-section {
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+        border-bottom: 2px solid #f1f5f9;
+    }
+
+    .form-section:last-child {
+        border-bottom: none;
+    }
+
+    .form-section-title {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: var(--admissions-blue);
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+    }
+
+    .form-section-title i {
+        color: var(--admissions-gold);
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--admissions-blue);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--admissions-light);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    /* Qualification Table */
+    .qualification-table {
+        overflow-x: auto;
+    }
+
+    .qualification-table table {
+        min-width: 600px;
+        background: var(--admissions-bg);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .qualification-table th {
+        background: var(--admissions-blue);
+        color: white;
+        padding: 1rem;
+        text-align: left;
+    }
+
+    .qualification-table td {
+        padding: 1rem;
+        background: white;
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .qualification-table input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 5px;
+        font-size: 0.9rem;
+    }
+
+    .qualification-table input:focus {
+        outline: none;
+        border-color: var(--admissions-light);
+    }
+
+    /* Declaration */
+    .declaration {
+        background: var(--admissions-bg);
+        padding: 1.5rem;
+        border-radius: 10px;
+        border: 2px dashed #cbd5e1;
+    }
+
+    .declaration .form-group {
+        margin: 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .declaration input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-top: 0.2rem;
+        accent-color: var(--admissions-green);
+    }
+
+    .declaration label {
+        margin: 0;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    /* Form Actions */
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        padding-top: 2rem;
+        border-top: 2px solid #f1f5f9;
+    }
+
+    /* ========== CONTACT ADMISSION ========== */
+    .contact-info {
+        margin-top: 2rem;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 15px;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(30, 58, 138, 0.1);
+        border: 2px solid transparent;
+    }
+
+    .contact-item:hover {
+        transform: translateX(5px);
+        border-color: var(--admissions-gold);
+    }
+
+    .contact-item i {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, var(--admissions-blue), var(--admissions-light));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--admissions-gold);
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .contact-item h4 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--admissions-blue);
+        margin-bottom: 0.3rem;
+    }
+
+    .contact-item p {
+        color: #666;
+        margin: 0;
+    }
+
+    /* Quick Links */
+    .quick-links h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--admissions-blue);
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .quick-links h3::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: var(--admissions-gold);
+        border-radius: 2px;
+    }
+
+    .link-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .link-list li {
+        margin-bottom: 1rem;
+    }
+
+    .link-list a {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        background: white;
+        border-radius: 10px;
+        color: var(--admissions-blue);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(30, 58, 138, 0.1);
+        border: 2px solid transparent;
+    }
+
+    .link-list a:hover {
+        transform: translateX(5px);
+        color: var(--admissions-light);
+        border-color: var(--admissions-gold);
+    }
+
+    .link-list a i {
+        color: var(--admissions-gold);
+        font-size: 1.2rem;
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes borderAnimation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    /* ========== RESPONSIVE DESIGN ========== */
+    @media (max-width: 768px) {
+        .section {
+            padding: 3rem 0;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .highlight-cards {
+            grid-template-columns: 1fr;
+        }
+
+        .tab-buttons {
+            flex-direction: column;
+        }
+
+        .tab-btn {
+            width: 100%;
+            padding: 1rem;
+        }
+
+        .table-header,
+        .table-row {
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+        }
+
+        .table-cell {
+            padding: 0.5rem 0;
+        }
+
+        .fee-tables {
+            grid-template-columns: 1fr;
+        }
+
+        .scholarship-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .documents-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .qualification-table {
+            margin: 0 -1rem;
+        }
+
+        .qualification-table table {
+            min-width: 100%;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .form-actions .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .admission-status {
+            flex-direction: column;
+            gap: 1rem;
+            bottom: 20px;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+        }
+
+        .cta-buttons .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+        }
+
+        .admission-form {
+            padding: 1.5rem;
+        }
+
+        .process-steps {
+            grid-template-columns: 1fr;
+        }
+
+        .table-cell h4 {
+            font-size: 1rem;
+        }
+
+        .fee-table {
+            padding: 1.5rem;
+        }
+
+        .form-section {
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .form-section-title {
+            font-size: 1.2rem;
+        }
+    }
+
+    /* Utility Classes */
+    .mt-6 { margin-top: 1.5rem; }
+    .text-center { text-align: center; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO BANNER ================= -->
+<section class="page-hero admissions-hero">
+    <div class="hero-overlay"></div>
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1 class="hero-title">Admissions 2024-25</h1>
+            <p class="hero-subtitle">Shape Your Future With Us</p>
+            <div class="breadcrumb justify-content-center">
+                <a href="{{ url_for('home') }}" class="text-white"><i class="fas fa-home me-2"></i>Home</a>
+                <i class="fas fa-chevron-right mx-3 text-white-50"></i>
+                <span class="text-white">Admissions</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admission Status -->
+    <div class="admission-status">
+        <div class="status-badge open">
+            <i class="fas fa-check-circle"></i>
+            <span>Admissions Open</span>
+        </div>
+        <div class="deadline-timer">
+            <i class="fas fa-clock"></i>
+            <span>Last Date: 30 June 2024</span>
+        </div>
+    </div>
+</section>
+
+<!-- ================= ADMISSION OVERVIEW ================= -->
+<section class="section admission-overview">
+    <div class="container">
+        <div class="grid-2 align-center gap-8">
+            <div data-aos="fade-right">
+                <span class="section-label"><i class="fas fa-rocket me-2"></i>Get Started</span>
+                <h2 class="section-title">Begin Your Journey</h2>
+
+                <div class="content-box">
+                    <p class="lead-text">
+                        <i class="fas fa-university me-2"></i>
+                        SBITM Betul invites applications for undergraduate and postgraduate
+                        programs in Engineering and Management for the academic session 2024-25.
+                    </p>
+
+                    <div class="highlight-cards">
+                        <div class="highlight-card">
+                            <i class="fas fa-university"></i>
+                            <div>
+                                <h4>RGPV Affiliated</h4>
+                                <p>Rajiv Gandhi Proudyogiki Vishwavidyalaya</p>
+                            </div>
+                        </div>
+
+                        <div class="highlight-card">
+                            <i class="fas fa-award"></i>
+                            <div>
+                                <h4>NAAC A+ Accredited</h4>
+                                <p>Highest accreditation grade</p>
+                            </div>
+                        </div>
+
+                        <div class="highlight-card">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <h4>AICTE Approved</h4>
+                                <p>National level approval</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta-buttons mt-6">
+                    <a href="#application-form" class="btn btn-primary btn-lg">
+                        <i class="fas fa-file-alt me-2"></i> Apply Now
+                    </a>
+                    <a href="#programs" class="btn btn-outline btn-lg">
+                        <i class="fas fa-list me-2"></i> View Programs
+                    </a>
+                </div>
+            </div>
+
+            <div class="admission-process" data-aos="fade-left">
+                <h3 class="process-title"><i class="fas fa-steps me-2"></i>Admission Process</h3>
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Application</h4>
+                            <p>Fill online/offline application form</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Documentation</h4>
+                            <p>Submit required documents</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Review</h4>
+                            <p>Application review by committee</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Admission</h4>
+                            <p>Seat allotment and fee payment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= PROGRAMS OFFERED ================= -->
+<section class="section programs-offered bg-light" id="programs">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-graduation-cap me-2"></i>Programs</span>
+            <h2 class="section-title">Programs Offered</h2>
+            <p class="section-subtitle">
+                Choose from our range of industry-aligned programs
+            </p>
+        </div>
+
+        <div class="program-tabs" data-aos="fade-up">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="btech">
+                    <i class="fas fa-cogs me-2"></i>B.Tech Programs
+                </button>
+                <button class="tab-btn" data-tab="mba">
+                    <i class="fas fa-chart-line me-2"></i>MBA Program
+                </button>
+                <button class="tab-btn" data-tab="bba">
+                    <i class="fas fa-business-time me-2"></i>BBA Program
+                </button>
+            </div>
+
+            <div class="tab-content active" id="btech">
+                <div class="programs-table">
+                    <div class="table-header">
+                        <div class="header-item">Program</div>
+                        <div class="header-item">Duration</div>
+                        <div class="header-item">Intake</div>
+                        <div class="header-item">Eligibility</div>
+                        <div class="header-item">Action</div>
+                    </div>
+
+                    <!-- CSE -->
+                    <div class="table-row" data-aos="fade-up">
+                        <div class="table-cell">
+                            <h4>Computer Science & Engineering</h4>
+                            <p class="code">CSE</p>
+                        </div>
+                        <div class="table-cell">4 Years</div>
+                        <div class="table-cell">120 seats</div>
+                        <div class="table-cell">
+                            10+2 with PCM, Minimum 45%
+                        </div>
+                        <div class="table-cell">
+                            <a href="#application-form" class="btn btn-sm">
+                                <i class="fas fa-arrow-right me-1"></i> Apply Now
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- IT -->
+                    <div class="table-row" data-aos="fade-up" data-aos-delay="100">
+                        <div class="table-cell">
+                            <h4>Information Technology</h4>
+                            <p class="code">IT</p>
+                        </div>
+                        <div class="table-cell">4 Years</div>
+                        <div class="table-cell">60 seats</div>
+                        <div class="table-cell">
+                            10+2 with PCM, Minimum 45%
+                        </div>
+                        <div class="table-cell">
+                            <a href="#application-form" class="btn btn-sm">
+                                <i class="fas fa-arrow-right me-1"></i> Apply Now
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Mechanical -->
+                    <div class="table-row" data-aos="fade-up" data-aos-delay="200">
+                        <div class="table-cell">
+                            <h4>Mechanical Engineering</h4>
+                            <p class="code">ME</p>
+                        </div>
+                        <div class="table-cell">4 Years</div>
+                        <div class="table-cell">60 seats</div>
+                        <div class="table-cell">
+                            10+2 with PCM, Minimum 45%
+                        </div>
+                        <div class="table-cell">
+                            <a href="#application-form" class="btn btn-sm">
+                                <i class="fas fa-arrow-right me-1"></i> Apply Now
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Civil -->
+                    <div class="table-row" data-aos="fade-up" data-aos-delay="300">
+                        <div class="table-cell">
+                            <h4>Civil Engineering</h4>
+                            <p class="code">CE</p>
+                        </div>
+                        <div class="table-cell">4 Years</div>
+                        <div class="table-cell">60 seats</div>
+                        <div class="table-cell">
+                            10+2 with PCM, Minimum 45%
+                        </div>
+                        <div class="table-cell">
+                            <a href="#application-form" class="btn btn-sm">
+                                <i class="fas fa-arrow-right me-1"></i> Apply Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="mba">
+                <div class="program-details">
+                    <div class="detail-card" data-aos="fade-up">
+                        <div class="detail-header">
+                            <h3>Master of Business Administration (MBA)</h3>
+                            <span class="badge">2 Years</span>
+                        </div>
+
+                        <div class="detail-content">
+                            <div class="detail-item">
+                                <i class="fas fa-chair"></i>
+                                <span><strong>Intake:</strong> 60 seats</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span><strong>Eligibility:</strong> Graduation in any discipline</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span><strong>Fee Structure:</strong> ₹85,000 per year</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span><strong>Application Deadline:</strong> 30 June 2024</span>
+                            </div>
+                        </div>
+
+                        <div class="specializations">
+                            <h4><i class="fas fa-star me-2"></i>Specializations Offered:</h4>
+                            <div class="spec-tags">
+                                <span class="tag">Marketing</span>
+                                <span class="tag">Finance</span>
+                                <span class="tag">Human Resources</span>
+                                <span class="tag">Operations</span>
+                                <span class="tag">International Business</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="bba">
+                <div class="program-details">
+                    <div class="detail-card" data-aos="fade-up">
+                        <div class="detail-header">
+                            <h3>Bachelor of Business Administration (BBA)</h3>
+                            <span class="badge">3 Years</span>
+                        </div>
+
+                        <div class="detail-content">
+                            <div class="detail-item">
+                                <i class="fas fa-chair"></i>
+                                <span><strong>Intake:</strong> 60 seats</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span><strong>Eligibility:</strong> 10+2 in any stream</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span><strong>Fee Structure:</strong> ₹50,000 per year</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span><strong>Application Deadline:</strong> 30 June 2024</span>
+                            </div>
+                        </div>
+
+                        <div class="specializations">
+                            <h4><i class="fas fa-star me-2"></i>Specializations Offered:</h4>
+                            <div class="spec-tags">
+                                <span class="tag">Finance</span>
+                                <span class="tag">Marketing</span>
+                                <span class="tag">Human Resources</span>
+                                <span class="tag">Entrepreneurship</span>
+                                <span class="tag">Digital Marketing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= ELIGIBILITY CRITERIA ================= -->
+<section class="section eligibility-criteria">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-clipboard-check me-2"></i>Requirements</span>
+            <h2 class="section-title">Eligibility Criteria</h2>
+        </div>
+
+        <div class="eligibility-grid">
+            <div class="eligibility-card" data-aos="fade-up">
+                <div class="eligibility-header">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>B.Tech Programs</h3>
+                </div>
+                <ul class="eligibility-list">
+                    <li><i class="fas fa-check"></i> 10+2 with Physics, Chemistry & Mathematics</li>
+                    <li><i class="fas fa-check"></i> Minimum 45% aggregate marks (40% for SC/ST)</li>
+                    <li><i class="fas fa-check"></i> Valid JEE Main/State Entrance Exam score</li>
+                    <li><i class="fas fa-check"></i> Age limit: 25 years (relaxation as per norms)</li>
+                    <li><i class="fas fa-check"></i> Direct admission through MP-DTE counseling</li>
+                </ul>
+            </div>
+
+            <div class="eligibility-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="eligibility-header">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>MBA Program</h3>
+                </div>
+                <ul class="eligibility-list">
+                    <li><i class="fas fa-check"></i> Bachelor's degree in any discipline</li>
+                    <li><i class="fas fa-check"></i> Minimum 50% aggregate marks (45% for SC/ST)</li>
+                    <li><i class="fas fa-check"></i> Valid CAT/MAT/CMAT/ATMA score</li>
+                    <li><i class="fas fa-check"></i> Group Discussion & Personal Interview</li>
+                    <li><i class="fas fa-check"></i> Work experience preferred but not mandatory</li>
+                </ul>
+            </div>
+
+            <div class="eligibility-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="eligibility-header">
+                    <i class="fas fa-business-time"></i>
+                    <h3>BBA Program</h3>
+                </div>
+                <ul class="eligibility-list">
+                    <li><i class="fas fa-check"></i> 10+2 in any stream from recognized board</li>
+                    <li><i class="fas fa-check"></i> Minimum 45% aggregate marks (40% for SC/ST)</li>
+                    <li><i class="fas fa-check"></i> No age limit for admission</li>
+                    <li><i class="fas fa-check"></i> Direct admission based on merit</li>
+                    <li><i class="fas fa-check"></i> Personal interview for final selection</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FEE STRUCTURE ================= -->
+<section class="section fee-structure bg-light">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-money-bill-wave me-2"></i>Investment</span>
+            <h2 class="section-title">Fee Structure 2024-25</h2>
+        </div>
+
+        <div class="fee-tables">
+            <div class="fee-table" data-aos="fade-up">
+                <h3><i class="fas fa-cogs me-2"></i>B.Tech Programs</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>Tuition Fee</th>
+                            <th>Other Charges</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1st Year</td>
+                            <td>₹85,000</td>
+                            <td>₹15,000</td>
+                            <td><strong>₹1,00,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td>2nd Year</td>
+                            <td>₹80,000</td>
+                            <td>₹10,000</td>
+                            <td><strong>₹90,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td>3rd Year</td>
+                            <td>₹80,000</td>
+                            <td>₹10,000</td>
+                            <td><strong>₹90,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td>4th Year</td>
+                            <td>₹80,000</td>
+                            <td>₹10,000</td>
+                            <td><strong>₹90,000</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="fee-table" data-aos="fade-up" data-aos-delay="100">
+                <h3><i class="fas fa-chart-line me-2"></i>Management Programs</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Program</th>
+                            <th>Annual Fee</th>
+                            <th>Duration</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>MBA</td>
+                            <td>₹85,000</td>
+                            <td>2 Years</td>
+                            <td><strong>₹1,70,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td>BBA</td>
+                            <td>₹50,000</td>
+                            <td>3 Years</td>
+                            <td><strong>₹1,50,000</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="fee-notes" data-aos="fade-up">
+            <div class="note">
+                <i class="fas fa-info-circle"></i>
+                <p>
+                    <strong>Note:</strong> Fee includes tuition fee, laboratory charges,
+                    library fee, and examination fee. Hostel fee extra (₹40,000 per year).
+                    Payment can be made in installments as per institute policy.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= SCHOLARSHIPS ================= -->
+<section class="section scholarships">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-hand-holding-usd me-2"></i>Financial Support</span>
+            <h2 class="section-title">Scholarships & Financial Aid</h2>
+        </div>
+
+        <div class="scholarship-grid">
+            <div class="scholarship-card" data-aos="fade-up">
+                <div class="scholarship-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3>Merit Scholarship</h3>
+                <p>Up to 100% tuition fee waiver for top rankers</p>
+                <ul class="scholarship-details">
+                    <li>JEE Main Rank < 10,000</li>
+                    <li>Class 12th > 90%</li>
+                    <li>Renewable annually based on performance</li>
+                    <li>Available for all programs</li>
+                </ul>
+            </div>
+
+            <div class="scholarship-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="scholarship-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>SC/ST Scholarship</h3>
+                <p>Government scholarships for reserved categories</p>
+                <ul class="scholarship-details">
+                    <li>Full tuition fee waiver</li>
+                    <li>₹1,000 monthly maintenance allowance</li>
+                    <li>₹2,000 annual book grant</li>
+                    <li>Hostel fee concession</li>
+                </ul>
+            </div>
+
+            <div class="scholarship-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="scholarship-icon">
+                    <i class="fas fa-female"></i>
+                </div>
+                <h3>Girls Scholarship</h3>
+                <p>Special scholarship for female students</p>
+                <ul class="scholarship-details">
+                    <li>25% tuition fee waiver</li>
+                    <li>All engineering and management programs</li>
+                    <li>Merit-based renewal each year</li>
+                    <li>Additional hostel fee discount</li>
+                </ul>
+            </div>
+
+            <div class="scholarship-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="scholarship-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <h3>Sports Scholarship</h3>
+                <p>For students with sports achievements</p>
+                <ul class="scholarship-details">
+                    <li>State/National level players</li>
+                    <li>Up to 50% fee waiver</li>
+                    <li>Sports facility access</li>
+                    <li>Training and coaching support</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= DOCUMENTS REQUIRED ================= -->
+<section class="section documents-required bg-light">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-clipboard-list me-2"></i>Checklist</span>
+            <h2 class="section-title">Documents Required</h2>
+        </div>
+
+        <div class="documents-grid">
+            <div class="document-category" data-aos="fade-up">
+                <h3><i class="fas fa-file-alt"></i> Academic Documents</h3>
+                <ul class="document-list">
+                    <li><i class="fas fa-check"></i> Class 10th Mark Sheet & Certificate (Original + 2 copies)</li>
+                    <li><i class="fas fa-check"></i> Class 12th Mark Sheet & Certificate (Original + 2 copies)</li>
+                    <li><i class="fas fa-check"></i> Graduation Mark Sheets (for PG) (All semesters)</li>
+                    <li><i class="fas fa-check"></i> Entrance Exam Score Card (JEE/CAT/MAT etc.)</li>
+                    <li><i class="fas fa-check"></i> Transfer Certificate / School Leaving Certificate</li>
+                </ul>
+            </div>
+
+            <div class="document-category" data-aos="fade-up" data-aos-delay="100">
+                <h3><i class="fas fa-id-card"></i> Personal Documents</h3>
+                <ul class="document-list">
+                    <li><i class="fas fa-check"></i> Aadhar Card (Photocopy - 2 copies)</li>
+                    <li><i class="fas fa-check"></i> PAN Card (Photocopy - 1 copy)</li>
+                    <li><i class="fas fa-check"></i> Passport Size Photographs (6 recent color photos)</li>
+                    <li><i class="fas fa-check"></i> Migration Certificate (For other state boards)</li>
+                    <li><i class="fas fa-check"></i> Category Certificate (SC/ST/OBC - if applicable)</li>
+                </ul>
+            </div>
+
+            <div class="document-category" data-aos="fade-up" data-aos-delay="200">
+                <h3><i class="fas fa-file-invoice"></i> Additional Documents</h3>
+                <ul class="document-list">
+                    <li><i class="fas fa-check"></i> Character Certificate from last institution</li>
+                    <li><i class="fas fa-check"></i> Gap Certificate (if applicable) on ₹100 stamp paper</li>
+                    <li><i class="fas fa-check"></i> Income Certificate (For scholarship applicants)</li>
+                    <li><i class="fas fa-check"></i> Medical Fitness Certificate from registered doctor</li>
+                    <li><i class="fas fa-check"></i> Anti-Ragging Affidavit (Student & Parent on ₹100 stamp paper)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= APPLICATION FORM ================= -->
+<section class="section application-form" id="application-form">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-file-signature me-2"></i>Apply Now</span>
+            <h2 class="section-title">Online Application Form</h2>
+            <p class="section-subtitle">
+                Fill the form below to start your admission process for 2024-25
+            </p>
+        </div>
+
+        <div class="form-container" data-aos="fade-up">
+            <form id="admissionForm" class="admission-form">
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-user"></i> Personal Information
+                    </h3>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName"><i class="fas fa-signature me-1"></i> Full Name *</label>
+                            <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email"><i class="fas fa-envelope me-1"></i> Email Address *</label>
+                            <input type="email" id="email" name="email" required placeholder="example@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone"><i class="fas fa-phone me-1"></i> Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="+91 98765 43210">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dob"><i class="fas fa-calendar-alt me-1"></i> Date of Birth *</label>
+                            <input type="date" id="dob" name="dob" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gender"><i class="fas fa-venus-mars me-1"></i> Gender *</label>
+                            <select id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category"><i class="fas fa-tags me-1"></i> Category *</label>
+                            <select id="category" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="general">General</option>
+                                <option value="obc">OBC</option>
+                                <option value="sc">SC</option>
+                                <option value="st">ST</option>
+                                <option value="ews">EWS</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Program Selection -->
+                <div class="form-section">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-graduation-cap"></i> Program Selection
+                    </h3>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="program"><i class="fas fa-book me-1"></i> Choose Program *</label>
+                            <select id="program" name="program" required>
+                                <option value="">Select Program</option>
+                                <optgroup label="🎓 B.Tech Programs">
+                                    <option value="cse">Computer Science & Engineering (CSE)</option>
+                                    <option value="it">Information Technology (IT)</option>
+                                    <option value="me">Mechanical Engineering (ME)</option>
+                                    <option value="ce">Civil Engineering (CE)</option>
+                                </optgroup>
+                                <optgroup label="📈 Management Programs">
+                                    <option value="mba">Master of Business Administration (MBA)</option>
+                                    <option value="bba">Bachelor of Business Administration (BBA)</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="entranceExam"><i class="fas fa-clipboard-list me-1"></i> Entrance Exam (if any)</label>
+                            <select id="entranceExam" name="entranceExam">
+                                <option value="">Select Exam</option>
+                                <option value="jee">JEE Main</option>
+                                <option value="cat">CAT</option>
+                                <option value="mat">MAT</option>
+                                <option value="cmat">CMAT</option>
+                                <option value="none">None</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="examScore"><i class="fas fa-chart-line me-1"></i> Exam Score/Rank</label>
+                            <input type="text" id="examScore" name="examScore" placeholder="Enter score or rank">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Educational Qualifications -->
+                <div class="form-section">
+                    <h3 class="form-section-title">
+                        <i class="fas fa-book"></i> Educational Qualifications
+                    </h3>
+
+                    <div class="qualification-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Examination</th>
+                                    <th>Board/University</th>
+                                    <th>Year</th>
+                                    <th>Percentage/CGPA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>10th Class</td>
+                                    <td><input type="text" name="tenthBoard" required placeholder="e.g., CBSE, MP Board"></td>
+                                    <td><input type="number" name="tenthYear" required placeholder="e.g., 2022" min="2000" max="2024"></td>
+                                    <td><input type="number" step="0.01" name="tenthPercent" required placeholder="e.g., 85.5"></td>
+                                </tr>
+                                <tr>
+                                    <td>12th Class</td>
+                                    <td><input type="text" name="twelfthBoard" required placeholder="e.g., CBSE, MP Board"></td>
+                                    <td><input type="number" name="twelfthYear" required placeholder="e.g., 2024" min="2000" max="2024"></td>
+                                    <td><input type="number" step="0.01" name="twelfthPercent" required placeholder="e.g., 78.2"></td>
+                                </tr>
+                                <tr>
+                                    <td>Graduation (if applicable)</td>
+                                    <td><input type="text" name="gradUniversity" placeholder="University name"></td>
+                                    <td><input type="number" name="gradYear" placeholder="Passing year"></td>
+                                    <td><input type="number" step="0.01" name="gradPercent" placeholder="Percentage"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Declaration -->
+                <div class="form-section">
+                    <div class="declaration">
+                        <div class="form-group">
+                            <input type="checkbox" id="declaration" name="declaration" required>
+                            <label for="declaration">
+                                <i class="fas fa-gavel me-2"></i>
+                                I declare that all information provided in this application
+                                is true and correct to the best of my knowledge. I agree to
+                                abide by the rules and regulations of the institute and
+                                understand that any false information may lead to cancellation
+                                of my admission.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-paper-plane me-2"></i> Submit Application
+                    </button>
+                    <button type="reset" class="btn btn-outline btn-lg">
+                        <i class="fas fa-redo me-2"></i> Reset Form
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CONTACT ADMISSION ================= -->
+<section class="section contact-admission bg-light">
+    <div class="container">
+        <div class="grid-2">
+            <div data-aos="fade-right">
+                <h2><i class="fas fa-question-circle me-3"></i>Need Help With Admission?</h2>
+                <p class="lead-text">
+                    Our admission counselors are available to assist you with the
+                    application process, eligibility criteria, program selection,
+                    and scholarship opportunities.
+                </p>
+
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Admission Helpline</h4>
+                            <p>+91 78981 23456 | +91 98765 43210</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email Support</h4>
+                            <p>admissions@sbitm.edu.in | info@sbitm.edu.in</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Working Hours</h4>
+                            <p>Monday to Saturday: 10:00 AM - 5:00 PM</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Campus Visit</h4>
+                            <p>Schedule a campus tour for personalized counseling</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-links" data-aos="fade-left">
+                <h3><i class="fas fa-link me-2"></i>Quick Links</h3>
+                <ul class="link-list">
+                    <li><a href="#"><i class="fas fa-download me-2"></i> Download Admission Brochure</a></li>
+                    <li><a href="#"><i class="fas fa-file-pdf me-2"></i> Fee Structure PDF</a></li>
+                    <li><a href="#"><i class="fas fa-question-circle me-2"></i> Frequently Asked Questions</a></li>
+                    <li><a href="{{ url_for('contact') }}"><i class="fas fa-map-marker-alt me-2"></i> Visit Campus Location</a></li>
+                    <li><a href="{{ url_for('academics') }}"><i class="fas fa-book me-2"></i> View Academic Programs</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100
+            });
+        }
+
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                // Show corresponding content
+                const tabId = button.getAttribute('data-tab');
+                const tabContent = document.getElementById(tabId);
+                if (tabContent) {
+                    tabContent.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Form validation and submission
+        const admissionForm = document.getElementById('admissionForm');
+        if (admissionForm) {
+            admissionForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Simple form validation
+                const requiredFields = this.querySelectorAll('[required]');
+                let isValid = true;
+
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.style.borderColor = '#ef4444';
+                        field.addEventListener('input', () => {
+                            field.style.borderColor = '#e2e8f0';
+                        });
+                    }
+                });
+
+                if (!isValid) {
+                    showNotification('Please fill all required fields marked with *', 'error');
+                    return;
+                }
+
+                // Simulate form submission
+                showNotification('Your application has been submitted successfully! We will contact you soon.', 'success');
+
+                // Reset form after delay
+                setTimeout(() => {
+                    admissionForm.reset();
+                }, 2000);
+            });
+        }
+
+        // Form reset
+        const resetBtn = admissionForm?.querySelector('button[type="reset"]');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                showNotification('Form has been reset.', 'info');
+            });
+        }
+
+        // Step hover effect
+        const steps = document.querySelectorAll('.step');
+        steps.forEach(step => {
+            step.addEventListener('mouseenter', () => {
+                step.style.transform = 'translateX(5px)';
+            });
+
+            step.addEventListener('mouseleave', () => {
+                step.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Scholarship card hover effect
+        const scholarshipCards = document.querySelectorAll('.scholarship-card');
+        scholarshipCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+
+            document.body.appendChild(notification);
+
+            // Add styles
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                color: white;
+                border-radius: 10px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+            `;
+
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 5000);
+        }
+
+        // Add animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    });
+</script>
+{% endblock %}

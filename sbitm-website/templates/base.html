@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SBITM Betul - Premier Engineering & Management College{% endblock %}</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Shri Balaji Institute of Technology & Management (SBITM), Betul - AICTE Approved, NAAC A+ Accredited, RGPV Affiliated Engineering College">
+    <meta name="keywords" content="engineering college, B.Tech college, MBA college, SBITM Betul, technical education, NAAC A+, RGPV">
+    <meta name="author" content="SBITM Betul">
+    <meta property="og:title" content="SBITM Betul - Engineering College">
+    <meta property="og:description" content="Premier Institute for Engineering & Management Education">
+    <meta property="og:type" content="website">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    {% block head %}{% endblock %}
+
+    <style>
+        /* Preloader Styles */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .preloader-logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        .preloader-logo i {
+            font-size: 50px;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a419e 100%);
+        }
+
+        /* Theme Variables */
+        :root {
+            --primary: #0f172a;
+            --secondary: #64748b;
+            --accent: #667eea;
+            --accent-dark: #764ba2;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader-logo">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+    </div>
+
+    <!-- Announcement Bar -->
+    <div class="announcement-bar bg-gradient-primary text-white py-2">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="announcement-content">
+                        <i class="fas fa-bullhorn me-2"></i>
+                        <span class="d-none d-md-inline">Admissions 2024-25 Open | Last Date: 30th June 2024</span>
+                        <span class="d-md-none">Admissions 2024 Open</span>
+                    </div>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="{{ url_for('admissions') }}" class="btn btn-sm btn-light">
+                        <i class="fas fa-rocket me-1"></i> Apply Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm" id="mainNavbar">
+        <div class="container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <div class="d-flex align-items-center">
+                    <div class="logo-wrapper me-3">
+                        <div class="logo-circle">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                    <div class="brand-text">
+                        <h4 class="mb-0 fw-bold" style="color: var(--primary);">SBITM Betul</h4>
+                        <small class="text-muted" style="font-size: 0.8rem;">Engineering Excellence</small>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation Links -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'home' %}active{% endif %}" href="{{ url_for('home') }}">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if request.endpoint in ['about'] %}active{% endif %}"
+                           href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-info-circle me-1"></i> About
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('about') }}">About College</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('about') }}#vision">Vision & Mission</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('about') }}#leadership">Leadership</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('about') }}#accreditations">Accreditations</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if request.endpoint in ['academics', 'programs', 'departments'] %}active{% endif %}"
+                           href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-graduation-cap me-1"></i> Academics
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('academics') }}">Academic Programs</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('programs') }}">All Programs</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('departments') }}">Departments</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('faculty') }}">Faculty</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('facilities') }}">Infrastructure</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'admissions' %}active{% endif %}"
+                           href="{{ url_for('admissions') }}">
+                            <i class="fas fa-user-graduate me-1"></i> Admissions
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'placements' %}active{% endif %}"
+                           href="{{ url_for('placements') }}">
+                            <i class="fas fa-briefcase me-1"></i> Placements
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if request.endpoint in ['facilities', 'gallery', 'campus_tour'] %}active{% endif %}"
+                           href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-building me-1"></i> Campus
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('facilities') }}">Facilities</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('gallery') }}">Gallery</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('campus_tour') }}">Virtual Tour</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}"
+                           href="{{ url_for('contact') }}">
+                            <i class="fas fa-phone-alt me-1"></i> Contact
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Action Buttons -->
+                <div class="navbar-actions">
+                    <a href="{{ url_for('apply') }}" class="btn btn-primary me-2">
+                        <i class="fas fa-paper-plane me-1"></i> Apply Now
+                    </a>
+                    <a href="{{ url_for('contact') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-headset me-1"></i> Enquiry
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/+919285180577?text=Hello%20SBITM%20Betul,%20I%20want%20more%20information%20about%20admissions"
+       class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Quick Contact Bar -->
+    <div class="quick-contact-bar bg-light py-3 border-top">
+        <div class="container">
+            <div class="row g-3">
+                <div class="col-md-3 col-6">
+                    <div class="contact-item text-center">
+                        <i class="fas fa-phone-alt text-primary"></i>
+                        <span class="d-block fw-bold">Call Us</span>
+                        <small>+91 78981 23456</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="contact-item text-center">
+                        <i class="fas fa-envelope text-primary"></i>
+                        <span class="d-block fw-bold">Email Us</span>
+                        <small>info@sbitm.edu.in</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="contact-item text-center">
+                        <i class="fas fa-map-marker-alt text-primary"></i>
+                        <span class="d-block fw-bold">Visit Us</span>
+                        <small>NH-69, Betul, MP</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="contact-item text-center">
+                        <i class="fas fa-clock text-primary"></i>
+                        <span class="d-block fw-bold">Working Hours</span>
+                        <small>9:00 AM - 5:00 PM</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4">
+                <!-- About Column -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="footer-logo mb-3">
+                        <div class="logo-circle footer-logo-circle">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h4 class="d-inline-block ms-3">SBITM Betul</h4>
+                    </div>
+                    <p class="mb-3" style="opacity: 0.8;">
+                        Shri Balaji Institute of Technology & Management is a premier institution
+                        dedicated to providing quality education in engineering and management since 2009.
+                    </p>
+                    <div class="accreditation-badges">
+                        <span class="badge bg-primary me-2 mb-2">NAAC A+</span>
+                        <span class="badge bg-success me-2 mb-2">AICTE Approved</span>
+                        <span class="badge bg-info mb-2">RGPV Affiliated</span>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-3 col-6 mb-4">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{{ url_for('home') }}" class="text-white-50 footer-link">Home</a></li>
+                        <li class="mb-2"><a href="{{ url_for('about') }}" class="text-white-50 footer-link">About Us</a></li>
+                        <li class="mb-2"><a href="{{ url_for('academics') }}" class="text-white-50 footer-link">Academics</a></li>
+                        <li class="mb-2"><a href="{{ url_for('admissions') }}" class="text-white-50 footer-link">Admissions</a></li>
+                        <li><a href="{{ url_for('placements') }}" class="text-white-50 footer-link">Placements</a></li>
+                    </ul>
+                </div>
+
+                <!-- Important Links -->
+                <div class="col-lg-2 col-md-3 col-6 mb-4">
+                    <h5 class="mb-3">Important Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{{ url_for('facilities') }}" class="text-white-50 footer-link">Facilities</a></li>
+                        <li class="mb-2"><a href="{{ url_for('gallery') }}" class="text-white-50 footer-link">Gallery</a></li>
+                        <li class="mb-2"><a href="{{ url_for('contact') }}" class="text-white-50 footer-link">Contact Us</a></li>
+                        <li class="mb-2"><a href="{{ url_for('sitemap') }}" class="text-white-50 footer-link">Sitemap</a></li>
+                        <li><a href="{{ url_for('privacy') }}" class="text-white-50 footer-link">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="mb-3">Contact Information</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            <span style="opacity: 0.8;">NH-69, Betul Bypass Road,<br>Betul, Madhya Pradesh - 460001</span>
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-phone-alt me-2"></i>
+                            <span style="opacity: 0.8;">+91 78981 23456</span>
+                        </li>
+                        <li class="mb-3">
+                            <i class="fas fa-envelope me-2"></i>
+                            <span style="opacity: 0.8;">info@sbitm.edu.in</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock me-2"></i>
+                            <span style="opacity: 0.8;">Mon - Sat: 9:00 AM - 5:00 PM</span>
+                        </li>
+                    </ul>
+
+                    <!-- Social Media -->
+                    <div class="social-media mt-4">
+                        <h6 class="mb-3">Connect With Us</h6>
+                        <div class="social-icons">
+                            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+
+            <!-- Bottom Footer -->
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0" style="opacity: 0.7;">
+                        &copy; {{ current_year }} SBITM Betul. All rights reserved.
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="{{ url_for('privacy') }}" class="text-white-50 me-3" style="opacity: 0.7;">Privacy Policy</a>
+                    <a href="{{ url_for('terms') }}" class="text-white-50" style="opacity: 0.7;">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="btn btn-primary rounded-circle shadow-lg">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    {% block scripts %}{% endblock %}
+
+    <script>
+        // Preloader
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
+
+        // Initialize AOS
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100,
+                easing: 'ease-in-out'
+            });
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('mainNavbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
+
+        // Back to Top Button
+        const backToTop = document.getElementById('backToTop');
+        backToTop.style.display = 'none';
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTop.style.display = 'block';
+                backToTop.classList.add('animate__fadeIn');
+                backToTop.classList.remove('animate__fadeOut');
+            } else {
+                backToTop.classList.remove('animate__fadeIn');
+                backToTop.classList.add('animate__fadeOut');
+                setTimeout(() => {
+                    if (window.scrollY <= 300) {
+                        backToTop.style.display = 'none';
+                    }
+                }, 300);
+            }
+        });
+
+        backToTop.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // WhatsApp Float Button Animation
+        const whatsappFloat = document.querySelector('.whatsapp-float');
+        if (whatsappFloat) {
+            setTimeout(() => {
+                whatsappFloat.classList.add('animate__bounceIn');
+            }, 2000);
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#' || href.startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = href.substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Active link highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname;
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Theme Toggle (optional)
+        const themeToggle = document.createElement('button');
+        themeToggle.className = 'btn btn-sm btn-outline-secondary theme-toggle';
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        themeToggle.style.position = 'fixed';
+        themeToggle.style.bottom = '20px';
+        themeToggle.style.left = '20px';
+        themeToggle.style.zIndex = '1000';
+
+        themeToggle.addEventListener('click', function() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-bs-theme', newTheme);
+            this.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-bs-theme', savedTheme);
+        document.body.appendChild(themeToggle);
+    </script>
+
+    <!-- Analytics Script (optional) -->
+    <script>
+        // You can add Google Analytics or other tracking scripts here
+        console.log('SBITM Betul Website Loaded Successfully');
+        console.log('Current Year:', {{ current_year }});
+    </script>
+</body>
+</html>

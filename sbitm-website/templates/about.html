@@ -1,0 +1,2273 @@
+{% extends "base.html" %}
+
+{% block title %}
+About SBITM Betul | Excellence in Technical Education Since 2009
+{% endblock %}
+
+{% block head %}
+<style>
+    /* ========== CUSTOM VARIABLES ========== */
+    :root {
+        --sbitm-blue: #003366;
+        --sbitm-gold: #FFD700;
+        --sbitm-light-blue: #0066CC;
+        --sbitm-white: #FFFFFF;
+        --sbitm-gray: #F5F5F5;
+        --border-gradient: linear-gradient(45deg, #003366, #FFD700, #0066CC, #FFD700);
+    }
+
+    /* ========== HERO SECTION ========== */
+    .page-hero {
+        position: relative;
+        min-height: 70vh;
+        background: linear-gradient(rgba(0, 51, 102, 0.9), rgba(0, 51, 102, 0.95)),
+                    url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        margin-top: -80px;
+        padding-top: 80px;
+        overflow: hidden;
+    }
+
+    .page-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(0, 51, 102, 0.3) 0%, rgba(255, 215, 0, 0.2) 100%);
+        z-index: 1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin-bottom: 2rem;
+        color: var(--sbitm-gold);
+        font-weight: 600;
+    }
+
+    /* Animated Background Shapes */
+    .hero-shapes {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .shape {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0.1;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .shape-1 {
+        width: 300px;
+        height: 300px;
+        background: var(--sbitm-gold);
+        top: -150px;
+        right: -150px;
+        animation-delay: 0s;
+    }
+
+    .shape-2 {
+        width: 200px;
+        height: 200px;
+        background: var(--sbitm-light-blue);
+        bottom: -100px;
+        left: -100px;
+        animation-delay: 2s;
+    }
+
+    .shape-3 {
+        width: 150px;
+        height: 150px;
+        background: var(--sbitm-blue);
+        top: 50%;
+        left: 10%;
+        animation-delay: 4s;
+    }
+
+    /* ========== INSTITUTE OVERVIEW ========== */
+    .institute-overview {
+        padding: 5rem 0;
+        background: white;
+    }
+
+    .section-label {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: var(--sbitm-blue);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+    }
+
+    .section-label::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 52px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .section-label:hover::before {
+        opacity: 1;
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 800;
+        color: var(--sbitm-blue);
+        margin-bottom: 1.5rem;
+    }
+
+    .lead-text {
+        font-size: 1.2rem;
+        color: var(--sbitm-blue);
+        font-weight: 500;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    @media (min-width: 992px) {
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .stats-row {
+        display: flex;
+        gap: 2rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-box {
+        text-align: center;
+        padding: 1.5rem;
+        background: var(--sbitm-gray);
+        border-radius: 15px;
+        min-width: 120px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid transparent;
+    }
+
+    .stat-box::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .stat-box:hover::before {
+        opacity: 1;
+    }
+
+    .stat-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-box h3 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--sbitm-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    /* Stats Icons */
+    .stat-icon {
+        font-size: 2rem;
+        color: var(--sbitm-gold);
+        margin-bottom: 0.5rem;
+    }
+
+    /* Timeline */
+    .timeline-container {
+        position: relative;
+        padding: 2rem;
+    }
+
+    .timeline {
+        position: relative;
+        padding-left: 2rem;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(to bottom, var(--sbitm-blue), var(--sbitm-gold));
+        border-radius: 2px;
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 2.5rem;
+        padding-left: 2rem;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: -2.2rem;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        background: var(--sbitm-blue);
+        border-radius: 50%;
+        border: 4px solid var(--sbitm-gold);
+        box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.2);
+    }
+
+    .timeline-year {
+        position: absolute;
+        left: -6rem;
+        top: -0.5rem;
+        background: var(--sbitm-gold);
+        color: var(--sbitm-blue);
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        min-width: 70px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .timeline-content {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .timeline-content::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .timeline-content:hover::before {
+        opacity: 1;
+    }
+
+    .timeline-content:hover {
+        transform: translateX(10px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .timeline-content h4 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--sbitm-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    /* Timeline Icons */
+    .timeline-icon {
+        color: var(--sbitm-gold);
+        font-size: 1.2rem;
+        margin-right: 10px;
+    }
+
+    /* ========== VISION & MISSION ========== */
+    .vision-mission {
+        padding: 5rem 0;
+    }
+
+    .vision-card, .mission-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: 2px solid transparent;
+        height: 100%;
+    }
+
+    .vision-card::before, .mission-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .vision-card:hover::before, .mission-card:hover::before {
+        opacity: 1;
+    }
+
+    .vision-card:hover, .mission-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--sbitm-blue) 0%, var(--sbitm-light-blue) 100%);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+        color: var(--sbitm-gold);
+        font-size: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .vision-card:hover .card-icon {
+        transform: rotate(360deg) scale(1.1);
+        background: linear-gradient(135deg, var(--sbitm-gold) 0%, #ffed4e 100%);
+        color: var(--sbitm-blue);
+    }
+
+    .mission-card:hover .card-icon {
+        transform: rotate(360deg) scale(1.1);
+        background: linear-gradient(135deg, var(--sbitm-gold) 0%, #ffed4e 100%);
+        color: var(--sbitm-blue);
+    }
+
+    .vision-card h3, .mission-card h3 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--sbitm-blue);
+        margin-bottom: 1rem;
+    }
+
+    .mission-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .mission-list li {
+        padding: 0.8rem 0;
+        border-bottom: 1px solid var(--sbitm-gray);
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        color: #666;
+    }
+
+    .mission-list li:last-child {
+        border-bottom: none;
+    }
+
+    .mission-list li i {
+        color: var(--sbitm-gold);
+        font-size: 1rem;
+        margin-top: 0.3rem;
+        flex-shrink: 0;
+    }
+
+    /* ========== CORE VALUES ========== */
+    .core-values {
+        padding: 5rem 0;
+        background: white;
+    }
+
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+
+    .value-card {
+        text-align: center;
+        padding: 2rem;
+        background: var(--sbitm-gray);
+        border-radius: 15px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .value-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .value-card:hover::before {
+        opacity: 1;
+    }
+
+    .value-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        background: white;
+    }
+
+    .value-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, var(--sbitm-blue) 0%, var(--sbitm-light-blue) 100%);
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: var(--sbitm-gold);
+        font-size: 1.8rem;
+        transition: all 0.3s ease;
+    }
+
+    .value-card:hover .value-icon {
+        transform: scale(1.1);
+        background: linear-gradient(135deg, var(--sbitm-gold) 0%, #ffed4e 100%);
+        color: var(--sbitm-blue);
+    }
+
+    .value-card h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--sbitm-blue);
+        margin-bottom: 1rem;
+    }
+
+    /* ========== LEADERSHIP ========== */
+    .leadership {
+        padding: 5rem 0;
+    }
+
+    .leadership-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        margin-top: 3rem;
+    }
+
+    @media (min-width: 992px) {
+        .leadership-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .leadership-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .leadership-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .leadership-card:hover::before {
+        opacity: 1;
+    }
+
+    .leadership-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .leader-image {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+    }
+
+    .leader-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .leadership-card:hover .leader-image img {
+        transform: scale(1.05);
+    }
+
+    .leader-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background: var(--sbitm-gold);
+        color: var(--sbitm-blue);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .leader-content {
+        padding: 2rem;
+    }
+
+    .leader-content h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--sbitm-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    .leader-designation {
+        color: var(--sbitm-gold);
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .leader-quote {
+        background: var(--sbitm-gray);
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .leader-quote i {
+        color: var(--sbitm-gold);
+        font-size: 1.5rem;
+        position: absolute;
+        top: 10px;
+        left: 15px;
+    }
+
+    .leader-quote p {
+        padding-left: 2rem;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .leader-credentials {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .credential {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--sbitm-gray);
+        padding: 0.8rem 1rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .credential i {
+        color: var(--sbitm-gold);
+    }
+
+    /* ========== ACCREDITATIONS ========== */
+    .accreditations {
+        padding: 5rem 0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+
+    .accreditation-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+
+    .accreditation-card {
+        text-align: center;
+        padding: 2.5rem 2rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .accreditation-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .accreditation-card:hover::before {
+        opacity: 1;
+    }
+
+    .accreditation-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .accreditation-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--sbitm-blue) 0%, var(--sbitm-light-blue) 100%);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: var(--sbitm-gold);
+        font-size: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .accreditation-card:hover .accreditation-icon {
+        transform: rotate(360deg) scale(1.1);
+        background: linear-gradient(135deg, var(--sbitm-gold) 0%, #ffed4e 100%);
+        color: var(--sbitm-blue);
+    }
+
+    .accreditation-card h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--sbitm-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: var(--sbitm-gold);
+        color: var(--sbitm-blue);
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+    }
+
+    /* ========== INFRASTRUCTURE GLIMPSE ========== */
+    .infrastructure-glimpse {
+        padding: 5rem 0;
+    }
+
+    .infrastructure-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+
+    .infra-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .infra-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .infra-card:hover::before {
+        opacity: 1;
+    }
+
+    .infra-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .infra-image {
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .infra-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .infra-card:hover .infra-image img {
+        transform: scale(1.1);
+    }
+
+    .infra-content {
+        padding: 1.5rem;
+    }
+
+    .infra-content h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--sbitm-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    .infra-icon {
+        color: var(--sbitm-gold);
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* ========== TESTIMONIALS - ENHANCED ========== */
+    .alumni-testimonials {
+        padding: 5rem 0;
+        background: linear-gradient(135deg, var(--sbitm-blue) 0%, var(--sbitm-light-blue) 100%);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .alumni-testimonials::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+            radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
+    }
+
+    .alumni-testimonials .section-label {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .alumni-testimonials .section-title {
+        color: white;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .testimonial-slider {
+        max-width: 800px;
+        margin: 3rem auto 0;
+        position: relative;
+        padding: 0 50px;
+    }
+
+    .slider-container {
+        overflow: hidden;
+        border-radius: 25px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .slider-track {
+        display: flex;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .testimonial-slide {
+        min-width: 100%;
+        padding: 40px;
+        opacity: 0;
+        transform: translateX(20px);
+        transition: all 0.5s ease;
+    }
+
+    .testimonial-slide.active {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .testimonial-content {
+        position: relative;
+        animation: slideInUp 0.8s ease;
+    }
+
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .quote-icon {
+        font-size: 3rem;
+        color: var(--sbitm-gold);
+        margin-bottom: 1.5rem;
+        opacity: 0.8;
+        display: inline-block;
+        animation: floatQuote 3s ease-in-out infinite;
+    }
+
+    @keyframes floatQuote {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .testimonial-text {
+        font-size: 1.25rem;
+        line-height: 1.8;
+        margin-bottom: 2.5rem;
+        color: rgba(255, 255, 255, 0.95);
+        font-weight: 300;
+        position: relative;
+        padding-left: 20px;
+    }
+
+    .testimonial-text::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: var(--sbitm-gold);
+        border-radius: 2px;
+    }
+
+    .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .testimonial-author:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-5px);
+    }
+
+    .author-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid var(--sbitm-gold);
+        flex-shrink: 0;
+    }
+
+    .author-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .testimonial-author:hover .author-avatar img {
+        transform: scale(1.1);
+    }
+
+    .author-info {
+        flex: 1;
+    }
+
+    .author-info h4 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: white;
+    }
+
+    .author-info p {
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .author-info p:last-of-type {
+        color: rgba(255, 215, 0, 0.9);
+        font-weight: 500;
+    }
+
+    .author-rating {
+        color: var(--sbitm-gold);
+        font-size: 1rem;
+        letter-spacing: 2px;
+    }
+
+    /* Slider Controls */
+    .slider-controls {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: space-between;
+        z-index: 10;
+        pointer-events: none;
+    }
+
+    .slider-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: all;
+    }
+
+    .slider-btn:hover {
+        background: var(--sbitm-gold);
+        color: var(--sbitm-blue);
+        border-color: var(--sbitm-gold);
+        transform: scale(1.1);
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+    }
+
+    .slider-btn:active {
+        transform: scale(0.95);
+    }
+
+    /* Slider Dots */
+    .slider-dots {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .dot::after {
+        content: '';
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        right: -4px;
+        bottom: -4px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        transition: all 0.3s ease;
+    }
+
+    .dot:hover {
+        background: rgba(255, 255, 255, 0.5);
+        transform: scale(1.2);
+    }
+
+    .dot.active {
+        background: var(--sbitm-gold);
+        transform: scale(1.3);
+    }
+
+    .dot.active::after {
+        border-color: var(--sbitm-gold);
+        animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        70% {
+            transform: scale(1.5);
+            opacity: 0;
+        }
+        100% {
+            transform: scale(1);
+            opacity: 0;
+        }
+    }
+
+    /* Auto-slide indicator */
+    .auto-slide-indicator {
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+    }
+
+    .auto-slide-indicator i {
+        color: var(--sbitm-gold);
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* ========== CTA SECTION ========== */
+    .cta-about {
+        padding: 5rem 0;
+        background: linear-gradient(135deg, var(--sbitm-blue) 0%, var(--sbitm-light-blue) 100%);
+        color: white;
+    }
+
+    .cta-content h2 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: white;
+    }
+
+    .cta-content p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        color: rgba(255, 255, 255, 0.9);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    /* ========== BUTTONS ========== */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 52px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .btn:hover::before {
+        opacity: 1;
+    }
+
+    .btn-primary {
+        background: var(--sbitm-blue);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: transparent;
+        color: var(--sbitm-blue);
+        border-color: var(--sbitm-blue);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 51, 102, 0.2);
+    }
+
+    .btn-outline-light {
+        background: transparent;
+        border-color: white;
+        color: white;
+    }
+
+    .btn-outline-light:hover {
+        background: white;
+        color: var(--sbitm-blue);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(255, 255, 255, 0.2);
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }
+
+    @keyframes borderAnimation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ========== RESPONSIVE DESIGN ========== */
+    @media (max-width: 768px) {
+        .stats-row {
+            justify-content: center;
+        }
+
+        .timeline-year {
+            position: relative;
+            left: 0;
+            top: 0;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        .timeline-item {
+            padding-left: 0;
+        }
+
+        .timeline::before {
+            display: none;
+        }
+
+        .timeline-item::before {
+            display: none;
+        }
+
+        .hero-shapes {
+            display: none;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn {
+            width: 100%;
+            max-width: 250px;
+            justify-content: center;
+        }
+
+        .testimonial-slider {
+            padding: 0 20px;
+        }
+
+        .testimonial-slide {
+            padding: 30px 20px;
+        }
+
+        .slider-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+
+        .testimonial-author {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 70px;
+            height: 70px;
+        }
+
+        .testimonial-text {
+            font-size: 1.1rem;
+            padding-left: 15px;
+        }
+
+        .quote-icon {
+            font-size: 2.5rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+        }
+
+        .lead-text {
+            font-size: 1.1rem;
+        }
+
+        .stat-box h3 {
+            font-size: 2rem;
+        }
+
+        .values-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .infrastructure-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .accreditation-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .cta-content h2 {
+            font-size: 2rem;
+        }
+
+        .slider-controls {
+            display: none;
+        }
+
+        .testimonial-text {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .author-info h4 {
+            font-size: 1.2rem;
+        }
+
+        .slider-dots {
+            margin-top: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- ================= HERO BANNER ================= -->
+<section class="page-hero">
+    <div class="hero-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1 class="hero-title">About SBITM Betul</h1>
+            <p class="hero-subtitle">Pioneering Excellence Since 2009</p>
+            <div class="breadcrumb justify-content-center">
+                <a href="{{ url_for('home') }}" class="text-white"><i class="fas fa-home me-2"></i>Home</a>
+                <i class="fas fa-chevron-right mx-3 text-white-50"></i>
+                <span class="text-white">About</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= INSTITUTE OVERVIEW ================= -->
+<section class="institute-overview">
+    <div class="container">
+        <div class="grid-2 align-items-center gap-5">
+            <div data-aos="fade-right">
+                <span class="section-label"><i class="fas fa-history me-2"></i>Our Legacy</span>
+                <h2 class="section-title">Shri Balaji Institute of Technology & Management</h2>
+
+                <div class="content-box">
+                    <p class="lead-text">
+                        <i class="fas fa-university me-2 text-gold"></i>
+                        Established in 2009, SBITM Betul has emerged as a premier institution
+                        dedicated to providing quality education in engineering and management.
+                    </p>
+
+                    <p class="mb-4">
+                        <i class="fas fa-award me-2 text-gold"></i>
+                        Affiliated to Rajiv Gandhi Proudyogiki Vishwavidyalaya (RGPV), Bhopal
+                        and approved by AICTE, New Delhi, the institute has consistently
+                        maintained excellence in academics, research, and placements.
+                    </p>
+
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <h3>15+</h3>
+                            <p class="mb-0">Years of Excellence</p>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <h3>2000+</h3>
+                            <p class="mb-0">Successful Alumni</p>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <h3>50+</h3>
+                            <p class="mb-0">Industry Partnerships</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-container" data-aos="fade-left">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">2009</div>
+                        <div class="timeline-content">
+                            <h4><i class="fas fa-building timeline-icon"></i> Institute Established</h4>
+                            <p class="mb-0">SBITM Betul founded with B.Tech programs</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">2012</div>
+                        <div class="timeline-content">
+                            <h4><i class="fas fa-graduation-cap timeline-icon"></i> First Batch Graduated</h4>
+                            <p class="mb-0">Successful placement of inaugural batch</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">2015</div>
+                        <div class="timeline-content">
+                            <h4><i class="fas fa-expand-alt timeline-icon"></i> Expansion Phase</h4>
+                            <p class="mb-0">New programs and infrastructure added</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">2020</div>
+                        <div class="timeline-content">
+                            <h4><i class="fas fa-award timeline-icon"></i> NAAC A+ Accreditation</h4>
+                            <p class="mb-0">Achieved highest accreditation grade</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-year">2024</div>
+                        <div class="timeline-content">
+                            <h4><i class="fas fa-trophy timeline-icon"></i> Record Placements</h4>
+                            <p class="mb-0">22 LPA highest package achieved</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= VISION & MISSION ================= -->
+<section class="vision-mission">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-brain me-2"></i>Our Philosophy</span>
+            <h2 class="section-title">Vision & Mission</h2>
+        </div>
+
+        <div class="grid-2 gap-5">
+            <div class="vision-card" data-aos="fade-right">
+                <div class="card-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h3>Our Vision</h3>
+                <p class="mb-0">
+                    To be a premier institution of technical and management education
+                    that produces globally competent professionals, fosters innovation,
+                    and contributes to societal development through quality education,
+                    research, and ethical values.
+                </p>
+            </div>
+
+            <div class="mission-card" data-aos="fade-left">
+                <div class="card-icon">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+                <h3>Our Mission</h3>
+                <ul class="mission-list">
+                    <li>
+                        <i class="fas fa-graduation-cap"></i>
+                        To provide quality education through innovative teaching-learning
+                        processes and state-of-the-art infrastructure
+                    </li>
+                    <li>
+                        <i class="fas fa-flask"></i>
+                        To promote research, innovation, and entrepreneurship among
+                        students and faculty
+                    </li>
+                    <li>
+                        <i class="fas fa-industry"></i>
+                        To develop industry-institute collaboration for skill enhancement
+                        and employability
+                    </li>
+                    <li>
+                        <i class="fas fa-heart"></i>
+                        To inculcate ethical values, social responsibility, and
+                        environmental consciousness
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CORE VALUES ================= -->
+<section class="core-values">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-gem me-2"></i>Our Foundation</span>
+            <h2 class="section-title">Core Values</h2>
+        </div>
+
+        <div class="values-grid">
+            <div class="value-card" data-aos="fade-up">
+                <div class="value-icon">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <h3>Excellence</h3>
+                <p class="mb-0">Pursuit of highest standards in academics, research, and innovation</p>
+            </div>
+
+            <div class="value-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="value-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Integrity</h3>
+                <p class="mb-0">Upholding ethical values, honesty, and transparency in all endeavors</p>
+            </div>
+
+            <div class="value-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="value-icon">
+                    <i class="fas fa-users-cog"></i>
+                </div>
+                <h3>Collaboration</h3>
+                <p class="mb-0">Fostering teamwork, industry partnerships, and community engagement</p>
+            </div>
+
+            <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="value-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3>Innovation</h3>
+                <p class="mb-0">Encouraging creativity, research, and entrepreneurial thinking</p>
+            </div>
+
+            <div class="value-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="value-icon">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+                <h3>Social Responsibility</h3>
+                <p class="mb-0">Contributing to society through sustainable practices and community service</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= LEADERSHIP ================= -->
+<section class="leadership">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-users-crown me-2"></i>Leadership</span>
+            <h2 class="section-title">Message from Leadership</h2>
+        </div>
+
+        <div class="leadership-grid">
+            <div class="leadership-card" data-aos="fade-right">
+                <div class="leader-image">
+                    <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Principal">
+                    <div class="leader-badge">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                </div>
+                <div class="leader-content">
+                    <h3>Dr. Rajesh Sharma</h3>
+                    <p class="leader-designation"><i class="fas fa-user-tie me-2"></i>Principal</p>
+                    <div class="leader-quote">
+                        <i class="fas fa-quote-left"></i>
+                        <p class="mb-0">
+                            At SBITM Betul, we believe in transforming lives through
+                            education. Our focus is on holistic development, ensuring
+                            our students are not just degree holders but responsible
+                            citizens and industry-ready professionals.
+                        </p>
+                    </div>
+                    <div class="leader-credentials">
+                        <div class="credential">
+                            <i class="fas fa-award"></i>
+                            <span>22+ Years Experience</span>
+                        </div>
+                        <div class="credential">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>Ph.D. (Computer Science)</span>
+                        </div>
+                        <div class="credential">
+                            <i class="fas fa-book"></i>
+                            <span>15+ Research Papers</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="leadership-card" data-aos="fade-left">
+                <div class="leader-image">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Vice Principal">
+                    <div class="leader-badge">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="leader-content">
+                    <h3>Prof. Anjali Verma</h3>
+                    <p class="leader-designation"><i class="fas fa-user-tie me-2"></i>Vice Principal</p>
+                    <div class="leader-quote">
+                        <i class="fas fa-quote-left"></i>
+                        <p class="mb-0">
+                            We strive to create an ecosystem where innovation thrives
+                            and students are empowered to explore their potential.
+                            Our industry-aligned curriculum and experienced faculty
+                            ensure excellent learning outcomes.
+                        </p>
+                    </div>
+                    <div class="leader-credentials">
+                        <div class="credential">
+                            <i class="fas fa-award"></i>
+                            <span>18+ Years Experience</span>
+                        </div>
+                        <div class="credential">
+                            <i class="fas fa-user-graduate"></i>
+                            <span>Ph.D. (Mechanical Engineering)</span>
+                        </div>
+                        <div class="credential">
+                            <i class="fas fa-trophy"></i>
+                            <span>National Award Winner</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= ACCREDITATIONS ================= -->
+<section class="accreditations">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-certificate me-2"></i>Recognition</span>
+            <h2 class="section-title">Accreditations & Approvals</h2>
+        </div>
+
+        <div class="accreditation-grid">
+            <div class="accreditation-card" data-aos="zoom-in">
+                <div class="accreditation-icon">
+                    <i class="fas fa-award"></i>
+                </div>
+                <h3>NAAC A+</h3>
+                <p class="mb-3">National Assessment and Accreditation Council</p>
+                <span class="badge"><i class="fas fa-star me-1"></i> Highest Grade</span>
+            </div>
+
+            <div class="accreditation-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="accreditation-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h3>RGPV Affiliated</h3>
+                <p class="mb-3">Rajiv Gandhi Proudyogiki Vishwavidyalaya, Bhopal</p>
+                <span class="badge"><i class="fas fa-link me-1"></i> State University</span>
+            </div>
+
+            <div class="accreditation-card" data-aos="zoom-in" data-aos-delay="200">
+                <div class="accreditation-icon">
+                    <i class="fas fa-check-double"></i>
+                </div>
+                <h3>AICTE Approved</h3>
+                <p class="mb-3">All India Council for Technical Education</p>
+                <span class="badge"><i class="fas fa-check-circle me-1"></i> National Approval</span>
+            </div>
+
+            <div class="accreditation-card" data-aos="zoom-in" data-aos-delay="300">
+                <div class="accreditation-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3>ISO Certified</h3>
+                <p class="mb-3">ISO 9001:2015 Quality Management System</p>
+                <span class="badge"><i class="fas fa-shield-alt me-1"></i> Quality Certified</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= INFRASTRUCTURE GLIMPSE ================= -->
+<section class="infrastructure-glimpse">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-building me-2"></i>Campus</span>
+            <h2 class="section-title">Infrastructure at a Glance</h2>
+        </div>
+
+        <div class="infrastructure-grid">
+            <div class="infra-card" data-aos="fade-up">
+                <div class="infra-image">
+                    <img src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Campus">
+                </div>
+                <div class="infra-content">
+                    <div class="infra-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <h3>25 Acre Campus</h3>
+                    <p class="mb-0">Spacious green campus with modern architecture</p>
+                </div>
+            </div>
+
+            <div class="infra-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="infra-image">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Labs">
+                </div>
+                <div class="infra-content">
+                    <div class="infra-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>25+ Labs</h3>
+                    <p class="mb-0">Well-equipped laboratories with latest equipment</p>
+                </div>
+            </div>
+
+            <div class="infra-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="infra-image">
+                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Library">
+                </div>
+                <div class="infra-content">
+                    <div class="infra-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Central Library</h3>
+                    <p class="mb-0">50,000+ books, journals, and digital resources</p>
+                </div>
+            </div>
+
+            <div class="infra-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="infra-image">
+                    <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Hostel">
+                </div>
+                <div class="infra-content">
+                    <div class="infra-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>Hostel Facilities</h3>
+                    <p class="mb-0">Separate hostels for boys and girls with all amenities</p>
+                </div>
+            </div>
+
+            <div class="infra-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="infra-image">
+                    <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Sports">
+                </div>
+                <div class="infra-content">
+                    <div class="infra-icon">
+                        <i class="fas fa-running"></i>
+                    </div>
+                    <h3>Sports Complex</h3>
+                    <p class="mb-0">Indoor and outdoor sports facilities</p>
+                </div>
+            </div>
+
+            <div class="infra-card" data-aos="fade-up" data-aos-delay="500">
+                <div class="infra-image">
+                    <img src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Auditorium">
+                </div>
+                <div class="infra-content">
+                    <div class="infra-icon">
+                        <i class="fas fa-theater-masks"></i>
+                    </div>
+                    <h3>Auditorium</h3>
+                    <p class="mb-0">800+ seating capacity with modern audio-visual system</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{{ url_for('facilities') }}" class="btn btn-primary">
+                <i class="fas fa-building me-2"></i> Explore All Facilities
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="alumni-testimonials">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-star me-2"></i>Success Stories</span>
+            <h2 class="section-title">What Our Students Say</h2>
+        </div>
+
+        <div class="testimonial-slider" data-aos="fade-up">
+            <!-- Slider Navigation -->
+            <div class="slider-controls">
+                <button class="slider-btn prev-btn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-btn next-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Slider Container -->
+            <div class="slider-container">
+                <div class="slider-track">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-slide active">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">
+                                "SBITM provided the perfect foundation for my career. The practical
+                                approach to learning and industry exposure prepared me for real-world
+                                challenges. Today, as an engineer at Amazon, I credit my success
+                                to the excellent faculty and infrastructure at SBITM."
+                            </p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                                         alt="Rahul Sharma">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Rahul Sharma</h4>
+                                    <p class="mb-1"><i class="fas fa-briefcase me-1"></i> Software Engineer, Amazon</p>
+                                    <p class="mb-1"><i class="fas fa-graduation-cap me-1"></i> B.Tech CSE '2020</p>
+                                    <div class="author-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">
+                                "The placement cell at SBITM is exceptional! They provided complete
+                                guidance from resume building to interview preparation. I received
+                                3 job offers in campus placements and joined TCS with a great package.
+                                The industry visits and workshops were particularly helpful."
+                            </p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                                         alt="Priya Patel">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Priya Patel</h4>
+                                    <p class="mb-1"><i class="fas fa-briefcase me-1"></i> Systems Engineer, TCS</p>
+                                    <p class="mb-1"><i class="fas fa-graduation-cap me-1"></i> B.Tech IT '2021</p>
+                                    <div class="author-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">
+                                "What I loved most about SBITM was the balance between academics
+                                and extracurricular activities. The technical clubs, hackathons,
+                                and sports facilities helped in my overall personality development.
+                                The faculty members were always approachable and supportive."
+                            </p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                                         alt="Amit Singh">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Amit Singh</h4>
+                                    <p class="mb-1"><i class="fas fa-briefcase me-1"></i> Project Engineer, Wipro</p>
+                                    <p class="mb-1"><i class="fas fa-graduation-cap me-1"></i> B.Tech ECE '2019</p>
+                                    <div class="author-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 4 -->
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">
+                                "The hostel facilities at SBITM are excellent with Wi-Fi, library,
+                                and sports amenities. The mess food is hygienic and tasty. Living
+                                on campus helped me build lifelong friendships and learn important
+                                life skills along with my engineering degree."
+                            </p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                                         alt="Neha Gupta">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Neha Gupta</h4>
+                                    <p class="mb-1"><i class="fas fa-user-graduate me-1"></i> M.Tech (IIT Delhi)</p>
+                                    <p class="mb-1"><i class="fas fa-graduation-cap me-1"></i> B.Tech CSE '2018</p>
+                                    <div class="author-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 5 -->
+                    <div class="testimonial-slide">
+                        <div class="testimonial-content">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            <p class="testimonial-text">
+                                "The research opportunities at SBITM are outstanding. Under faculty
+                                guidance, I published 2 research papers during my B.Tech. The
+                                well-equipped labs and access to international journals through
+                                the digital library were instrumental in my research journey."
+                            </p>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+                                         alt="Rajesh Kumar">
+                                </div>
+                                <div class="author-info">
+                                    <h4>Rajesh Kumar</h4>
+                                    <p class="mb-1"><i class="fas fa-user-graduate me-1"></i> Research Scholar, IIT Bombay</p>
+                                    <p class="mb-1"><i class="fas fa-graduation-cap me-1"></i> B.Tech Mechanical '2020</p>
+                                    <div class="author-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slider Dots -->
+            <div class="slider-dots">
+                <span class="dot active" data-slide="0"></span>
+                <span class="dot" data-slide="1"></span>
+                <span class="dot" data-slide="2"></span>
+                <span class="dot" data-slide="3"></span>
+                <span class="dot" data-slide="4"></span>
+            </div>
+
+            <!-- Auto Slide Indicator -->
+            <div class="auto-slide-indicator">
+                <i class="fas fa-sync-alt"></i>
+                <span>Auto-sliding every 3 seconds</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CTA SECTION ================= -->
+<section class="cta-about">
+    <div class="container text-center">
+        <div class="cta-content" data-aos="zoom-in">
+            <h2><i class="fas fa-graduation-cap me-3"></i>Become Part of Our Legacy</h2>
+            <p>
+                <i class="fas fa-rocket me-2"></i>
+                Join SBITM Betul and embark on a journey of academic excellence,
+                innovation, and professional success.
+            </p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('admissions') }}" class="btn btn-primary">
+                    <i class="fas fa-file-alt me-2"></i> Apply Now
+                </a>
+                <a href="{{ url_for('contact') }}" class="btn btn-outline-light ms-3">
+                    <i class="fas fa-map-marker-alt me-2"></i> Visit Campus
+                </a>
+                <!-- Courses link ko hata diya gaya -->
+                <!-- <a href="{{ url_for('courses') }}" class="btn btn-outline-light ms-3">
+                    <i class="fas fa-book me-2"></i> View Courses
+                </a> -->
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Timeline hover effect
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.querySelector('.timeline-content').style.transform = 'translateX(10px)';
+            });
+
+            item.addEventListener('mouseleave', () => {
+                item.querySelector('.timeline-content').style.transform = 'translateX(0)';
+            });
+        });
+
+        // Value cards hover effect
+        const valueCards = document.querySelectorAll('.value-card');
+        valueCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // ========== TESTIMONIAL SLIDER ==========
+        function initTestimonialSlider() {
+            const slides = document.querySelectorAll('.testimonial-slide');
+            const dots = document.querySelectorAll('.dot');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            const sliderTrack = document.querySelector('.slider-track');
+
+            let currentSlide = 0;
+            let slideInterval;
+            const slideDuration = 3000; // 3 seconds
+
+            // Function to show a specific slide
+            function showSlide(n) {
+                // Hide all slides
+                slides.forEach(slide => {
+                    slide.classList.remove('active');
+                    slide.style.opacity = '0';
+                    slide.style.transform = 'translateX(20px)';
+                });
+
+                // Remove active class from all dots
+                dots.forEach(dot => dot.classList.remove('active'));
+
+                // Update current slide index
+                currentSlide = (n + slides.length) % slides.length;
+
+                // Show current slide
+                slides[currentSlide].classList.add('active');
+                slides[currentSlide].style.opacity = '1';
+                slides[currentSlide].style.transform = 'translateX(0)';
+
+                // Update active dot
+                dots[currentSlide].classList.add('active');
+
+                // Move slider track
+                sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
+
+            // Function to go to next slide
+            function nextSlide() {
+                showSlide(currentSlide + 1);
+            }
+
+            // Function to go to previous slide
+            function prevSlide() {
+                showSlide(currentSlide - 1);
+            }
+
+            // Function to start auto slide
+            function startAutoSlide() {
+                slideInterval = setInterval(nextSlide, slideDuration);
+            }
+
+            // Function to stop auto slide
+            function stopAutoSlide() {
+                clearInterval(slideInterval);
+            }
+
+            // Event listeners for navigation buttons
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    nextSlide();
+                    stopAutoSlide();
+                    startAutoSlide();
+                });
+            }
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    prevSlide();
+                    stopAutoSlide();
+                    startAutoSlide();
+                });
+            }
+
+            // Event listeners for dots
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    showSlide(index);
+                    stopAutoSlide();
+                    startAutoSlide();
+                });
+            });
+
+            // Pause auto slide on hover
+            const sliderContainer = document.querySelector('.slider-container');
+            if (sliderContainer) {
+                sliderContainer.addEventListener('mouseenter', stopAutoSlide);
+                sliderContainer.addEventListener('mouseleave', startAutoSlide);
+            }
+
+            // Initialize slider
+            showSlide(0);
+            startAutoSlide();
+
+            // Touch support for mobile devices
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            if (sliderContainer) {
+                sliderContainer.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                    stopAutoSlide();
+                });
+
+                sliderContainer.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                    startAutoSlide();
+                });
+            }
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+
+                if (touchStartX - touchEndX > swipeThreshold) {
+                    // Swipe left - next slide
+                    nextSlide();
+                } else if (touchEndX - touchStartX > swipeThreshold) {
+                    // Swipe right - previous slide
+                    prevSlide();
+                }
+            }
+        }
+
+        // Initialize testimonial slider
+        initTestimonialSlider();
+    });
+</script>
+{% endblock %}

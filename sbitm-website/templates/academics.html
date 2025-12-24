@@ -1,0 +1,2270 @@
+{% extends "base.html" %}
+
+{% block title %}
+Academics | Programs, Curriculum & Research at SBITM Betul
+{% endblock %}
+
+{% block head %}
+<style>
+    /* ========== CUSTOM VARIABLES FOR ACADEMICS ========== */
+    :root {
+        --academic-blue: #1a365d;
+        --academic-gold: #d4af37;
+        --academic-light: #4299e1;
+        --academic-bg: #f8f9fa;
+        --academic-card: #ffffff;
+        --border-gradient: linear-gradient(45deg, #1a365d, #d4af37, #4299e1, #d4af37);
+    }
+
+    /* ========== HERO SECTION ========== */
+    .academics-hero {
+        position: relative;
+        min-height: 70vh;
+        background: linear-gradient(rgba(26, 54, 93, 0.9), rgba(26, 54, 93, 0.95)),
+                    url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        margin-top: -80px;
+        padding-top: 80px;
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(212, 175, 55, 0.1) 0%, rgba(66, 153, 225, 0.05) 100%);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        animation: slideDown 1s ease;
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin-bottom: 2rem;
+        color: var(--academic-gold);
+        font-weight: 600;
+        animation: slideUp 1s ease 0.3s both;
+    }
+
+    /* Academic Icons Animation */
+    .academic-icons {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .academic-icons i {
+        position: absolute;
+        font-size: 3rem;
+        color: rgba(255, 255, 255, 0.1);
+        animation: floatIcon 15s linear infinite;
+    }
+
+    .academic-icons i:nth-child(1) {
+        top: 20%;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .academic-icons i:nth-child(2) {
+        top: 60%;
+        right: 15%;
+        animation-delay: 3s;
+    }
+
+    .academic-icons i:nth-child(3) {
+        bottom: 30%;
+        left: 20%;
+        animation-delay: 6s;
+    }
+
+    .academic-icons i:nth-child(4) {
+        top: 40%;
+        right: 25%;
+        animation-delay: 9s;
+    }
+
+    /* ========== SECTION STYLES ========== */
+    .section {
+        padding: 5rem 0;
+        position: relative;
+    }
+
+    .bg-light {
+        background: var(--academic-bg);
+    }
+
+    .section-label {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: var(--academic-blue);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 800;
+        color: var(--academic-blue);
+        margin-bottom: 1rem;
+        position: relative;
+        display: inline-block;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: var(--academic-gold);
+        border-radius: 2px;
+    }
+
+    .section-subtitle {
+        font-size: 1.1rem;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto 2rem;
+        line-height: 1.6;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-header.text-center .section-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* ========== ACADEMIC OVERVIEW ========== */
+    .academic-overview {
+        background: white;
+    }
+
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    @media (min-width: 992px) {
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .align-center {
+        align-items: center;
+    }
+
+    .gap-8 {
+        gap: 2rem;
+    }
+
+    .lead-text {
+        font-size: 1.2rem;
+        color: var(--academic-blue);
+        font-weight: 500;
+        line-height: 1.6;
+        margin-bottom: 2rem;
+    }
+
+    /* Features Grid */
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: var(--academic-bg);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-item::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 14px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .feature-item:hover::before {
+        opacity: 1;
+    }
+
+    .feature-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(26, 54, 93, 0.1);
+        background: white;
+    }
+
+    .feature-item i {
+        font-size: 1.8rem;
+        color: var(--academic-gold);
+        background: linear-gradient(135deg, var(--academic-blue), var(--academic-light));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        min-width: 40px;
+        padding-top: 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .feature-item:hover i {
+        transform: scale(1.2) rotate(10deg);
+    }
+
+    .feature-item h4 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--academic-blue);
+        margin-bottom: 0.3rem;
+    }
+
+    .feature-item p {
+        font-size: 0.9rem;
+        color: #666;
+        margin: 0;
+    }
+
+    /* Academic Stats */
+    .academic-stats {
+        display: flex;
+        justify-content: center;
+    }
+
+    .stats-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 15px 35px rgba(26, 54, 93, 0.1);
+        width: 100%;
+        max-width: 400px;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stats-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .stats-card:hover::before {
+        opacity: 1;
+    }
+
+    .stats-card h3 {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--academic-blue);
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .stats-card h3::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50px;
+        height: 3px;
+        background: var(--academic-gold);
+        border-radius: 2px;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 1.5rem 1rem;
+        background: var(--academic-bg);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-5px);
+        background: white;
+        box-shadow: 0 5px 15px rgba(26, 54, 93, 0.1);
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--academic-blue);
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, var(--academic-blue), var(--academic-light));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: #666;
+        font-weight: 600;
+    }
+
+    /* ========== PROGRAMS SECTION ========== */
+    .programs-section {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .programs-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.03;
+        z-index: 0;
+    }
+
+    .programs-section > .container {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Program Category */
+    .program-category {
+        margin-bottom: 4rem;
+    }
+
+    .category-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(26, 54, 93, 0.08);
+    }
+
+    .category-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, var(--academic-blue), var(--academic-light));
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--academic-gold);
+        font-size: 2rem;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+    }
+
+    .category-header:hover .category-icon {
+        transform: rotate(360deg) scale(1.1);
+        background: linear-gradient(135deg, var(--academic-gold), #f0c420);
+        color: var(--academic-blue);
+    }
+
+    .category-header h3 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--academic-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    .category-header p {
+        color: #666;
+        margin: 0;
+    }
+
+    /* Programs Grid */
+    .programs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    /* Program Card */
+    .program-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(26, 54, 93, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .program-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .program-card:hover::before {
+        opacity: 1;
+    }
+
+    .program-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(26, 54, 93, 0.15);
+    }
+
+    .program-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: var(--academic-gold);
+        color: var(--academic-blue);
+        padding: 0.5rem 1.2rem;
+        border-radius: 25px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        z-index: 2;
+        box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .program-header {
+        padding: 2rem 2rem 1rem;
+        background: linear-gradient(135deg, var(--academic-blue), var(--academic-light));
+        position: relative;
+        overflow: hidden;
+    }
+
+    .program-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+        animation: shine 3s infinite;
+    }
+
+    .program-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        color: var(--academic-gold);
+        font-size: 1.8rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .program-header h4 {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .program-details {
+        padding: 1.5rem 2rem;
+        background: var(--academic-bg);
+    }
+
+    .detail-row {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin-bottom: 0.8rem;
+        color: #555;
+    }
+
+    .detail-row i {
+        color: var(--academic-gold);
+        font-size: 1rem;
+        min-width: 20px;
+    }
+
+    .detail-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .program-content {
+        padding: 1.5rem 2rem;
+    }
+
+    .program-content h5 {
+        color: var(--academic-blue);
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .program-content h5::before {
+        content: '';
+        width: 10px;
+        height: 10px;
+        background: var(--academic-gold);
+        border-radius: 50%;
+    }
+
+    .program-features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .program-features li {
+        padding: 0.5rem 0;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .program-features li::before {
+        content: '✓';
+        color: var(--academic-gold);
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+
+    /* Specializations */
+    .specializations {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .spec-badge {
+        padding: 0.3rem 0.8rem;
+        background: rgba(66, 153, 225, 0.1);
+        color: var(--academic-light);
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        border: 1px solid rgba(66, 153, 225, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .spec-badge:hover {
+        background: var(--academic-light);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Program Footer */
+    .program-footer {
+        padding: 1.5rem 2rem;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.5rem;
+        border-radius: 25px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.85rem;
+    }
+
+    .btn-outline {
+        background: transparent;
+        border-color: var(--academic-light);
+        color: var(--academic-light);
+    }
+
+    .btn-outline:hover {
+        background: var(--academic-light);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(66, 153, 225, 0.3);
+    }
+
+    .btn {
+        background: var(--academic-blue);
+        color: white;
+    }
+
+    .btn:hover {
+        background: var(--academic-light);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(26, 54, 93, 0.3);
+    }
+
+    /* ========== CURRICULUM SECTION ========== */
+    .curriculum-tabs {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .tab-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        padding: 1rem 2rem;
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 50px;
+        font-weight: 600;
+        color: var(--academic-blue);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .tab-btn i {
+        font-size: 1.2rem;
+    }
+
+    .tab-btn:hover {
+        border-color: var(--academic-light);
+        color: var(--academic-light);
+        transform: translateY(-3px);
+    }
+
+    .tab-btn.active {
+        background: var(--academic-blue);
+        color: white;
+        border-color: var(--academic-blue);
+        box-shadow: 0 5px 15px rgba(26, 54, 93, 0.2);
+    }
+
+    /* Tab Content */
+    .tab-content {
+        display: none;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .curriculum-content {
+        background: white;
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: 0 10px 30px rgba(26, 54, 93, 0.1);
+    }
+
+    .curriculum-content h3 {
+        color: var(--academic-blue);
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+        text-align: center;
+    }
+
+    /* Semester Grid */
+    .semester-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .semester-card {
+        background: var(--academic-bg);
+        border-radius: 15px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        text-align: center;
+        border: 2px solid transparent;
+    }
+
+    .semester-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(26, 54, 93, 0.1);
+        border-color: var(--academic-gold);
+        background: white;
+    }
+
+    .semester-header {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .semester-header h4 {
+        color: var(--academic-blue);
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+
+    .credits {
+        display: inline-block;
+        padding: 0.3rem 1rem;
+        background: var(--academic-gold);
+        color: var(--academic-blue);
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .semester-subjects {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+    }
+
+    .semester-subjects li {
+        padding: 0.5rem 0;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .semester-subjects li::before {
+        content: '•';
+        color: var(--academic-gold);
+        font-size: 1.5rem;
+    }
+
+    /* Credit Structure */
+    .credit-structure {
+        display: flex;
+        justify-content: center;
+    }
+
+    .credit-card {
+        background: linear-gradient(135deg, var(--academic-blue), var(--academic-light));
+        border-radius: 20px;
+        padding: 2.5rem;
+        color: white;
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+        box-shadow: 0 15px 35px rgba(26, 54, 93, 0.2);
+    }
+
+    .credit-card h4 {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+        font-weight: 700;
+    }
+
+    .credit-breakdown {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .breakdown-item {
+        padding: 1.5rem 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .breakdown-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .breakdown-item h5 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .breakdown-item p {
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin: 0;
+        color: var(--academic-gold);
+    }
+
+    /* ========== METHODOLOGY SECTION ========== */
+    .methodology-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+
+    .method-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(26, 54, 93, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .method-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .method-card:hover::before {
+        opacity: 1;
+    }
+
+    .method-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(26, 54, 93, 0.15);
+    }
+
+    .method-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--academic-blue), var(--academic-light));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: var(--academic-gold);
+        font-size: 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .method-card:hover .method-icon {
+        transform: rotate(360deg) scale(1.1);
+        background: linear-gradient(135deg, var(--academic-gold), #f0c420);
+        color: var(--academic-blue);
+    }
+
+    .method-card h3 {
+        color: var(--academic-blue);
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .method-card p {
+        color: #666;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .method-features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+    }
+
+    .method-features li {
+        padding: 0.5rem 0;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .method-features li::before {
+        content: '✓';
+        color: var(--academic-gold);
+        font-weight: bold;
+    }
+
+    /* ========== RESEARCH SECTION ========== */
+    .research-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    @media (min-width: 992px) {
+        .research-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .research-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(26, 54, 93, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .research-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(26, 54, 93, 0.15);
+        border-color: var(--academic-gold);
+    }
+
+    .research-image {
+        height: 250px;
+        overflow: hidden;
+    }
+
+    .research-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .research-card:hover .research-image img {
+        transform: scale(1.05);
+    }
+
+    .research-content {
+        padding: 2rem;
+    }
+
+    .research-content h3 {
+        color: var(--academic-blue);
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+    }
+
+    .research-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .research-list li {
+        padding: 0.8rem 0;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .research-list li:last-child {
+        border-bottom: none;
+    }
+
+    .research-list li i {
+        color: var(--academic-gold);
+        font-size: 1.2rem;
+        width: 25px;
+    }
+
+    /* Outcome Stats */
+    .outcome-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .outcome-item {
+        text-align: center;
+        padding: 1.5rem 1rem;
+        background: var(--academic-bg);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .outcome-item:hover {
+        background: white;
+        box-shadow: 0 5px 15px rgba(26, 54, 93, 0.1);
+        transform: translateY(-3px);
+    }
+
+    .outcome-item h4 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--academic-blue);
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, var(--academic-blue), var(--academic-light));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .outcome-item p {
+        color: #666;
+        font-weight: 600;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    /* ========== STUDENT SUPPORT ========== */
+    .support-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .support-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(26, 54, 93, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .support-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(26, 54, 93, 0.15);
+        border-color: var(--academic-gold);
+    }
+
+    .support-icon {
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, var(--academic-blue), var(--academic-light));
+        border-radius: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        color: var(--academic-gold);
+        font-size: 1.8rem;
+        transition: all 0.3s ease;
+    }
+
+    .support-card:hover .support-icon {
+        transform: rotate(360deg) scale(1.1);
+        background: linear-gradient(135deg, var(--academic-gold), #f0c420);
+        color: var(--academic-blue);
+    }
+
+    .support-card h3 {
+        color: var(--academic-blue);
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    .support-card p {
+        color: #666;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .support-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+    }
+
+    .support-card ul li {
+        padding: 0.5rem 0;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .support-card ul li::before {
+        content: '✓';
+        color: var(--academic-gold);
+        font-weight: bold;
+    }
+
+    /* ========== DOWNLOADS SECTION ========== */
+    .downloads-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .download-card {
+        display: flex;
+        align-items: center;
+        background: white;
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 10px 25px rgba(26, 54, 93, 0.1);
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .download-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(26, 54, 93, 0.15);
+        border-color: var(--academic-gold);
+    }
+
+    .download-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--academic-blue), var(--academic-light));
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--academic-gold);
+        font-size: 1.5rem;
+        margin-right: 1.5rem;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+    }
+
+    .download-card:hover .download-icon {
+        transform: rotate(360deg) scale(1.1);
+        background: linear-gradient(135deg, var(--academic-gold), #f0c420);
+        color: var(--academic-blue);
+    }
+
+    .download-content {
+        flex: 1;
+    }
+
+    .download-content h4 {
+        color: var(--academic-blue);
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+
+    .download-content p {
+        color: #666;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .download-btn {
+        width: 50px;
+        height: 50px;
+        background: var(--academic-bg);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--academic-blue);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-left: 1rem;
+        flex-shrink: 0;
+    }
+
+    .download-btn:hover {
+        background: var(--academic-blue);
+        color: white;
+        transform: rotate(360deg);
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes floatIcon {
+        0% {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.1;
+        }
+        50% {
+            transform: translateY(-20px) rotate(180deg);
+            opacity: 0.3;
+        }
+        100% {
+            transform: translateY(0) rotate(360deg);
+            opacity: 0.1;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes borderAnimation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes shine {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
+    /* ========== RESPONSIVE DESIGN ========== */
+    @media (max-width: 768px) {
+        .section {
+            padding: 3rem 0;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .category-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .tab-buttons {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .tab-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .programs-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .outcome-stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .download-card {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .download-icon {
+            margin-right: 0;
+            margin-bottom: 1rem;
+        }
+
+        .download-btn {
+            margin-left: 0;
+            margin-top: 1rem;
+        }
+
+        .program-footer {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .program-footer .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .outcome-stats {
+            grid-template-columns: 1fr;
+        }
+
+        .methodology-grid,
+        .support-grid,
+        .downloads-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .semester-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Utility Classes */
+    .mt-4 { margin-top: 1rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .text-center { text-align: center; }
+    .text-gold { color: var(--academic-gold); }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO BANNER ================= -->
+<section class="page-hero academics-hero">
+    <div class="hero-overlay"></div>
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1 class="hero-title">Academics</h1>
+            <p class="hero-subtitle">Excellence in Teaching & Learning</p>
+            <div class="breadcrumb justify-content-center">
+                <a href="{{ url_for('home') }}" class="text-white"><i class="fas fa-home me-2"></i>Home</a>
+                <i class="fas fa-chevron-right mx-3 text-white-50"></i>
+                <span class="text-white">Academics</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Academic Icons -->
+    <div class="academic-icons">
+        <i class="fas fa-graduation-cap"></i>
+        <i class="fas fa-book"></i>
+        <i class="fas fa-flask"></i>
+        <i class="fas fa-laptop-code"></i>
+    </div>
+</section>
+
+<!-- ================= ACADEMIC OVERVIEW ================= -->
+<section class="section academic-overview">
+    <div class="container">
+        <div class="grid-2 align-center gap-8">
+            <div data-aos="fade-right">
+                <span class="section-label"><i class="fas fa-seedling me-2"></i>Learning Ecosystem</span>
+                <h2 class="section-title">Academic Excellence</h2>
+
+                <div class="content-box">
+                    <p class="lead-text">
+                        <i class="fas fa-university me-2 text-gold"></i>
+                        SBITM Betul offers industry-aligned programs designed to
+                        equip students with the skills and knowledge required for
+                        successful careers in engineering and management.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <div>
+                                <h4>Outcome-Based Education</h4>
+                                <p>Focus on practical skills and employability</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <i class="fas fa-industry"></i>
+                            <div>
+                                <h4>Industry Collaboration</h4>
+                                <p>Curriculum designed with industry inputs</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <i class="fas fa-handshake"></i>
+                            <div>
+                                <h4>Skill Development</h4>
+                                <p>Soft skills and technical training programs</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <i class="fas fa-flask"></i>
+                            <div>
+                                <h4>Research Focus</h4>
+                                <p>Encouraging innovation and projects</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="academic-stats" data-aos="fade-left">
+                <div class="stats-card">
+                    <h3><i class="fas fa-chart-bar me-2"></i>Academic Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">7+</div>
+                            <div class="stat-label">Programs</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">58</div>
+                            <div class="stat-label">Faculty</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">25+</div>
+                            <div class="stat-label">Laboratories</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">50K+</div>
+                            <div class="stat-label">Library Books</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= PROGRAMS SECTION ================= -->
+<section class="section programs-section bg-light">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-graduation-cap me-2"></i>Our Offerings</span>
+            <h2 class="section-title">Academic Programs</h2>
+            <p class="section-subtitle">
+                Choose from our wide range of undergraduate and postgraduate programs
+            </p>
+        </div>
+
+        <!-- Engineering Programs -->
+        <div class="program-category" data-aos="fade-up">
+            <div class="category-header">
+                <div class="category-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <div>
+                    <h3>Engineering Programs (B.Tech)</h3>
+                    <p>4-Year Bachelor of Technology Programs</p>
+                </div>
+            </div>
+
+            <div class="programs-grid">
+                <!-- CSE Program -->
+                <div class="program-card detailed" id="cse" data-aos="fade-up" data-aos-delay="100">
+                    <div class="program-badge">B.Tech</div>
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h4>Computer Science & Engineering (CSE)</h4>
+                    </div>
+
+                    <div class="program-details">
+                        <div class="detail-row">
+                            <i class="fas fa-user-tie"></i>
+                            <span><strong>HOD:</strong> Dr. Ravi Sharma</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-chair"></i>
+                            <span><strong>Intake:</strong> 120 seats</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-clock"></i>
+                            <span><strong>Duration:</strong> 4 Years</span>
+                        </div>
+                    </div>
+
+                    <div class="program-content">
+                        <h5>Program Highlights</h5>
+                        <ul class="program-features">
+                            <li>Industry-oriented curriculum</li>
+                            <li>Modern computer labs</li>
+                            <li>AI & Machine Learning focus</li>
+                            <li>Industry projects and internships</li>
+                            <li>100% placement assistance</li>
+                        </ul>
+                    </div>
+
+                    <div class="program-footer">
+                        <a href="#" class="btn btn-sm btn-outline">
+                            <i class="fas fa-download"></i> Syllabus
+                        </a>
+                        <a href="{{ url_for('admissions') }}" class="btn btn-sm">
+                            <i class="fas fa-info-circle"></i> Admission Info
+                        </a>
+                    </div>
+                </div>
+
+                <!-- IT Program -->
+                <div class="program-card detailed" id="it" data-aos="fade-up" data-aos-delay="200">
+                    <div class="program-badge">B.Tech</div>
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h4>Information Technology (IT)</h4>
+                    </div>
+
+                    <div class="program-details">
+                        <div class="detail-row">
+                            <i class="fas fa-user-tie"></i>
+                            <span><strong>HOD:</strong> Prof. Sunita Verma</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-chair"></i>
+                            <span><strong>Intake:</strong> 60 seats</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-clock"></i>
+                            <span><strong>Duration:</strong> 4 Years</span>
+                        </div>
+                    </div>
+
+                    <div class="program-content">
+                        <h5>Program Highlights</h5>
+                        <ul class="program-features">
+                            <li>Cybersecurity specialization</li>
+                            <li>Cloud computing labs</li>
+                            <li>Web development focus</li>
+                            <li>Database management</li>
+                            <li>Network administration</li>
+                        </ul>
+                    </div>
+
+                    <div class="program-footer">
+                        <a href="#" class="btn btn-sm btn-outline">
+                            <i class="fas fa-download"></i> Syllabus
+                        </a>
+                        <a href="{{ url_for('admissions') }}" class="btn btn-sm">
+                            <i class="fas fa-info-circle"></i> Admission Info
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mechanical Program -->
+                <div class="program-card detailed" id="mechanical" data-aos="fade-up" data-aos-delay="300">
+                    <div class="program-badge">B.Tech</div>
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h4>Mechanical Engineering</h4>
+                    </div>
+
+                    <div class="program-details">
+                        <div class="detail-row">
+                            <i class="fas fa-user-tie"></i>
+                            <span><strong>HOD:</strong> Dr. Arjun Singh</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-chair"></i>
+                            <span><strong>Intake:</strong> 60 seats</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-clock"></i>
+                            <span><strong>Duration:</strong> 4 Years</span>
+                        </div>
+                    </div>
+
+                    <div class="program-content">
+                        <h5>Program Highlights</h5>
+                        <ul class="program-features">
+                            <li>CAD/CAM/CAE labs</li>
+                            <li>Automation & Robotics</li>
+                            <li>Thermal engineering</li>
+                            <li>Design & Manufacturing</li>
+                            <li>Industry 4.0 technologies</li>
+                        </ul>
+                    </div>
+
+                    <div class="program-footer">
+                        <a href="#" class="btn btn-sm btn-outline">
+                            <i class="fas fa-download"></i> Syllabus
+                        </a>
+                        <a href="{{ url_for('admissions') }}" class="btn btn-sm">
+                            <i class="fas fa-info-circle"></i> Admission Info
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Civil Program -->
+                <div class="program-card detailed" id="civil" data-aos="fade-up" data-aos-delay="400">
+                    <div class="program-badge">B.Tech</div>
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-hard-hat"></i>
+                        </div>
+                        <h4>Civil Engineering</h4>
+                    </div>
+
+                    <div class="program-details">
+                        <div class="detail-row">
+                            <i class="fas fa-user-tie"></i>
+                            <span><strong>HOD:</strong> Prof. Rajendra Kumar</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-chair"></i>
+                            <span><strong>Intake:</strong> 60 seats</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-clock"></i>
+                            <span><strong>Duration:</strong> 4 Years</span>
+                        </div>
+                    </div>
+
+                    <div class="program-content">
+                        <h5>Program Highlights</h5>
+                        <ul class="program-features">
+                            <li>Structural engineering labs</li>
+                            <li>Surveying & GIS</li>
+                            <li>Environmental engineering</li>
+                            <li>Construction management</li>
+                            <li>Transportation engineering</li>
+                        </ul>
+                    </div>
+
+                    <div class="program-footer">
+                        <a href="#" class="btn btn-sm btn-outline">
+                            <i class="fas fa-download"></i> Syllabus
+                        </a>
+                        <a href="{{ url_for('admissions') }}" class="btn btn-sm">
+                            <i class="fas fa-info-circle"></i> Admission Info
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Management Programs -->
+        <div class="program-category" data-aos="fade-up">
+            <div class="category-header">
+                <div class="category-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div>
+                    <h3>Management Programs</h3>
+                    <p>Building Future Business Leaders</p>
+                </div>
+            </div>
+
+            <div class="programs-grid">
+                <!-- MBA Program -->
+                <div class="program-card detailed" id="mba" data-aos="fade-up" data-aos-delay="100">
+                    <div class="program-badge">MBA</div>
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-business-time"></i>
+                        </div>
+                        <h4>Master of Business Administration</h4>
+                    </div>
+
+                    <div class="program-details">
+                        <div class="detail-row">
+                            <i class="fas fa-user-tie"></i>
+                            <span><strong>Director:</strong> Dr. Priya Gupta</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-chair"></i>
+                            <span><strong>Intake:</strong> 60 seats</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-clock"></i>
+                            <span><strong>Duration:</strong> 2 Years</span>
+                        </div>
+                    </div>
+
+                    <div class="program-content">
+                        <h5>Specializations</h5>
+                        <div class="specializations">
+                            <span class="spec-badge">Marketing</span>
+                            <span class="spec-badge">Finance</span>
+                            <span class="spec-badge">Human Resources</span>
+                            <span class="spec-badge">Operations</span>
+                        </div>
+
+                        <h5 class="mt-4">Key Features</h5>
+                        <ul class="program-features">
+                            <li>Case-based learning</li>
+                            <li>Industry internships</li>
+                            <li>Business simulations</li>
+                            <li>Leadership development</li>
+                            <li>Entrepreneurship focus</li>
+                        </ul>
+                    </div>
+
+                    <div class="program-footer">
+                        <a href="#" class="btn btn-sm btn-outline">
+                            <i class="fas fa-download"></i> Brochure
+                        </a>
+                        <a href="{{ url_for('admissions') }}" class="btn btn-sm">
+                            <i class="fas fa-graduation-cap"></i> Apply Now
+                        </a>
+                    </div>
+                </div>
+
+                <!-- BBA Program -->
+                <div class="program-card detailed" id="bba" data-aos="fade-up" data-aos-delay="200">
+                    <div class="program-badge">BBA</div>
+                    <div class="program-header">
+                        <div class="program-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h4>Bachelor of Business Administration</h4>
+                    </div>
+
+                    <div class="program-details">
+                        <div class="detail-row">
+                            <i class="fas fa-user-tie"></i>
+                            <span><strong>HOD:</strong> Prof. Sanjay Mehta</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-chair"></i>
+                            <span><strong>Intake:</strong> 60 seats</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-clock"></i>
+                            <span><strong>Duration:</strong> 3 Years</span>
+                        </div>
+                    </div>
+
+                    <div class="program-content">
+                        <h5>Specializations</h5>
+                        <div class="specializations">
+                            <span class="spec-badge">Finance</span>
+                            <span class="spec-badge">Marketing</span>
+                            <span class="spec-badge">HR</span>
+                            <span class="spec-badge">Entrepreneurship</span>
+                        </div>
+
+                        <h5 class="mt-4">Key Features</h5>
+                        <ul class="program-features">
+                            <li>Industry interface programs</li>
+                            <li>Summer internships</li>
+                            <li>Business analytics</li>
+                            <li>Communication skills</li>
+                            <li>Digital marketing</li>
+                        </ul>
+                    </div>
+
+                    <div class="program-footer">
+                        <a href="#" class="btn btn-sm btn-outline">
+                            <i class="fas fa-download"></i> Brochure
+                        </a>
+                        <a href="{{ url_for('admissions') }}" class="btn btn-sm">
+                            <i class="fas fa-graduation-cap"></i> Apply Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CURRICULUM ================= -->
+<section class="section curriculum-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-book-open me-2"></i>Learning Framework</span>
+            <h2 class="section-title">Curriculum Structure</h2>
+        </div>
+
+        <div class="curriculum-tabs" data-aos="fade-up">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="semester">
+                    <i class="fas fa-calendar-alt me-2"></i>Semester System
+                </button>
+                <button class="tab-btn" data-tab="credit">
+                    <i class="fas fa-award me-2"></i>Credit System
+                </button>
+                <button class="tab-btn" data-tab="evaluation">
+                    <i class="fas fa-clipboard-check me-2"></i>Evaluation Pattern
+                </button>
+            </div>
+
+            <div class="tab-content active" id="semester">
+                <div class="curriculum-content">
+                    <h3><i class="fas fa-calendar me-2"></i>Eight Semester Structure</h3>
+                    <div class="semester-grid">
+                        {% for i in range(1, 9) %}
+                        <div class="semester-card">
+                            <div class="semester-header">
+                                <h4>Semester {{ i }}</h4>
+                                <span class="credits">{{ (i*20) + 4 }} Credits</span>
+                            </div>
+                            <ul class="semester-subjects">
+                                <li>Core Subjects ({{ 5 + i//2 }})</li>
+                                <li>Lab Sessions ({{ 3 + i//3 }})</li>
+                                {% if i >= 5 %}
+                                <li>Electives ({{ i-3 }})</li>
+                                <li>Projects</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="credit">
+                <div class="curriculum-content">
+                    <h3><i class="fas fa-award me-2"></i>Choice Based Credit System (CBCS)</h3>
+                    <div class="credit-structure">
+                        <div class="credit-card">
+                            <h4>Total Credits: 160</h4>
+                            <div class="credit-breakdown">
+                                <div class="breakdown-item">
+                                    <h5>Core Courses</h5>
+                                    <p>120 Credits</p>
+                                </div>
+                                <div class="breakdown-item">
+                                    <h5>Electives</h5>
+                                    <p>20 Credits</p>
+                                </div>
+                                <div class="breakdown-item">
+                                    <h5>Lab/Workshop</h5>
+                                    <p>12 Credits</p>
+                                </div>
+                                <div class="breakdown-item">
+                                    <h5>Project/Internship</h5>
+                                    <p>8 Credits</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= TEACHING METHODOLOGY ================= -->
+<section class="section methodology bg-light">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-chalkboard-teacher me-2"></i>Pedagogy</span>
+            <h2 class="section-title">Teaching-Learning Methodology</h2>
+        </div>
+
+        <div class="methodology-grid">
+            <div class="method-card" data-aos="fade-up">
+                <div class="method-icon">
+                    <i class="fas fa-chalkboard"></i>
+                </div>
+                <h3>Interactive Classroom</h3>
+                <p>Smart classrooms with multimedia facilities for engaging lectures</p>
+                <ul class="method-features">
+                    <li>Digital boards</li>
+                    <li>Audio-visual aids</li>
+                    <li>Interactive sessions</li>
+                </ul>
+            </div>
+
+            <div class="method-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="method-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h3>Hands-on Learning</h3>
+                <p>Practical exposure through well-equipped laboratories</p>
+                <ul class="method-features">
+                    <li>Industry-standard labs</li>
+                    <li>Project-based learning</li>
+                    <li>Research facilities</li>
+                </ul>
+            </div>
+
+            <div class="method-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="method-icon">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <h3>Industry Interface</h3>
+                <p>Regular industry interactions and exposure</p>
+                <ul class="method-features">
+                    <li>Guest lectures</li>
+                    <li>Industry visits</li>
+                    <li>Live projects</li>
+                </ul>
+            </div>
+
+            <div class="method-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="method-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3>Digital Learning</h3>
+                <p>Technology-enabled learning platforms</p>
+                <ul class="method-features">
+                    <li>Learning Management System</li>
+                    <li>Online resources</li>
+                    <li>Virtual labs</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= RESEARCH & INNOVATION ================= -->
+<section class="section research-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-flask me-2"></i>Innovation</span>
+            <h2 class="section-title">Research & Development</h2>
+        </div>
+
+        <div class="research-grid">
+            <div class="research-card" data-aos="fade-right">
+                <div class="research-image">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Research Labs">
+                </div>
+                <div class="research-content">
+                    <h3><i class="fas fa-microscope me-2"></i>Research Centers</h3>
+                    <ul class="research-list">
+                        <li><i class="fas fa-laptop-code"></i> Advanced Computing Lab</li>
+                        <li><i class="fas fa-robot"></i> AI & Robotics Center</li>
+                        <li><i class="fas fa-bolt"></i> Renewable Energy Lab</li>
+                        <li><i class="fas fa-leaf"></i> Environmental Research Center</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="research-card" data-aos="fade-left">
+                <div class="research-content">
+                    <h3><i class="fas fa-chart-line me-2"></i>Research Outcomes</h3>
+                    <div class="outcome-stats">
+                        <div class="outcome-item">
+                            <h4>50+</h4>
+                            <p>Research Papers</p>
+                        </div>
+                        <div class="outcome-item">
+                            <h4>15+</h4>
+                            <p>Patents Filed</p>
+                        </div>
+                        <div class="outcome-item">
+                            <h4>10+</h4>
+                            <p>Projects Funded</p>
+                        </div>
+                        <div class="outcome-item">
+                            <h4>5+</h4>
+                            <p>Industry Collaborations</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <a href="#" class="btn btn-outline">
+                            <i class="fas fa-file-pdf"></i> View Publications
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= STUDENT SUPPORT ================= -->
+<section class="section student-support bg-light">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <span class="section-label"><i class="fas fa-hands-helping me-2"></i>Support System</span>
+            <h2 class="section-title">Academic Support Services</h2>
+        </div>
+
+        <div class="support-grid">
+            <div class="support-card" data-aos="fade-up">
+                <div class="support-icon">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+                <h3>Mentoring System</h3>
+                <p>Personalized guidance through faculty mentors</p>
+                <ul>
+                    <li>Academic counseling</li>
+                    <li>Career guidance</li>
+                    <li>Personal development</li>
+                </ul>
+            </div>
+
+            <div class="support-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="support-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>Learning Resources</h3>
+                <p>Comprehensive academic support facilities</p>
+                <ul>
+                    <li>Digital library access</li>
+                    <li>Online journals</li>
+                    <li>Reference materials</li>
+                </ul>
+            </div>
+
+            <div class="support-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="support-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Remedial Classes</h3>
+                <p>Additional support for students needing help</p>
+                <ul>
+                    <li>Subject-specific tutorials</li>
+                    <li>Skill enhancement</li>
+                    <li>Exam preparation</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= DOWNLOADS ================= -->
+<section class="section downloads-section">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <h2 class="section-title"><i class="fas fa-download me-3"></i>Academic Resources</h2>
+        </div>
+
+        <div class="downloads-grid">
+            <div class="download-card" data-aos="fade-up">
+                <div class="download-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <div class="download-content">
+                    <h4>Academic Calendar 2024-25</h4>
+                    <p>Complete schedule of academic activities</p>
+                </div>
+                <a href="#" class="download-btn">
+                    <i class="fas fa-download"></i>
+                </a>
+            </div>
+
+            <div class="download-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="download-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="download-content">
+                    <h4>Course Curriculum</h4>
+                    <p>Detailed syllabus for all programs</p>
+                </div>
+                <a href="#" class="download-btn">
+                    <i class="fas fa-download"></i>
+                </a>
+            </div>
+
+            <div class="download-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="download-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="download-content">
+                    <h4>Examination Rules</h4>
+                    <p>Evaluation and grading system</p>
+                </div>
+                <a href="#" class="download-btn">
+                    <i class="fas fa-download"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100
+            });
+        }
+
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                // Show corresponding content
+                const tabId = button.getAttribute('data-tab');
+                const tabContent = document.getElementById(tabId);
+                if (tabContent) {
+                    tabContent.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Program card hover effect
+        const programCards = document.querySelectorAll('.program-card');
+        programCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Method card hover effect
+        const methodCards = document.querySelectorAll('.method-card');
+        methodCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Download button animation
+        const downloadBtns = document.querySelectorAll('.download-btn');
+        downloadBtns.forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                btn.style.transform = 'rotate(360deg)';
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'rotate(0deg)';
+            });
+        });
+
+        // Feature item hover effect
+        const featureItems = document.querySelectorAll('.feature-item');
+        featureItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateY(-5px)';
+            });
+
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateY(0)';
+            });
+        });
+    });
+</script>
+{% endblock %}

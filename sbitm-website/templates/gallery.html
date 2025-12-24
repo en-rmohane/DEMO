@@ -1,0 +1,1634 @@
+{% extends "base.html" %}
+
+{% block title %}
+Gallery | Campus Life, Events & Infrastructure - SBITM
+{% endblock %}
+
+{% block head %}
+<style>
+    /* ========== CUSTOM VARIABLES ========== */
+    :root {
+        --sbitm-blue: #003366;
+        --sbitm-gold: #FFD700;
+        --sbitm-light-blue: #0066CC;
+        --sbitm-white: #FFFFFF;
+        --sbitm-gray: #F5F5F5;
+        --border-gradient: linear-gradient(45deg, #003366, #FFD700, #0066CC, #FFD700);
+    }
+
+    /* ========== HERO SECTION ========== */
+    .gallery-hero {
+        position: relative;
+        min-height: 70vh;
+        background: linear-gradient(rgba(0, 51, 102, 0.9), rgba(0, 51, 102, 0.95)),
+                    url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        margin-top: -80px;
+        padding-top: 80px;
+        overflow: hidden;
+    }
+
+    .gallery-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(0, 51, 102, 0.3) 0%, rgba(255, 215, 0, 0.2) 100%);
+        z-index: 1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 2rem;
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1rem;
+        color: white;
+        font-family: 'Montserrat', sans-serif;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        margin-bottom: 2rem;
+        color: var(--sbitm-gold);
+        font-weight: 600;
+    }
+
+    /* Gallery Icons */
+    .gallery-icons {
+        position: absolute;
+        bottom: 40px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        z-index: 2;
+    }
+
+    .gallery-icons i {
+        font-size: 2rem;
+        color: rgba(255, 255, 255, 0.9);
+        background: rgba(0, 51, 102, 0.3);
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 215, 0, 0.3);
+        transition: all 0.3s ease;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    .gallery-icons i:nth-child(1) { animation-delay: 0s; }
+    .gallery-icons i:nth-child(2) { animation-delay: 0.5s; }
+    .gallery-icons i:nth-child(3) { animation-delay: 1s; }
+    .gallery-icons i:nth-child(4) { animation-delay: 1.5s; }
+
+    .gallery-icons i:hover {
+        background: var(--sbitm-gold);
+        color: var(--sbitm-blue);
+        transform: translateY(-10px) scale(1.1);
+        border-color: var(--sbitm-gold);
+        box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+    }
+
+    /* ========== GALLERY FILTER ========== */
+    .gallery-filter {
+        padding: 3rem 0;
+        background: var(--sbitm-gray);
+    }
+
+    .filter-container {
+        text-align: center;
+    }
+
+    .filter-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--sbitm-blue);
+        margin-bottom: 1.5rem;
+    }
+
+    .filter-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .filter-btn {
+        padding: 0.8rem 1.5rem;
+        background: white;
+        border: 2px solid var(--sbitm-gray);
+        border-radius: 50px;
+        font-weight: 600;
+        color: #666;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .filter-btn::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 52px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .filter-btn.active::before,
+    .filter-btn:hover::before {
+        opacity: 1;
+    }
+
+    .filter-btn.active {
+        background: var(--sbitm-blue);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 51, 102, 0.2);
+    }
+
+    .filter-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-stats {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        font-weight: 600;
+        color: var(--sbitm-blue);
+    }
+
+    /* ========== GALLERY GRID ========== */
+    .gallery-grid-section {
+        padding: 3rem 0;
+    }
+
+    .masonry-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    @media (min-width: 992px) {
+        .masonry-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .gallery-item {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .gallery-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .gallery-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .gallery-card:hover::before {
+        opacity: 1;
+    }
+
+    .gallery-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .gallery-image {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+    }
+
+    .gallery-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .gallery-card:hover .gallery-image img {
+        transform: scale(1.1);
+    }
+
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(transparent, rgba(0, 51, 102, 0.9));
+        display: flex;
+        align-items: flex-end;
+        padding: 1.5rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .gallery-card:hover .image-overlay {
+        opacity: 1;
+    }
+
+    .overlay-content h4 {
+        color: white;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .overlay-content p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .photo-date {
+        color: var(--sbitm-gold);
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .gallery-actions {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        display: flex;
+        gap: 8px;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .gallery-card:hover .gallery-actions {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .action-btn {
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--sbitm-blue);
+    }
+
+    .action-btn:hover {
+        background: var(--sbitm-blue);
+        color: white;
+        transform: scale(1.1);
+    }
+
+    /* ========== FEATURED ALBUMS ========== */
+    .featured-albums {
+        padding: 3rem 0;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .section-label {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: var(--sbitm-blue);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        font-weight: 800;
+        color: var(--sbitm-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    .albums-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+
+    .album-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .album-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .album-card:hover::before {
+        opacity: 1;
+    }
+
+    .album-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .album-cover {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .album-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .album-card:hover .album-cover img {
+        transform: scale(1.1);
+    }
+
+    .album-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(transparent, rgba(0, 51, 102, 0.9));
+        display: flex;
+        align-items: flex-end;
+        padding: 1rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .album-card:hover .album-overlay {
+        opacity: 1;
+    }
+
+    .album-stats {
+        color: white;
+        font-size: 0.85rem;
+        display: flex;
+        gap: 1rem;
+    }
+
+    .album-info {
+        padding: 1.5rem;
+    }
+
+    .album-info h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--sbitm-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    .album-info p {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .album-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--sbitm-blue);
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .album-link:hover {
+        gap: 12px;
+        color: var(--sbitm-light-blue);
+    }
+
+    /* ========== VIDEO GALLERY ========== */
+    .video-gallery {
+        padding: 3rem 0;
+    }
+
+    .videos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .video-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .video-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .video-card:hover::before {
+        opacity: 1;
+    }
+
+    .video-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .video-container {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .video-thumbnail {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .video-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .video-card:hover .video-thumbnail img {
+        transform: scale(1.1);
+    }
+
+    .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 215, 0, 0.9);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--sbitm-blue);
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .video-card:hover .play-button {
+        background: var(--sbitm-blue);
+        color: var(--sbitm-gold);
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .video-duration {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+
+    .video-info {
+        padding: 1.5rem;
+    }
+
+    .video-info h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--sbitm-blue);
+        margin-bottom: 0.5rem;
+    }
+
+    .video-info p {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .video-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.85rem;
+        color: #888;
+    }
+
+    /* ========== PHOTO OF THE DAY ========== */
+    .photo-of-day {
+        padding: 3rem 0;
+    }
+
+    .photo-day-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        position: relative;
+        border: 2px solid transparent;
+    }
+
+    .photo-day-container::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 22px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+    }
+
+    .photo-main {
+        position: relative;
+        height: 400px;
+        overflow: hidden;
+    }
+
+    .photo-main img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .photo-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 51, 102, 0.9));
+        padding: 2rem;
+        color: white;
+    }
+
+    .photo-info h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .photo-meta {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .photo-description {
+        padding: 2rem;
+    }
+
+    .photo-description p {
+        color: #666;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    .photo-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    /* ========== GALLERY STATS ========== */
+    .gallery-stats {
+        padding: 3rem 0;
+        background: linear-gradient(135deg, var(--sbitm-blue) 0%, var(--sbitm-light-blue) 100%);
+        color: white;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .stat-card {
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 17px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .stat-card:hover::before {
+        opacity: 1;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .stat-icon {
+        font-size: 2.5rem;
+        color: var(--sbitm-gold);
+        margin-bottom: 1rem;
+    }
+
+    .stat-card h3 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+    }
+
+    /* ========== PHOTO CONTEST ========== */
+    .photo-contest {
+        padding: 3rem 0;
+    }
+
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+
+    @media (min-width: 992px) {
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .contest-details {
+        margin: 2rem 0;
+    }
+
+    .detail {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
+
+    .detail:hover {
+        transform: translateX(10px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .detail i {
+        width: 50px;
+        height: 50px;
+        background: var(--sbitm-blue);
+        color: white;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+
+    .contest-winners {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .winner-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .winner-card {
+        text-align: center;
+    }
+
+    .winner-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+    }
+
+    /* ========== BUTTONS ========== */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: var(--border-gradient);
+        background-size: 400% 400%;
+        border-radius: 52px;
+        z-index: -1;
+        animation: borderAnimation 3s ease infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .btn:hover::before {
+        opacity: 1;
+    }
+
+    .btn-primary {
+        background: var(--sbitm-blue);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: transparent;
+        color: var(--sbitm-blue);
+        border-color: var(--sbitm-blue);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 51, 102, 0.2);
+    }
+
+    .btn-outline {
+        background: transparent;
+        border-color: var(--sbitm-blue);
+        color: var(--sbitm-blue);
+    }
+
+    .btn-outline:hover {
+        background: var(--sbitm-blue);
+        color: white;
+        transform: translateY(-3px);
+    }
+
+    /* ========== ANIMATIONS ========== */
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-15px);
+        }
+    }
+
+    @keyframes borderAnimation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ========== RESPONSIVE DESIGN ========== */
+    @media (max-width: 768px) {
+        .masonry-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .filter-buttons {
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .gallery-icons {
+            gap: 20px;
+            bottom: 20px;
+        }
+
+        .gallery-icons i {
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+        }
+
+        .photo-main {
+            height: 300px;
+        }
+
+        .winner-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .masonry-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+        }
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .filter-btn {
+            width: 100%;
+            max-width: 250px;
+            justify-content: center;
+        }
+
+        .gallery-icons i {
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- ================= HERO BANNER ================= -->
+<section class="gallery-hero">
+    <div class="container">
+        <div class="hero-content" data-aos="fade-up">
+            <h1 class="hero-title">Campus Gallery</h1>
+            <p class="hero-subtitle">Visual Journey Through SBITM Betul</p>
+            <div class="breadcrumb justify-content-center">
+                <a href="{{ url_for('home') }}" class="text-white"><i class="fas fa-home me-2"></i>Home</a>
+                <i class="fas fa-chevron-right mx-3 text-white-50"></i>
+                <span class="text-white">Gallery</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Animated Gallery Icons -->
+    <div class="gallery-icons">
+        <i class="fas fa-camera"></i>
+        <i class="fas fa-images"></i>
+        <i class="fas fa-video"></i>
+        <i class="fas fa-play-circle"></i>
+    </div>
+</section>
+
+<!-- ================= GALLERY FILTER ================= -->
+<section class="gallery-filter">
+    <div class="container">
+        <div class="filter-container" data-aos="fade-up">
+            <h3 class="filter-title">Explore Our Gallery</h3>
+
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fas fa-th"></i> All Photos
+                </button>
+                <button class="filter-btn" data-filter="campus">
+                    <i class="fas fa-university"></i> Campus
+                </button>
+                <button class="filter-btn" data-filter="events">
+                    <i class="fas fa-calendar-alt"></i> Events
+                </button>
+                <button class="filter-btn" data-filter="infrastructure">
+                    <i class="fas fa-building"></i> Infrastructure
+                </button>
+                <button class="filter-btn" data-filter="sports">
+                    <i class="fas fa-futbol"></i> Sports
+                </button>
+                <button class="filter-btn" data-filter="students">
+                    <i class="fas fa-users"></i> Student Life
+                </button>
+                <button class="filter-btn" data-filter="achievements">
+                    <i class="fas fa-trophy"></i> Achievements
+                </button>
+            </div>
+
+            <div class="filter-stats">
+                <span class="photo-count"><i class="fas fa-images me-1"></i> 150+ Photos</span>
+                <span class="album-count"><i class="fas fa-folder me-1"></i> 8 Albums</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= GALLERY GRID ================= -->
+<section class="gallery-grid-section">
+    <div class="container">
+        <div class="masonry-grid">
+            <!-- Campus Photos -->
+            <div class="gallery-item campus" data-aos="fade-up">
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Main Academic Building">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <h4>Main Academic Block</h4>
+                                <p>Modern architecture with green surroundings</p>
+                                <span class="photo-date"><i class="far fa-calendar me-1"></i> 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-actions">
+                        <button class="action-btn view-btn" data-image="campus1.jpg">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <button class="action-btn like-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button class="action-btn share-btn">
+                            <i class="fas fa-share"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item campus" data-aos="fade-up" data-aos-delay="100">
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1576495199011-ebd36d1d32f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Green Campus">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <h4>Green Campus</h4>
+                                <p>25-acre eco-friendly campus</p>
+                                <span class="photo-date"><i class="far fa-calendar me-1"></i> 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events Photos -->
+            <div class="gallery-item events" data-aos="fade-up" data-aos-delay="200">
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Cultural Fest">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <h4>Annual Cultural Fest</h4>
+                                <p>Students performing at cultural event</p>
+                                <span class="photo-date"><i class="far fa-calendar me-1"></i> 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Infrastructure Photos -->
+            <div class="gallery-item infrastructure" data-aos="fade-up" data-aos-delay="300">
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Computer Lab">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <h4>Computer Laboratory</h4>
+                                <p>Modern computing facilities</p>
+                                <span class="photo-date"><i class="far fa-calendar me-1"></i> 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-item infrastructure" data-aos="fade-up">
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Library">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <h4>Central Library</h4>
+                                <p>Knowledge hub with 50,000+ books</p>
+                                <span class="photo-date"><i class="far fa-calendar me-1"></i> 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sports Photos -->
+            <div class="gallery-item sports" data-aos="fade-up" data-aos-delay="100">
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Sports Meet">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <h4>Annual Sports Meet</h4>
+                                <p>Students participating in athletics</p>
+                                <span class="photo-date"><i class="far fa-calendar me-1"></i> 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Life Photos -->
+            <div class="gallery-item students" data-aos="fade-up" data-aos-delay="200">
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Classroom">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <h4>Interactive Classroom</h4>
+                                <p>Students engaged in learning</p>
+                                <span class="photo-date"><i class="far fa-calendar me-1"></i> 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements Photos -->
+            <div class="gallery-item achievements" data-aos="fade-up" data-aos-delay="300">
+                <div class="gallery-card">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Awards">
+                        <div class="image-overlay">
+                            <div class="overlay-content">
+                                <h4>Award Ceremony</h4>
+                                <p>Students receiving academic awards</p>
+                                <span class="photo-date"><i class="far fa-calendar me-1"></i> 2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load More Button -->
+        <div class="text-center mt-5" data-aos="fade-up">
+            <button class="btn btn-primary" id="loadMore">
+                <i class="fas fa-sync-alt me-2"></i> Load More Photos
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FEATURED ALBUMS ================= -->
+<section class="featured-albums">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Collections</span>
+            <h2 class="section-title">Featured Albums</h2>
+        </div>
+
+        <div class="albums-grid">
+            <div class="album-card" data-aos="fade-up">
+                <div class="album-cover">
+                    <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Convocation">
+                    <div class="album-overlay">
+                        <div class="album-stats">
+                            <span><i class="fas fa-images me-1"></i> 45 Photos</span>
+                            <span><i class="far fa-calendar me-1"></i> 2023</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="album-info">
+                    <h3>Convocation 2023</h3>
+                    <p>Graduation ceremony of batch 2023</p>
+                    <a href="#" class="album-link">
+                        View Album <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="album-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="album-cover">
+                    <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Tech Fest">
+                    <div class="album-overlay">
+                        <div class="album-stats">
+                            <span><i class="fas fa-images me-1"></i> 60 Photos</span>
+                            <span><i class="far fa-calendar me-1"></i> 2023</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="album-info">
+                    <h3>Tech Fest 2023</h3>
+                    <p>Annual technical festival</p>
+                    <a href="#" class="album-link">
+                        View Album <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="album-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="album-cover">
+                    <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Sports Day">
+                    <div class="album-overlay">
+                        <div class="album-stats">
+                            <span><i class="fas fa-images me-1"></i> 55 Photos</span>
+                            <span><i class="far fa-calendar me-1"></i> 2023</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="album-info">
+                    <h3>Sports Day 2023</h3>
+                    <p>Annual sports competitions</p>
+                    <a href="#" class="album-link">
+                        View Album <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="album-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="album-cover">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                         alt="Placements">
+                    <div class="album-overlay">
+                        <div class="album-stats">
+                            <span><i class="fas fa-images me-1"></i> 40 Photos</span>
+                            <span><i class="far fa-calendar me-1"></i> 2023</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="album-info">
+                    <h3>Placements 2023</h3>
+                    <p>Campus recruitment drives</p>
+                    <a href="#" class="album-link">
+                        View Album <i class="fas fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= VIDEO GALLERY ================= -->
+<section class="video-gallery">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Multimedia</span>
+            <h2 class="section-title">Video Gallery</h2>
+        </div>
+
+        <div class="videos-grid">
+            <div class="video-card" data-aos="fade-up">
+                <div class="video-container">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Campus Tour">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div class="video-duration">5:30</div>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <h3>Virtual Campus Tour</h3>
+                    <p>360° tour of SBITM Betul campus</p>
+                    <div class="video-meta">
+                        <span><i class="far fa-eye me-1"></i> 1.2K views</span>
+                        <span><i class="far fa-calendar me-1"></i> 2 weeks ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="video-container">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Convocation">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div class="video-duration">8:15</div>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <h3>Convocation 2023</h3>
+                    <p>Graduation ceremony highlights</p>
+                    <div class="video-meta">
+                        <span><i class="far fa-eye me-1"></i> 2.5K views</span>
+                        <span><i class="far fa-calendar me-1"></i> 1 month ago</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="video-container">
+                    <div class="video-thumbnail">
+                        <img src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                             alt="Student Interview">
+                        <div class="play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div class="video-duration">3:45</div>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <h3>Student Success Stories</h3>
+                    <p>Interviews with placed students</p>
+                    <div class="video-meta">
+                        <span><i class="far fa-eye me-1"></i> 1.8K views</span>
+                        <span><i class="far fa-calendar me-1"></i> 3 weeks ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= PHOTO OF THE DAY ================= -->
+<section class="photo-of-day">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-label">Highlight</span>
+            <h2 class="section-title">Photo of the Day</h2>
+        </div>
+
+        <div class="photo-day-container" data-aos="zoom-in">
+            <div class="photo-main">
+                <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                     alt="Morning at SBITM">
+                <div class="photo-info">
+                    <h3>Morning at SBITM</h3>
+                    <p>Students gathering for morning assembly</p>
+                    <div class="photo-meta">
+                        <span><i class="fas fa-camera me-1"></i> Photography Club</span>
+                        <span><i class="far fa-calendar me-1"></i> Today</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="photo-description p-4">
+                <p class="mb-4">
+                    This beautiful morning capture shows our students gathering for
+                    the daily assembly. The lush green campus provides the perfect
+                    backdrop for academic activities.
+                </p>
+                <div class="photo-actions">
+                    <button class="btn btn-outline">
+                        <i class="far fa-thumbs-up me-2"></i> Like
+                    </button>
+                    <button class="btn btn-outline ms-2">
+                        <i class="fas fa-download me-2"></i> Download
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= GALLERY STATS ================= -->
+<section class="gallery-stats">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card" data-aos="fade-up">
+                <div class="stat-icon">
+                    <i class="fas fa-images"></i>
+                </div>
+                <h3>1500+</h3>
+                <p>Photos in Gallery</p>
+            </div>
+
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="stat-icon">
+                    <i class="fas fa-film"></i>
+                </div>
+                <h3>50+</h3>
+                <p>Videos</p>
+            </div>
+
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-icon">
+                    <i class="fas fa-folder"></i>
+                </div>
+                <h3>25+</h3>
+                <p>Albums</p>
+            </div>
+
+            <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="stat-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h3>10K+</h3>
+                <p>Monthly Views</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= PHOTO CONTEST ================= -->
+<section class="photo-contest">
+    <div class="container">
+        <div class="grid-2 align-items-center">
+            <div data-aos="fade-right">
+                <span class="section-label">Contest</span>
+                <h2 class="section-title">Student Photo Contest</h2>
+                <p class="mb-4">
+                    Participate in our annual photography contest and showcase
+                    your talent. Winners get exciting prizes and recognition.
+                </p>
+
+                <div class="contest-details">
+                    <div class="detail">
+                        <i class="fas fa-trophy"></i>
+                        <div>
+                            <h4 class="h6 fw-bold mb-1">Exciting Prizes</h4>
+                            <p class="text-muted mb-0">Cash prizes and certificates</p>
+                        </div>
+                    </div>
+
+                    <div class="detail">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <h4 class="h6 fw-bold mb-1">Submission Deadline</h4>
+                            <p class="text-muted mb-0">31 December 2024</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-camera me-2"></i> Submit Your Photo
+                    </a>
+                </div>
+            </div>
+
+            <div class="contest-winners" data-aos="fade-left">
+                <h3 class="h4 fw-bold mb-3">Last Year's Winners</h3>
+                <div class="winner-grid">
+                    <div class="winner-card">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                             alt="Winner">
+                        <div class="winner-info mt-2">
+                            <h4 class="h6 fw-bold mb-1">Rahul Sharma</h4>
+                            <p class="text-muted mb-0">1st Prize - Campus Life</p>
+                        </div>
+                    </div>
+
+                    <div class="winner-card">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                             alt="Winner">
+                        <div class="winner-info mt-2">
+                            <h4 class="h6 fw-bold mb-1">Priya Singh</h4>
+                            <p class="text-muted mb-0">2nd Prize - Nature</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.getAttribute('data-filter');
+
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                // Filter items
+                galleryItems.forEach(item => {
+                    if (filter === 'all' || item.classList.contains(filter)) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Load more functionality
+        const loadMoreBtn = document.getElementById('loadMore');
+        let currentItems = 8;
+
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', () => {
+                const items = Array.from(document.querySelectorAll('.gallery-item'));
+                for (let i = currentItems; i < currentItems + 4; i++) {
+                    if (items[i]) {
+                        items[i].style.display = 'block';
+                        setTimeout(() => {
+                            items[i].style.opacity = '1';
+                            items[i].style.transform = 'translateY(0)';
+                        }, 100);
+                    }
+                }
+                currentItems += 4;
+
+                // Hide button if no more items
+                if (currentItems >= items.length) {
+                    loadMoreBtn.style.display = 'none';
+                }
+            });
+        }
+
+        // Like button functionality
+        const likeButtons = document.querySelectorAll('.like-btn');
+        likeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const icon = button.querySelector('i');
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                    icon.style.color = '#ff4757';
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
+                    icon.style.color = '';
+                }
+            });
+        });
+
+        // Initialize AOS
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 1000,
+                once: true,
+                offset: 100
+            });
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

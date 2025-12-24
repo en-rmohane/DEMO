@@ -1,0 +1,187 @@
+{
+  "college": {
+    "name": "Shri Balaji Institute of Technology & Management, Betul",
+    "short_name": "SBITM Betul",
+    "address": "NH-69, Betul Bypass Road, Betul, Madhya Pradesh 460001",
+    "phone": "+91 78981 23456",
+    "email": "info@sbitm.edu.in",
+    "website": "www.sbitm.edu.in",
+    "established": "2009",
+    "affiliation": "Rajiv Gandhi Proudyogiki Vishwavidyalaya (RGPV), Bhopal",
+    "approval": "AICTE, New Delhi",
+    "naac": "A+",
+    "vision": "To be a premier institution of technical and management education producing globally competent professionals.",
+    "mission": "To provide quality education through innovative teaching, research, and industry collaboration."
+  },
+
+  "departments": {
+    "engineering": [
+      {
+        "code": "CSE",
+        "name": "Computer Science & Engineering",
+        "hod": "Dr. R.K. Sharma",
+        "seats": 120,
+        "duration": "4 Years"
+      },
+      {
+        "code": "ME",
+        "name": "Mechanical Engineering",
+        "hod": "Dr. S.P. Singh",
+        "seats": 60,
+        "duration": "4 Years"
+      },
+      {
+        "code": "CE",
+        "name": "Civil Engineering",
+        "hod": "Dr. A.K. Verma",
+        "seats": 60,
+        "duration": "4 Years"
+      },
+      {
+        "code": "EE",
+        "name": "Electrical Engineering",
+        "hod": "Dr. M.L. Patel",
+        "seats": 60,
+        "duration": "4 Years"
+      },
+      {
+        "code": "ECE",
+        "name": "Electronics & Communication Engineering",
+        "hod": "Dr. P.K. Gupta",
+        "seats": 60,
+        "duration": "4 Years"
+      }
+    ],
+    "management": [
+      {
+        "code": "MBA",
+        "name": "Master of Business Administration",
+        "hod": "Dr. S. Mishra",
+        "seats": 60,
+        "duration": "2 Years"
+      },
+      {
+        "code": "BBA",
+        "name": "Bachelor of Business Administration",
+        "hod": "Dr. R. Tiwari",
+        "seats": 60,
+        "duration": "3 Years"
+      }
+    ]
+  },
+
+  "facilities": [
+    {
+      "name": "Smart Classrooms",
+      "icon": "fa-chalkboard-teacher",
+      "description": "Digitally equipped classrooms with modern teaching aids"
+    },
+    {
+      "name": "Central Library",
+      "icon": "fa-book",
+      "description": "50,000+ books, journals and e-resources"
+    },
+    {
+      "name": "Computer Labs",
+      "icon": "fa-desktop",
+      "description": "Advanced labs with latest hardware and software"
+    },
+    {
+      "name": "Wi-Fi Campus",
+      "icon": "fa-wifi",
+      "description": "High-speed internet connectivity across campus"
+    },
+    {
+      "name": "Hostels",
+      "icon": "fa-building",
+      "description": "Separate hostels for boys and girls"
+    },
+    {
+      "name": "Sports Facilities",
+      "icon": "fa-futbol",
+      "description": "Indoor and outdoor sports facilities"
+    },
+    {
+      "name": "Cafeteria",
+      "icon": "fa-utensils",
+      "description": "Hygienic and nutritious food services"
+    },
+    {
+      "name": "Transport",
+      "icon": "fa-bus",
+      "description": "College bus facility for students and staff"
+    }
+  ],
+
+  "placements": {
+    "2024": {
+      "total_offers": 180,
+      "highest_package": "₹22 LPA",
+      "average_package": "₹6.2 LPA",
+      "placement_rate": "92%",
+      "top_companies": [
+        "TCS",
+        "Infosys",
+        "Wipro",
+        "Capgemini",
+        "Accenture",
+        "IBM",
+        "Cognizant",
+        "Tech Mahindra",
+        "Amazon",
+        "Microsoft"
+      ]
+    },
+    "2023": {
+      "total_offers": 150,
+      "highest_package": "₹18 LPA",
+      "average_package": "₹5.5 LPA",
+      "placement_rate": "88%",
+      "top_companies": [
+        "TCS",
+        "Infosys",
+        "Wipro",
+        "Capgemini",
+        "Accenture"
+      ]
+    }
+  },
+
+  "faculty": [
+    {
+      "name": "Dr. Rajesh Sharma",
+      "designation": "Principal",
+      "qualification": "Ph.D (Computer Science), M.Tech",
+      "experience": "22 Years",
+      "department": "Computer Science"
+    },
+    {
+      "name": "Prof. Anjali Verma",
+      "designation": "Vice Principal",
+      "qualification": "Ph.D (Mechanical Engineering), M.Tech",
+      "experience": "18 Years",
+      "department": "Mechanical Engineering"
+    },
+    {
+      "name": "Dr. Sanjay Patel",
+      "designation": "Professor",
+      "qualification": "Ph.D (Electronics Engineering), M.Tech",
+      "experience": "15 Years",
+      "department": "Electronics & Communication"
+    },
+    {
+      "name": "Dr. Priya Singh",
+      "designation": "Professor",
+      "qualification": "Ph.D (Civil Engineering), M.Tech",
+      "experience": "12 Years",
+      "department": "Civil Engineering"
+    },
+    {
+      "name": "Prof. Ravi Kumar",
+      "designation": "Associate Professor",
+      "qualification": "M.Tech, MBA",
+      "experience": "10 Years",
+      "department": "Management"
+    }
+  ]
+}

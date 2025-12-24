@@ -1,0 +1,503 @@
+{% extends "base.html" %}
+
+{% block title %}SBITM Betul | Premier Engineering College in Central India{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Auto-changing Background -->
+<section class="hero-section">
+    <div class="hero-background">
+        <!-- Auto-changing background images -->
+        <div class="bg-slide active" style="background-image: url('{{ url_for('static', filename='images/Background.png') }}');">
+            <div class="bg-overlay"></div>
+        </div>
+        <div class="bg-slide" style="background-image: url('{{ url_for('static', filename='images/Background.png') }}');">
+            <div class="bg-overlay"></div>
+        </div>
+        <div class="bg-slide" style="background-image: url('{{ url_for('static', filename='images/Background.png') }}');">
+            <div class="bg-overlay"></div>
+        </div>
+        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+            <div class="bg-overlay"></div>
+        </div>
+        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+            <div class="bg-overlay"></div>
+        </div>
+    </div>
+
+    <div class="hero-content">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-8 col-md-10 mx-auto text-center">
+                    <!-- College Logo/Badge -->
+                    <div class="college-badge mb-4 animate__animated animate__fadeInDown">
+                        <div class="badge-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <span class="badge-text">Established 2009</span>
+                    </div>
+
+                    <!-- Main Title -->
+                    <h1 class="hero-title animate__animated animate__fadeInUp">
+                        <span class="gradient-text">Shri Balaji Institute of</span><br>
+                        <span class="highlight-text">Technology & Management</span>
+                    </h1>
+
+                    <!-- Subtitle -->
+                    <p class="hero-subtitle animate__animated animate__fadeInUp animate__delay-1s">
+                        <i class="fas fa-map-marker-alt me-2"></i>Betul, Madhya Pradesh
+                        <span class="divider">|</span>
+                        <i class="fas fa-award me-2"></i>NAAC A+ Accredited
+                        <span class="divider">|</span>
+                        <i class="fas fa-university me-2"></i>RGPV Affiliated
+                    </p>
+
+                    <!-- Stats Bar -->
+                    <div class="stats-bar animate__animated animate__fadeInUp animate__delay-4">
+                        <div class="stat-item">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Years</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">2500+</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">92%</div>
+                            <div class="stat-label">Placements</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">₹22 LPA</div>
+                            <div class="stat-label">Highest Package</div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="hero-buttons animate__animated animate__fadeInUp animate__delay-3s">
+                        <a href="{{ url_for('admissions') }}" class="btn btn-primary btn-lg me-3 mb-3">
+                            <i class="fas fa-rocket me-2"></i>Apply Now 2024
+                        </a>
+                        <a href="{{ url_for('campus_tour') }}" class="btn btn-outline-light btn-lg mb-3">
+                            <i class="fas fa-video me-2"></i>Virtual Tour
+                        </a>
+                    </div>
+
+                    <!-- Scroll Down Indicator -->
+                    <div class="scroll-down animate__animated animate__fadeInUp animate__delay-4s">
+                        <a href="#about-section" class="scroll-link">
+                            <i class="fas fa-chevron-down"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about-section" class="section about-section">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="section-header mb-4">
+                    <span class="section-label">About SBITM</span>
+                    <h2 class="section-title">Excellence in Engineering Education Since 2009</h2>
+                </div>
+
+                <div class="about-content">
+                    <p class="lead mb-4">
+                        <strong>Shri Balaji Institute of Technology & Management (SBITM), Betul</strong>
+                        is a premier institution dedicated to providing quality education in engineering
+                        and management, shaping future innovators and leaders.
+                    </p>
+
+                    <div class="about-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h5>NAAC A+ Accredited</h5>
+                                <p>Highest grade accreditation for quality education</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h5>RGPV Affiliated</h5>
+                                <p>Affiliated to Rajiv Gandhi Proudyogiki Vishwavidyalaya, Bhopal</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h5>AICTE Approved</h5>
+                                <p>Approved by All India Council for Technical Education</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="{{ url_for('about') }}" class="btn btn-primary">
+                            <i class="fas fa-history me-2"></i>Learn More About Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="about-image">
+                    <div class="image-frame">
+                       <img src="{{ url_for('static', filename='images/Background.png') }}"
+                             alt="SBITM Campus" class="img-fluid rounded shadow-lg">
+                        <div class="image-badge">
+                            <div class="badge-content">
+                                <h4 class="mb-0">25+</h4>
+                                <small>Acres Campus</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Programs Section -->
+<section class="section programs-section bg-light">
+    <div class="container">
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <span class="section-label">Academic Programs</span>
+            <h2 class="section-title">Our Engineering & Management Programs</h2>
+            <p class="section-subtitle">Industry-aligned curriculum with practical exposure</p>
+        </div>
+
+        <div class="row g-4">
+            {% for program in data.programs.btech[:3] %}
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
+                <div class="program-card">
+                    <div class="program-header" style="background: {{ program.color }};">
+                        <div class="program-icon">
+                            <i class="{{ program.icon }}"></i>
+                        </div>
+                        <div class="program-code">{{ program.code }}</div>
+                    </div>
+                    <div class="program-body">
+                        <h4 class="program-title">{{ program.name }}</h4>
+                        <p class="program-desc">{{ program.description }}</p>
+                        <div class="program-details">
+                            <div class="detail">
+                                <i class="fas fa-clock"></i>
+                                <span>{{ program.duration }}</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-chair"></i>
+                                <span>{{ program.seats }} Seats</span>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('academics') }}" class="btn btn-sm btn-outline-primary mt-3">
+                            View Details <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{{ url_for('programs') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-book-open me-2"></i>View All Programs
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Placements Section -->
+<section class="section placements-section">
+    <div class="container">
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <span class="section-label">Career Success</span>
+            <h2 class="section-title text-white">Placement Excellence</h2>
+            <p class="section-subtitle text-light">Our students placed in top companies with excellent packages</p>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="placement-stat text-center">
+                    <div class="stat-value">{{ data.placements.current_year.highest }}</div>
+                    <div class="stat-label">Highest Package</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="placement-stat text-center">
+                    <div class="stat-value">{{ data.placements.current_year.average }}</div>
+                    <div class="stat-label">Average Package</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="placement-stat text-center">
+                    <div class="stat-value">{{ data.placements.current_year.percentage }}</div>
+                    <div class="stat-label">Placement Rate</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="placement-stat text-center">
+                    <div class="stat-value">{{ data.placements.current_year.offers }}</div>
+                    <div class="stat-label">Total Offers</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Companies Marquee -->
+        <div class="companies-marquee" data-aos="fade-up">
+            <h4 class="text-center mb-4 text-white">Our Recruiters</h4>
+            <div class="marquee-container">
+                <div class="marquee-track">
+                    {% for company in data.placements.current_year.companies %}
+                    <div class="company-logo">
+                        <span class="company-name">{{ company }}</span>
+                    </div>
+                    {% endfor %}
+                    <!-- Duplicate for seamless loop -->
+                    {% for company in data.placements.current_year.companies %}
+                    <div class="company-logo">
+                        <span class="company-name">{{ company }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{{ url_for('placements') }}" class="btn btn-light btn-lg">
+                <i class="fas fa-chart-line me-2"></i>View Placement Report
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Facilities Section -->
+<section class="section facilities-section">
+    <div class="container">
+        <div class="section-header text-center mb-5" data-aos="fade-up">
+            <span class="section-label">Campus Life</span>
+            <h2 class="section-title">World-Class Facilities</h2>
+            <p class="section-subtitle">Modern infrastructure for holistic development</p>
+        </div>
+
+        <div class="row g-4">
+            {% for facility in data.facilities %}
+            <div class="col-lg-3 col-md-4 col-6" data-aos="fade-up" data-aos-delay="{{ loop.index * 50 }}">
+                <div class="facility-card">
+                    <div class="facility-icon" style="background: {{ facility.color }};">
+                        <i class="{{ facility.icon }}"></i>
+                    </div>
+                    <h5 class="facility-title">{{ facility.name }}</h5>
+                    <p class="facility-desc">{{ facility.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5" data-aos="fade-up">
+            <a href="{{ url_for('facilities') }}" class="btn btn-primary">
+                <i class="fas fa-building me-2"></i>Explore All Facilities
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section cta-section">
+    <div class="container">
+        <div class="cta-content text-center" data-aos="zoom-in">
+            <div class="cta-icon mb-4">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h2 class="cta-title mb-3">Start Your Engineering Journey at SBITM</h2>
+            <p class="cta-subtitle mb-4">
+                Admissions open for academic session {{ current_year }}-{{ current_year + 1 }}.
+                Transform your dreams into reality with India's premier engineering college.
+            </p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('admissions') }}" class="btn btn-light btn-lg me-3 mb-3">
+                    <i class="fas fa-file-alt me-2"></i>Apply Online
+                </a>
+                <a href="{{ url_for('contact') }}" class="btn btn-outline-light btn-lg mb-3">
+                    <i class="fas fa-phone-alt me-2"></i>Contact Admissions
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Links -->
+<section class="section quick-links bg-light">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3 col-6">
+                <div class="quick-link-card text-center">
+                    <div class="link-icon mb-3">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h5>Academic Calendar</h5>
+                    <a href="#" class="btn btn-sm btn-link">View Schedule →</a>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="quick-link-card text-center">
+                    <div class="link-icon mb-3">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <h5>Latest News</h5>
+                    <a href="#" class="btn btn-sm btn-link">Read More →</a>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="quick-link-card text-center">
+                    <div class="link-icon mb-3">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h5>Download Brochure</h5>
+                    <a href="#" class="btn btn-sm btn-link">Download PDF →</a>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="quick-link-card text-center">
+                    <div class="link-icon mb-3">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h5>Visit Campus</h5>
+                    <a href="{{ url_for('campus_tour') }}" class="btn btn-sm btn-link">Book Tour →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<!-- Include Animate.css for animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-changing background images
+    const bgSlides = document.querySelectorAll('.bg-slide');
+    let currentSlide = 0;
+
+    function changeBackground() {
+        // Hide current slide
+        bgSlides[currentSlide].classList.remove('active');
+
+        // Move to next slide
+        currentSlide = (currentSlide + 1) % bgSlides.length;
+
+        // Show next slide
+        bgSlides[currentSlide].classList.add('active');
+    }
+
+    // Change background every 2 seconds
+    setInterval(changeBackground, 2000);
+
+    // Initialize background slideshow
+    changeBackground();
+
+    // Stats counter animation
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(stat => {
+        const finalText = stat.textContent;
+        const isPercentage = finalText.includes('%');
+        const isLPA = finalText.includes('LPA');
+        const isPlus = finalText.includes('+');
+
+        let finalValue;
+        if (isPercentage) {
+            finalValue = parseInt(finalText);
+        } else if (isLPA) {
+            finalValue = parseInt(finalText.replace('₹', '').replace(' LPA', ''));
+        } else if (isPlus) {
+            finalValue = parseInt(finalText);
+        } else {
+            finalValue = parseInt(finalText.replace(/\D/g, ''));
+        }
+
+        if (!isNaN(finalValue)) {
+            let current = 0;
+            const increment = finalValue / 30;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= finalValue) {
+                    stat.textContent = finalText;
+                    clearInterval(timer);
+                } else {
+                    let displayValue = Math.floor(current);
+                    if (isPercentage) {
+                        stat.textContent = displayValue + '%';
+                    } else if (isLPA) {
+                        stat.textContent = '₹' + displayValue + ' LPA';
+                    } else if (isPlus) {
+                        stat.textContent = displayValue + '+';
+                    } else {
+                        stat.textContent = displayValue;
+                    }
+                }
+            }, 50);
+        }
+    });
+
+    // Smooth scroll for links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Initialize AOS animations
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+    }
+
+    // Marquee animation
+    const marqueeTrack = document.querySelector('.marquee-track');
+    if (marqueeTrack) {
+        const scrollSpeed = 1; // pixels per frame
+        let position = 0;
+
+        function animateMarquee() {
+            position -= scrollSpeed;
+
+            // Reset position when half of track is scrolled
+            const trackWidth = marqueeTrack.scrollWidth / 2;
+            if (Math.abs(position) >= trackWidth) {
+                position = 0;
+            }
+
+            marqueeTrack.style.transform = `translateX(${position}px)`;
+            requestAnimationFrame(animateMarquee);
+        }
+
+        animateMarquee();
+    }
+});
+</script>
+{% endblock %}
